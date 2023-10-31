@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\TramitesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
