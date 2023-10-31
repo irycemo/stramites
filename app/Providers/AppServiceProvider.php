@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Livewire::setScriptRoute(function ($handle) {
-            return Route::get(env('APP_URL') . '/livewire/livewire.js', $handle);
+            return Route::get('/stramites/public/livewire/livewire.js', $handle);
         });
 
     }
