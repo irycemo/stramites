@@ -39,5 +39,9 @@ class AppServiceProvider extends ServiceProvider
             return Route::get('/stramites/public/livewire/livewire.js', $handle);
         });
 
+        Livewire::setUpdateRoute(function ($handle) {
+            return Route::post('/stramites/public/livewire/update', $handle);
+        });
+
     }
 }
