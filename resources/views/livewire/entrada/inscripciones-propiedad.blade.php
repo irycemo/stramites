@@ -243,12 +243,6 @@
 
                             </x-input-group>
 
-                            <x-input-group for="modelo_editar.numero_propiedad" label="Número de propiedad" :error="$errors->first('modelo_editar.numero_propiedad')" class="">
-
-                                <x-input-text id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" />
-
-                            </x-input-group>
-
                             <x-input-group for="modelo_editar.tomo" label="Tomo" :error="$errors->first('modelo_editar.tomo')" class="">
 
                                 <x-input-text id="modelo_editar.tomo" wire:model.lazy="modelo_editar.tomo" />
@@ -258,6 +252,12 @@
                             <x-input-group for="modelo_editar.registro" label="Registro" :error="$errors->first('modelo_editar.registro')" class="">
 
                                 <x-input-text id="modelo_editar.registro" wire:model.lazy="modelo_editar.registro" />
+
+                            </x-input-group>
+
+                            <x-input-group for="modelo_editar.numero_propiedad" label="Número de propiedad" :error="$errors->first('modelo_editar.numero_propiedad')" class="">
+
+                                <x-input-text id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" />
 
                             </x-input-group>
 
@@ -305,21 +305,57 @@
 
                             <x-input-group for="modelo_editar.tipo_documento" label="Tipo de documento" :error="$errors->first('modelo_editar.tipo_documento')" class="w-full">
 
-                                <x-input-text id="modelo_editar.tipo_documento" wire:model="modelo_editar.tipo_documento" />
+                                <x-input-select id="modelo_editar.tipo_documento" wire:model="modelo_editar.tipo_documento" class="w-full">
+
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="escritura">Escritura</option>
+                                    <option value="oficio">Oficio</option>
+                                    <option value="contrato">Contrato</option>
+
+                                </x-input-select>
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.autoridad_cargo" label="Autoridad cargo" :error="$errors->first('modelo_editar.autoridad_cargo')" class="w-full">
 
-                                <x-input-text id="modelo_editar.autoridad_cargo" wire:model="modelo_editar.autoridad_cargo" />
+                                <x-input-select id="modelo_editar.autoridad_cargo" wire:model.live="modelo_editar.autoridad_cargo" class="w-full">
+
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="notario">Notario(a)</option>
+                                    <option value="foraneo">Notario(a) foraneo</option>
+                                    <option value="juez">Juez(a)</option>
+                                    <option value="funcionario">Funcionario</option>
+
+                                </x-input-select>
 
                             </x-input-group>
 
-                            <x-input-group for="modelo_editar.nombre_autoridad" label="Nombre de la autoridad" :error="$errors->first('modelo_editar.nombre_autoridad')" class="w-full">
+                            @if($modelo_editar->autoridad_cargo == 'notario')
 
-                                <x-input-text id="modelo_editar.nombre_autoridad" wire:model="modelo_editar.nombre_autoridad" />
+                                <x-input-group for="modelo_editar.nombre_autoridad" label="Nombre de la autoridad" :error="$errors->first('modelo_editar.nombre_autoridad')" class="w-full">
 
-                            </x-input-group>
+                                    <x-input-select id="modelo_editar.nombre_autoridad" wire:model="modelo_editar.nombre_autoridad" class="w-full">
+
+                                        <option value="">Seleccione una opción</option>
+                                        @foreach ($notarias as $notario)
+
+                                            <option value="{{ $notario->numero . '-' . $notario->notario }}">{{ $notario->numero . '-' . $notario->notario }}</option>
+
+                                        @endforeach
+
+                                    </x-input-select>
+
+                                </x-input-group>
+
+                            @else
+
+                                <x-input-group for="modelo_editar.nombre_autoridad" label="Número y nombre de la autoridad" :error="$errors->first('modelo_editar.nombre_autoridad')" class="w-full">
+
+                                    <x-input-text id="modelo_editar.nombre_autoridad" wire:model="modelo_editar.nombre_autoridad" />
+
+                                </x-input-group>
+
+                            @endif
 
                             <x-input-group for="modelo_editar.numero_documento" label="Número de documento" :error="$errors->first('modelo_editar.numero_documento')" class="w-full">
 

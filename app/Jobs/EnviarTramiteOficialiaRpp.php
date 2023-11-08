@@ -17,6 +17,8 @@ class EnviarTramiteOficialiaRpp implements ShouldQueue
 
     private Tramite $tramite;
 
+    public $tries = 5;
+
     public function __construct($tramiteId)
     {
 

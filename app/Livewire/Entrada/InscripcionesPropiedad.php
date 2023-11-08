@@ -5,6 +5,7 @@ namespace App\Livewire\Entrada;
 use App\Models\Notaria;
 use App\Models\Tramite;
 use Livewire\Component;
+use App\Models\Servicio;
 use App\Models\Dependencia;
 use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
@@ -45,8 +46,8 @@ class InscripcionesPropiedad extends Component
     public $batchId;
     public $job = false;
 
-    public $valor_propiedad = ['D123', 'D119', 'D120', 'D121', 'D122'];
-    public $numero_inmuebles = ['D113', 'DL14', 'D116', 'D115'];
+    public $valor_propiedad = ['D123', 'D119', 'D120', 'D121', 'D122', 'D115','D116'];
+    public $numero_inmuebles = ['D113', 'DL14'];
 
     public $flags = [
         'adiciona' => true,
@@ -83,7 +84,7 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.movimiento_registral' => 'nullable',
-            'modelo_editar.procedencia' => 'required',
+            'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => 'required',
             'modelo_editar.numero_documento' => 'required',
             'modelo_editar.numero_propiedad' => 'required',
@@ -94,7 +95,8 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.numero_inmuebles' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], $this->numero_inmuebles)),
             'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_inmuebles' => 'nullable'
+            'modelo_editar.numero_inmuebles' => 'nullable',
+            'modelo_editar.foraneo' => 'required'
          ];
     }
 
@@ -115,6 +117,7 @@ class InscripcionesPropiedad extends Component
         'modelo_editar.folio_real' => 'folio_real',
         'modelo_editar.tipo_documento' => 'tipo de documento',
         'modelo_editar.nombre_autoridad' => 'nombre de la autoridad',
+        'modelo_editar.autoridad_cargo' => 'cargo de la autoridad',
         'modelo_editar.fecha_emision' => 'fecha de emisión',
         'modelo_editar.valor_propiedad' => 'valor de la propiedad',
     ];
@@ -129,7 +132,8 @@ class InscripcionesPropiedad extends Component
         $this->modelo_editar = Tramite::make([
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
-            'tipo_servicio' => 'ordinario'
+            'tipo_servicio' => 'ordinario',
+            'foraneo' => false
         ]);
 
     }
@@ -406,12 +410,12 @@ class InscripcionesPropiedad extends Component
 
             $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
 
-            if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
+            /* if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
 
                 $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
 
                 $this->modelo_editar->tipo_servicio = null;
-            }
+            } */
 
             if($this->modelo_editar->monto == 0){
 
@@ -430,12 +434,12 @@ class InscripcionesPropiedad extends Component
 
             $this->modelo_editar->monto = $this->servicio['extra_urgente'] * $this->modelo_editar->cantidad;
 
-            if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
+           /*  if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
 
                 $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 11:00 hrs."]);
 
                 $this->modelo_editar->tipo_servicio = null;
-            }
+            } */
 
             if($this->modelo_editar->monto == 0){
 
@@ -454,6 +458,9 @@ class InscripcionesPropiedad extends Component
 
         $this->updatedModeloEditarTipoTramite();
 
+        if($this->modelo_editar->foraneo)
+            $this->foraneo();
+
     }
 
     public function updatedModeloEditarNumeroPaginas(){
@@ -465,6 +472,55 @@ class InscripcionesPropiedad extends Component
     public function updatedModeloEditarCantidad(){
 
         $this->updatedModeloEditarTipoServicio();
+
+    }
+
+    public function updatedModeloEditarValorPropiedad(){
+
+        if($this->servicio['clave_ingreso'] == 'D115' && $this->modelo_editar->valor_propiedad > 946110){
+
+            $this->modelo_editar->valor_propiedad = 0;
+
+            $this->dispatch('mostrarMensaje', ['error', 'Verificar el valor de propiedad.']);
+
+        }elseif($this->servicio['clave_ingreso'] == 'D116' && $this->modelo_editar->valor_propiedad < 946110){
+
+            $this->modelo_editar->valor_propiedad = 0;
+
+            $this->dispatch('mostrarMensaje', ['error', 'Verificar el valor de propiedad.']);
+
+        }
+
+    }
+
+    public function updatedModeloEditarAutoridadCargo(){
+
+        if($this->modelo_editar->autoridad_cargo == 'foraneo'){
+
+            $this->modelo_editar->foraneo = true;
+
+        }else{
+
+            $this->modelo_editar->foraneo = false;
+
+        }
+
+        $this->updatedModeloEditarTipoServicio();
+
+    }
+
+    public function foraneo(){
+
+        $foraneo = Servicio::where('clave_ingreso', 'D158')->first()[$this->modelo_editar->tipo_servicio];
+
+        if($this->modelo_editar->foraneo){
+
+            $this->modelo_editar->monto = $this->modelo_editar->monto + $foraneo;
+
+        }else{
+
+            $this->modelo_editar->monto = $this->modelo_editar->monto - $foraneo;
+        }
 
     }
 

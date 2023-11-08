@@ -18,6 +18,8 @@ class GenerarFolioTramite implements ShouldQueue
 
     private Tramite $tramite;
 
+    public $tries = 5;
+
     public function __construct(int $tramiteId)
     {
 

@@ -584,16 +584,6 @@
 
                         @endif
 
-                        @if ($modelo_editar->numero_propiedad)
-
-                            <div class="rounded-lg bg-gray-100 py-1 px-2">
-
-                                <p><strong>Número de propiedad:</strong> {{ $modelo_editar->numero_propiedad }}</p>
-
-                            </div>
-
-                        @endif
-
                         @if ($modelo_editar->numero_escritura)
 
                             <div class="rounded-lg bg-gray-100 py-1 px-2">
