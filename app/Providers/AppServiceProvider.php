@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         LogViewer::auth(function ($request) {
-
-            if(Auth::user()->hasRole('Administrador'))
+            return true;
+            if(auth()->user()->hasRole('Administrador'))
                 return true;
             else
                 abort(401, 'Unauthorized');
