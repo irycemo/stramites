@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Opcodes\LogViewer\Facades\LogViewer;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
 
         LogViewer::auth(function ($request) {
 
-            if(auth()->user()->hasRole('Administrador'))
+            if(Auth::user()->hasRole('Administrador'))
                 return true;
             else
                 abort(401, 'Unauthorized');
