@@ -33,5 +33,14 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678'),
         ])->assignRole('Administrador');
 
+        User::create([
+            'name' => 'Uruapan precalificación',
+            'ubicacion' => 'Regional 4',
+            'status' => 'activo',
+            'area' => 'Coordinación Regional 4 Purhépecha (Uruapan)',
+            'email' => 'uruapan1@correo.com',
+            'password' => Hash::make('12345678'),
+        ])->assignRole('Precalificación');
+
     }
 }
