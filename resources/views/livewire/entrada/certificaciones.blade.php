@@ -1,9 +1,5 @@
 <div class="">
 
-    @if($job)
-        <div wire:poll.500ms="checkBatch"></div>
-    @endif
-
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
         {{-- Campos --}}

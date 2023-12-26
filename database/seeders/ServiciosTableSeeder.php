@@ -14,12 +14,12 @@ class ServiciosTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('servicios')->delete();
-        
+
         \DB::table('servicios')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'nombre' => 'Cuando se trate de uno o hasta cinco tomos o libros índice',
@@ -39,7 +39,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-09 17:36:09',
                 'updated_at' => '2023-05-11 13:00:12',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
             'nombre' => 'Copias certificadas (por página)',
@@ -59,7 +59,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-09 17:38:33',
                 'updated_at' => '2023-06-07 13:52:56',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'nombre' => 'Búsqueda de antecedente de 1 a 10',
@@ -79,7 +79,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-11 12:42:06',
                 'updated_at' => '2023-06-08 11:32:30',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'nombre' => 'Búsqueda de bienes por índices de 11 a 20.',
@@ -99,7 +99,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-11 12:42:31',
                 'updated_at' => '2023-05-11 12:42:31',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'nombre' => 'Búsqueda de bienes por índices de 21 o más.',
@@ -119,7 +119,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-11 12:42:54',
                 'updated_at' => '2023-06-07 13:52:02',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
             'nombre' => 'Copias simples (por página)',
@@ -139,7 +139,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-11 13:02:12',
                 'updated_at' => '2023-06-07 13:50:40',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'nombre' => 'No habitacional rustico',
@@ -159,7 +159,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 13:31:09',
                 'updated_at' => '2023-10-11 13:32:22',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'nombre' => 'No habitacional urbano',
@@ -179,7 +179,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:23:00',
                 'updated_at' => '2023-10-11 15:23:00',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'nombre' => 'Habitacional cuyo valor no exceda $946,110.00',
@@ -199,7 +199,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:26:24',
                 'updated_at' => '2023-10-11 15:26:24',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'nombre' => 'Habitacional cuyo valor exceda $946,110.00',
@@ -219,7 +219,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:27:45',
                 'updated_at' => '2023-10-11 15:27:45',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'nombre' => 'Servidumbre de paso por cada inmueble',
@@ -239,7 +239,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:28:32',
                 'updated_at' => '2023-10-11 15:28:32',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales recidencial',
@@ -259,7 +259,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:29:49',
                 'updated_at' => '2023-10-12 12:09:58',
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 13,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales tipo medio',
@@ -279,7 +279,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:30:30',
                 'updated_at' => '2023-10-12 12:09:53',
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 14,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales popular',
@@ -299,7 +299,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:31:05',
                 'updated_at' => '2023-10-12 12:09:48',
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 15,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales campestre',
@@ -319,7 +319,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:32:28',
                 'updated_at' => '2023-10-12 12:09:35',
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 16,
                 'nombre' => 'Lotificación industrial y comercial',
@@ -339,7 +339,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:33:22',
                 'updated_at' => '2023-10-11 15:33:22',
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 17,
                 'nombre' => 'Régimen de propiedad en condominio habitacional por cada vivienda',
@@ -359,7 +359,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:34:39',
                 'updated_at' => '2023-10-11 15:34:39',
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 18,
                 'nombre' => 'Régimen de propiedad en condominio por local comercial',
@@ -379,7 +379,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:35:24',
                 'updated_at' => '2023-10-11 15:35:24',
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 19,
                 'nombre' => 'No habitacional rustico',
@@ -399,7 +399,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:37:59',
                 'updated_at' => '2023-10-11 17:05:23',
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 20,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales rustico',
@@ -419,8 +419,28 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-12 12:11:45',
                 'updated_at' => '2023-10-12 12:11:45',
             ),
+            20 =>
+            array (
+                'id' => 21,
+                'nombre' => 'Tratándose de testimonios notariales que provengan de otras entidades federativas',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '1986.00',
+                'urgente' => '3972.00',
+                'extra_urgente' => '5958.00',
+                'material' => '2403177013',
+                'clave_ingreso' => 'D158',
+                'operacion_principal' => '2403',
+                'operacion_parcial' => '2403',
+                'categoria_servicio_id' => 4,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2023-12-20 13:48:14',
+                'updated_at' => '2023-12-20 13:48:14',
+            ),
         ));
-        
-        
+
+
     }
 }

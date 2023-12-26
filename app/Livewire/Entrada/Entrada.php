@@ -6,9 +6,12 @@ use App\Models\Tramite;
 use Livewire\Component;
 use App\Models\Servicio;
 use App\Models\CategoriaServicio;
+use App\Traits\BatchTramiteTrait;
 
 class Entrada extends Component
 {
+
+    use BatchTramiteTrait;
 
     public $categorias;
     public $categoria;
@@ -25,7 +28,10 @@ class Entrada extends Component
         'InscripcionesPropiedad' => false,
     ];
 
-    protected $listeners = ['reset' => 'resetAll'];
+    protected $listeners = [
+        'reset' => 'resetAll',
+        'crearBatch' => 'crearBatch'
+    ];
 
     public function resetAll(){
 
@@ -45,7 +51,7 @@ class Entrada extends Component
 
         $this->categoria = json_decode($this->categoria_seleccionada, true);
 
-        $this->servicios = Servicio::with('categoria')->where('categoria_servicio_id', $this->categoria['id'])->where('estado', 'activo')->get();
+        $this->servicios = Servicio::with('categoria')->where('categoria_servicio_id', $this->categoria['id'])->where('estado', 'activo')->orderBy('nombre')->get();
 
         $this->reset(['servicio_seleccionado', 'servicio', 'servicio_seleccionado', 'flags']);
 

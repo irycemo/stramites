@@ -89,6 +89,36 @@
 
             <div>
 
+                <Label>Ubicación</Label>
+            </div>
+
+            <div>
+
+                <select class="rounded text-sm w-full" wire:model.live="ubicacion">
+
+                    <option value="" selected>Seleccione una opción</option>
+                    @foreach ($ubicaciones as $ubicacion)
+
+                        <option value="{{$ubicacion}}" >{{$ubicacion}}</option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+            <div>
+
+                @error('estado') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+            </div>
+
+        </div>
+
+        <div class="flex-auto ">
+
+            <div>
+
                 <Label>Usuario</Label>
             </div>
 
@@ -214,7 +244,7 @@
 
             <p class="text-xl font-extralight">Se encontraron: {{ number_format($tramites->total()) }} registros con los filtros seleccionados.</p>
 
-            <button wire:click="descargarExcel" class="text-white flex items-center border rounded-full px-4 py-2 bg-green-500 hover:bg-green-700 mt-2 md:mt-0 w-full md:w-auto justify-center">
+            <x-button-green wire:click="descargarExcel" >
 
                 <img wire:loading wire:target="descargarExcel" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
 
@@ -224,7 +254,7 @@
 
                 Exportar a Excel
 
-            </button>
+            </x-button-green>
 
         </div>
 

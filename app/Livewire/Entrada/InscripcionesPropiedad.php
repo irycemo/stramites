@@ -17,8 +17,6 @@ use App\Jobs\EnviarTramiteOficialiaRpp;
 use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
-use App\Exceptions\ErrorAlGenerarLineaDeCaptura;
-use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 
 class InscripcionesPropiedad extends Component
 {
@@ -46,8 +44,8 @@ class InscripcionesPropiedad extends Component
     public $batchId;
     public $job = false;
 
-    public $valor_propiedad = ['D123', 'D119', 'D120', 'D121', 'D122', 'D115','D116'];
-    public $numero_inmuebles = ['D113', 'DL14'];
+    public $valor_propiedad = ['D115','D116', 'D113', 'D114'];
+    public $numero_inmuebles = ['D123', 'D120', 'D121', 'D122','D119', 'D124', 'D125', 'D126'];
 
     public $flags = [
         'adiciona' => true,
@@ -511,7 +509,7 @@ class InscripcionesPropiedad extends Component
 
     public function foraneo(){
 
-        $foraneo = Servicio::where('clave_ingreso', 'D158')->first()[$this->modelo_editar->tipo_servicio];
+        $foraneo = Servicio::where('clave_ingreso', 'D158')->first()[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
 
         if($this->modelo_editar->foraneo){
 
@@ -556,15 +554,9 @@ class InscripcionesPropiedad extends Component
 
                 $this->tramiteCreado = (new TramiteService($this->modelo_editar))->crear();
 
-                $this->job = true;
+                $this->dispatch('crearBatch', $this->tramiteCreado->id);
 
-                $batch = Bus::batch([
-
-                    new GenerarFolioTramite($this->tramiteCreado->id)
-
-                ])->dispatch();
-
-                $this->batchId = $batch->id;
+                $this->dispatch('reset');
 
                 $this->resetearTodo($borrado = true);
 
@@ -635,34 +627,6 @@ class InscripcionesPropiedad extends Component
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
             $this->resetearTodo($borrado = true);
-        }
-
-    }
-
-    public function getBatchProperty(){
-
-        if(!$this->batchId){
-
-            return null;
-        }
-
-        return Bus::findBatch($this->batchId);
-
-    }
-
-    public function checkBatch(){
-
-        if($this->batch && $this->batch->finished()){
-
-            $this->batch->delete();
-
-            $this->job = false;
-
-            if($this->tramiteCreado->solicitante == 'Oficialia de partes')
-                dispatch(new EnviarTramiteOficialiaRpp($this->tramiteCreado->id));
-
-            $this->dispatch('imprimir_recibo', ['tramite' => $this->tramiteCreado->id]);
-
         }
 
     }

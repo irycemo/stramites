@@ -20,6 +20,7 @@ class TramiteExport implements FromCollection, WithProperties, WithDrawings, Sho
 {
 
     public $servicio_id;
+    public $ubicacion;
     public $usuario_id;
     public $tipo_servicio;
     public $solicitante;
@@ -28,9 +29,10 @@ class TramiteExport implements FromCollection, WithProperties, WithDrawings, Sho
     public $fecha2;
 
 
-    public function __construct($estado, $servicio, $usuario, $tipo_servicio, $solicitante, $fecha1, $fecha2)
+    public function __construct($estado, $ubicacion, $servicio, $usuario, $tipo_servicio, $solicitante, $fecha1, $fecha2)
     {
         $this->servicio_id = $servicio;
+        $this->ubicacion = $ubicacion;
         $this->usuario_id = $usuario;
         $this->tipo_servicio = $tipo_servicio;
         $this->solicitante = $solicitante;
@@ -60,6 +62,11 @@ class TramiteExport implements FromCollection, WithProperties, WithDrawings, Sho
                         })
                         ->when(isset($this->solicitante) && $this->solicitante != "", function($q){
                             return $q->where('solicitante', $this->solicitante);
+                        })
+                        ->when(isset($this->ubicacion) && $this->ubicacion != "", function($q){
+                            return $q->whereHas('creadoPor', function($q){
+                                $q->where('ubicacion', $this->ubicacion);
+                            });
                         })
                         ->whereBetween('created_at', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
                         ->get();

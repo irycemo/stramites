@@ -32,7 +32,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'localidad',
+        'ubicacion',
         'status',
         'area',
         'creado_por',

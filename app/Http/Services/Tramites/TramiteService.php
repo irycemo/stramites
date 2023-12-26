@@ -48,6 +48,10 @@ class TramiteService{
 
             throw new TramiteServiceException($th->getMessage());
 
+        }catch (SistemaRppServiceException $th) {
+
+            throw new TramiteServiceException($th->getMessage());
+
         } catch (\Throwable $th) {
 
             Log::error("Error al crear trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '. ' . $th);

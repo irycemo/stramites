@@ -44,6 +44,11 @@ class SistemaRppService{
                 'numero_escritura' => $tramite->numero_escritura,
                 'numero_notaria' => $tramite->numero_notaria,
                 'valor_propiedad' => $tramite->valor_propiedad,
+                'tipo_documento' => $tramite->tipo_documento,
+                'autoridad_cargo' => $tramite->autoridad_cargo,
+                'autoridad_nombre' => $tramite->numero_documento,
+                'fecha_emision' => $tramite->fecha_emision,
+                'procedencia' => $tramite->procedencia,
             ]);
 
         } catch (ConnectionException $th) {
@@ -75,7 +80,7 @@ class SistemaRppService{
 
         }else{
 
-            Log::error("Error al enviar al Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". ". $response);
+            Log::error($response);
 
             throw new SistemaRppServiceException("Error al insertar trámite en Sistema RPP.");
 
@@ -118,6 +123,11 @@ class SistemaRppService{
                 'numero_notaria' => $tramite->numero_notaria,
                 'valor_propiedad' => $tramite->valor_propiedad,
                 'movimiento_registral' => $tramite->movimiento_registral,
+                'tipo_documento' => $tramite->tipo_documento,
+                'autoridad_cargo' => $tramite->autoridad_cargo,
+                'autoridad_nombre' => $tramite->numero_documento,
+                'fecha_emision' => $tramite->fecha_emision,
+                'procedencia' => $tramite->procedencia,
             ]);
 
         } catch (\Throwable $th) {

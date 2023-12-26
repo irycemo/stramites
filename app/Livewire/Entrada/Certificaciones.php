@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\EnviarTramiteOficialiaRpp;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
+use App\Http\Services\SistemaRPP\SistemaRppService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Certificaciones extends Component
@@ -39,10 +40,6 @@ class Certificaciones extends Component
     public $dependencias;
     public $notarias;
     public $notaria;
-
-    public $tramiteCreado;
-    public $batchId;
-    public $job = false;
 
     public $flags = [
         'adiciona' => false,
@@ -535,31 +532,25 @@ class Certificaciones extends Component
 
                         $this->modelo_editar->monto = $this->modelo_editar->monto + $consulta->monto;
 
-                        $this->tramiteCreado = (new TramiteService($this->modelo_editar))->crear();
+                        $tramite = (new TramiteService($this->modelo_editar))->crear();
 
                     /* Copias que adicionan a otro tramite */
                     }else{
 
-                        $this->tramiteCreado = (new TramiteService($this->modelo_editar))->crear();
+                        $tramite = (new TramiteService($this->modelo_editar))->crear();
 
                     }
 
                 /* Consultas */
                 }else{
 
-                    $this->tramiteCreado = (new TramiteService($this->modelo_editar))->crear();
+                    $tramite = (new TramiteService($this->modelo_editar))->crear();
 
                 }
 
-                $this->job = true;
+                $this->dispatch('crearBatch', $tramite->id);
 
-                $batch = Bus::batch([
-
-                    new GenerarFolioTramite($this->tramiteCreado->id)
-
-                ])->dispatch();
-
-                $this->batchId = $batch->id;
+                $this->dispatch('reset');
 
                 $this->resetearTodo($borrado = true);
 
@@ -627,34 +618,6 @@ class Certificaciones extends Component
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
             $this->resetearTodo($borrado = true);
-        }
-
-    }
-
-    public function getBatchProperty(){
-
-        if(!$this->batchId){
-
-            return null;
-        }
-
-        return Bus::findBatch($this->batchId);
-
-    }
-
-    public function checkBatch(){
-
-        if($this->batch && $this->batch->finished()){
-
-            $this->batch->delete();
-
-            $this->job = false;
-
-            if($this->tramiteCreado->solicitante == 'Oficialia de partes')
-                dispatch(new EnviarTramiteOficialiaRpp($this->tramiteCreado->id));
-
-            $this->dispatch('imprimir_recibo', ['tramite' => $this->tramiteCreado->id]);
-
         }
 
     }

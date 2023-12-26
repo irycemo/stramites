@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use App\Http\Services\SistemaRPP\SistemaRppService;
 
 class GenerarFolioTramite implements ShouldQueue
 {
@@ -38,6 +39,18 @@ class GenerarFolioTramite implements ShouldQueue
         $this->tramite->numero_control = (Tramite::where('año', $this->tramite->año)->max('numero_control') ?? 0) + 1;
 
         $this->tramite->save();
+
+        if($this->tramite->solicitante == 'Oficialia de partes' || $this->tramite->solicitante == 'SAT'){
+
+            $this->tramite->update([
+                'estado' => 'pagado',
+                'fecha_pago' => now(),
+                'fecha_prelacion' => now()->toDateString(),
+            ]);
+
+            (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+
+        }
 
     }
 

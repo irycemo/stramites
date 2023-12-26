@@ -15,13 +15,13 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(RoleSeeder::class);
-        $this->call(UserSeeder::class);
+        /* $this->call(UserSeeder::class); */
         $this->call(CategoriaServicioSeeder::class);
         $this->call(UmaSeeder::class);
-        $this->call(DependenciaSeeder::class);
+        /* $this->call(DependenciaSeeder::class); */
 
         /* $this->call(TramiteSeeder::class); */
-        $this->call(NotariaSeeder::class);
+        /* $this->call(NotariaSeeder::class); */
         $this->call(ServiciosTableSeeder::class);
     }
 }
