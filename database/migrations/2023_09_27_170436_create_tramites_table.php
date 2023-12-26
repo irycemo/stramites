@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string("seccion")->nullable();
             $table->unsignedDecimal("monto", 18, 2);
             $table->string("tipo_servicio");
-            $table->unsignedInteger('numero_paginas')->nullable();
+            $table->unsignedInteger('cantidad')->nullable();
             $table->unsignedInteger('numero_inmuebles')->nullable();
             $table->string("numero_propiedad")->nullable();
             $table->string("numero_escritura")->nullable();
