@@ -24,23 +24,5 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678'),
         ])->assignRole('Administrador');
 
-        User::create([
-            'name' => 'Jesús Manriquez Vargas',
-            'ubicacion' => 'Catastro',
-            'status' => 'activo',
-            'area' => 'Subdirección De Tecnologías De La Información',
-            'email' => 'subdirti.irycem@correo.michoacan.gob.mx',
-            'password' => Hash::make('12345678'),
-        ])->assignRole('Administrador');
-
-        User::create([
-            'name' => 'Uruapan precalificación',
-            'ubicacion' => 'Regional 4',
-            'status' => 'activo',
-            'area' => 'Coordinación Regional 4 Purhépecha (Uruapan)',
-            'email' => 'uruapan1@correo.com',
-            'password' => Hash::make('12345678'),
-        ])->assignRole('Precalificación');
-
     }
 }
