@@ -75,11 +75,11 @@
             </p>
             <p><strong>Tipo de servicio:</strong> {{ $tramite->tipo_servicio }}</p>
             @if($tramite->tomo) <p><strong>Tomo:</strong> {{ $tramite->tomo }}, <strong>Registro:</strong> {{ $tramite->registro}}</p>@endif
-            <p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}, Sección: {{ $tramite->seccion }}</p>
-            @if($tramite->cantidad) <p>CAntidad:</strong> {{ $tramite->cantidad}} </p>@endif
+            <p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}, <strong>Sección:</strong> {{ $tramite->seccion }}</p>
+            @if($tramite->cantidad) <p>Cantidad:</strong> {{ $tramite->cantidad}} </p>@endif
             <p><strong>Orden de pago:</strong> {{ $tramite->orden_de_pago }}</p>
             <p><strong>Linea de captura:</strong> {{ $tramite->linea_de_captura }}</p>
-            <p>Precalificó: {{ $tramite->creadoPor->name }}</p>
+            <p><strong>Precalificó:</strong> {{ $tramite->creadoPor->name }}</p>
 
         </div>
 
