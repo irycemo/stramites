@@ -520,7 +520,7 @@
 
                         <div class="rounded-lg bg-gray-100 py-1 px-2">
 
-                            <p><strong>Número de control:</strong> {{ $modelo_editar->numero_control }}</p>
+                            <p><strong>Número de control:</strong> {{ $modelo_editar->año }}-{{ $modelo_editar->numero_control }}</p>
 
                         </div>
 

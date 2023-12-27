@@ -237,9 +237,9 @@ class Tramites extends Component
 
             }
 
-            if($this->modelo_editar->estado != 'nuevo' || $this->modelo_editar->estado != 'expirado'){
+            if($this->modelo_editar->fecha_pago){
 
-                $this->dispatch('mostrarMensaje', ['error', "El trámite esta registrado en el Sistema RPP no puede ser eliminado."]);
+                $this->dispatch('mostrarMensaje', ['error', "El trámite tiene un pago registrado no puede ser borrado."]);
 
                 return;
 
