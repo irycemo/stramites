@@ -11,12 +11,9 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use App\Jobs\GenerarFolioTramite;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
-use App\Jobs\EnviarTramiteOficialiaRpp;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
-use App\Http\Services\SistemaRPP\SistemaRppService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Certificaciones extends Component
@@ -102,7 +99,7 @@ class Certificaciones extends Component
 
     protected $listeners = [
         'cambioServicio' => 'cambiarFlags',
-        'cargarTramite' => 'cargarTramite'
+        'cargarTramite' => 'cargarTramite',
     ];
 
     public function crearModeloVacio(){
@@ -122,7 +119,6 @@ class Certificaciones extends Component
         $this->resetValidation();
 
         $this->reset([
-            'tramite',
             'adicionaTramite',
             'tramitesAdicionados',
             'tramiteAdicionadoSeleccionado',
@@ -157,6 +153,8 @@ class Certificaciones extends Component
     public function cambiarFlags($servicio){
 
         $this->servicio = $servicio;
+
+        $this->reset('tramite');
 
         $this->resetearTodo($borrado = true);
 

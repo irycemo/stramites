@@ -23,6 +23,8 @@ class Entrada extends Component
     public $numero_control;
     public $año;
 
+    public $flag = false;
+
     public $flags = [
         'Certificaciones' => false,
         'InscripcionesPropiedad' => false,
@@ -64,6 +66,14 @@ class Entrada extends Component
             $this->reset('flags');
 
             return;
+
+        }
+
+        if($this->flag){
+
+            $this->reset('tramite');
+
+            $this->flag = false;
 
         }
 
@@ -130,9 +140,9 @@ class Entrada extends Component
 
         $this->updatedServicioSeleccionado();
 
-        $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria']);
+        $this->flag = true;
 
-        sleep(1);
+        $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria','numero_control']);
 
         $this->dispatch('cargarTramite', $this->tramite);
 

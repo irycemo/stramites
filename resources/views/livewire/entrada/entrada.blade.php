@@ -109,7 +109,7 @@
                         <option value="2023">2023</option>
                     </select>
 
-                    <input type="number" placeholder="Número de control" min="1" class="bg-white text-sm w-full focus:ring-0 @error('tramite_folio') border-red-500 @enderror" wire:model="numero_control">
+                    <input type="number" placeholder="Número de control" min="1" class="bg-white text-sm w-full focus:ring-0 @error('numero_control') border-red-500 @enderror" wire:model="numero_control">
 
                     <button
                         wire:click="buscarTramite"
