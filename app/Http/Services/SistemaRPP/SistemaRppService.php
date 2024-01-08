@@ -75,7 +75,7 @@ class SistemaRppService{
 
             $tramite->update(['movimiento_registral' => $data['data']['id']]);
 
-            if($tramite->adicionaAlTramite && $tramite->servicio->clave_ingreso == 'DC93')
+            if($tramite->adicionaAlTramite && $tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93')
                 $tramite->adicionaAlTramite->update(['movimiento_registral' => $data['data']['id']]);
 
         }else{

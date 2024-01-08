@@ -11,7 +11,7 @@
 
                     @if ($flags['adiciona'])
 
-                        <div class="flex space-x-3 bg-white p-4 rounded-lg mb-3 shadow-md">
+                        <div class="flex space-x-3 bg-white p-4 rounded-lg mb-3 shadow-md relative" wire:loading.class.delaylongest="opacity-50">
 
                             <div class="flex space-x-4 items-center">
 
@@ -81,6 +81,13 @@
 
                             @endif
 
+                            <div wire:loading.flex class="flex absolute top-1 right-1 items-center">
+                                <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
+
                         </div>
 
                     @endif
@@ -88,7 +95,7 @@
                     {{-- Solicitante - Nombre del solicitante --}}
                     @if ($flags['solicitante'])
 
-                        <div class="flex-row lg:flex lg:space-x-3">
+                        <div class="flex-row lg:flex lg:space-x-3 relative" wire:loading.class.delaylongest="opacity-50">
 
                             <div class="flex-auto bg-white p-3 rounded-lg mb-3 shadow-md">
 
@@ -224,11 +231,18 @@
 
                             @endif
 
+                            <div wire:loading.flex class="flex absolute top-1 right-1 items-center">
+                                <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
+
                         </div>
 
                     @endif
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative" wire:loading.class.delaylongest="opacity-50">
 
                         @if($flags['tomo'])
 
@@ -517,11 +531,18 @@
 
                         @endif
 
+                        <div wire:loading.flex class="flex absolute top-1 right-1 items-center">
+                            <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+
                     </div>
 
                     @if ($flags['observaciones'])
 
-                        <div class="flex-auto bg-white p-4 rounded-lg mb-3 shadow-md">
+                        <div class="flex-auto bg-white p-4 rounded-lg mb-3 shadow-md relative" wire:loading.class.delaylongest="opacity-50">
 
                             <div class="mb-2">
 
@@ -541,6 +562,13 @@
 
                                 @error('modelo_editar.movimiento_registral') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
+                            </div>
+
+                            <div wire:loading.flex class="flex absolute top-1 right-1 items-center">
+                                <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
                             </div>
 
                         </div>
