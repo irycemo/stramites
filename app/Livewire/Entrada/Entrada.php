@@ -71,6 +71,15 @@ class Entrada extends Component
 
         }
 
+        $this->servicio = json_decode($this->servicio_seleccionado, true);
+
+        $this->mostrarComponente($this->categoria['nombre']);
+
+        $this->dispatch('cambioServicio', $this->servicio);
+
+        if($this->tramite)
+            $this->dispatch('cargarTramite', $this->tramite);
+
         if($this->flag){
 
             $this->reset('tramite');
@@ -78,12 +87,6 @@ class Entrada extends Component
             $this->flag = false;
 
         }
-
-        $this->servicio = json_decode($this->servicio_seleccionado, true);
-
-        $this->mostrarComponente($this->categoria['nombre']);
-
-        $this->dispatch('cambioServicio', $this->servicio);
 
     }
 
@@ -114,7 +117,7 @@ class Entrada extends Component
 
     public function buscarTramite(){
 
-        $this->validate(['numero_control' => 'required']);
+        $this->validate(['numero_control' => 'required', 'año' => 'required']);
 
         $this->reset('categoria_seleccionada', 'servicio_seleccionado', 'flags');
 
@@ -128,7 +131,7 @@ class Entrada extends Component
 
             $this->dispatch('mostrarMensaje', ['error', "No se encontro el trámite."]);
 
-            $this->numero_control = null;
+            $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria','numero_control', 'tramite', 'flag']);
 
             return;
 
@@ -145,8 +148,6 @@ class Entrada extends Component
         $this->flag = true;
 
         $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria','numero_control']);
-
-        $this->dispatch('cargarTramite', $this->tramite);
 
     }
 

@@ -228,11 +228,31 @@ class Certificaciones extends Component
 
         if(!$this->tramiteAdicionado->movimiento_registral){
 
-            $this->dispatch('mostrarMensaje', ['error', "El trámite " . $this->tramiteAdicionado->numero_control . " no esta dado de alta en Sistema RPP"]);
+            $this->dispatch('mostrarMensaje', ['error', "El trámite " . $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . " no esta dado de alta en Sistema RPP"]);
 
             $this->modelo_editar->adiciona = null;
 
             return;
+
+        }
+
+        if($this->tramiteAdicionado->adicionadoPor->count() >= 5){
+
+            $this->dispatch('mostrarMensaje', ['error', "El trámite " .  $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . " tiene 5 tramites adicionados"]);
+
+            $this->modelo_editar->adiciona = null;
+
+            return;
+
+        }
+
+        if($this->tramiteAdicionado->servicio->clave_ingreso == 'DC93'){
+
+            $this->flags['cantidad'] = true;
+            $this->flags['tomo'] = true;
+            $this->flags['registro'] = true;
+
+            $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
 
         }
 
