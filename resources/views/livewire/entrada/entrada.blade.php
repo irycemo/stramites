@@ -106,7 +106,11 @@
                 <div class="flex lg:w-1/2 mx-auto">
 
                     <select class="bg-white rounded-l text-sm border border-r-transparent  focus:ring-0" wire:model="año">
-                        <option value="2023">2023</option>
+                        @foreach ($años as $año)
+
+                            <option value="{{ $año }}">{{ $año }}</option>
+
+                        @endforeach
                     </select>
 
                     <input type="number" placeholder="Número de control" min="1" class="bg-white text-sm w-full focus:ring-0 @error('numero_control') border-red-500 @enderror" wire:model="numero_control">

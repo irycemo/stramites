@@ -105,4 +105,9 @@ class Constantes{
         19 => '19 Tanhuato'
     ];
 
+    const AÑOS = [
+        '2023' => '2023',
+        '2024' => '2024'
+    ];
+
 }

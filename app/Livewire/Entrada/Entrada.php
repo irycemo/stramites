@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Entrada;
 
+use App\Constantes\Constantes;
 use App\Models\Tramite;
 use Livewire\Component;
 use App\Models\Servicio;
@@ -22,6 +23,7 @@ class Entrada extends Component
     public $tramite;
     public $numero_control;
     public $año;
+    public $años;
 
     public $flag = false;
 
@@ -150,6 +152,8 @@ class Entrada extends Component
 
     public function mount(): void
     {
+
+        $this->años = Constantes::AÑOS;
 
         $this->categorias = CategoriaServicio::orderBy('nombre')->get();
 

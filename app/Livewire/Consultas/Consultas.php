@@ -5,6 +5,7 @@ namespace App\Livewire\Consultas;
 use App\Models\Tramite;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Constantes\Constantes;
 use App\Traits\ComponentesTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +19,7 @@ class Consultas extends Component
     use ComponentesTrait;
     use WithPagination;
 
+    public $años;
     public $año;
     public $numero_control;
     public $tramite;
@@ -94,6 +96,8 @@ class Consultas extends Component
     }
 
     public function mount(){
+
+        $this->años = Constantes::AÑOS;
 
         $this->año = now()->format('Y');
 
