@@ -253,6 +253,8 @@ class Certificaciones extends Component
             $this->flags['registro'] = true;
             $this->flags['tipo_servicio'] = true;
             $this->flags['tipo_tramite'] = false;
+            $this->flags['distrito'] = true;
+            $this->flags['seccion'] = true;
 
         }else{
 
@@ -261,6 +263,8 @@ class Certificaciones extends Component
             $this->flags['tomo'] = false;
             $this->flags['registro'] = false;
             $this->flags['tipo_servicio'] = false;
+            $this->flags['distrito'] = false;
+            $this->flags['seccion'] = false;
 
         }
 
