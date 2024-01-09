@@ -397,7 +397,7 @@ class Certificaciones extends Component
 
         }
 
-        if($this->modelo_editar->tipo_tramite == 'normal' && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']))
+        if($this->modelo_editar->tipo_tramite == 'normal' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']))
             $this->flags['tipo_servicio'] = false;
 
     }
