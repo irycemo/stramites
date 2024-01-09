@@ -255,9 +255,13 @@ class Certificaciones extends Component
             $this->flags['tipo_tramite'] = false;
             $this->flags['distrito'] = true;
             $this->flags['seccion'] = true;
+            $this->flags['solicitante'] = true;
+            $this->flags['nombre_solicitante'] = true;
 
         }else{
 
+            $this->flags['nombre_solicitante'] = false;
+            $this->flags['solicitante'] = false;
             $this->flags['tipo_tramite'] = true;
             $this->flags['cantidad'] = false;
             $this->flags['tomo'] = false;
@@ -392,6 +396,9 @@ class Certificaciones extends Component
             $this->flags['cantidad'] = true;
 
         }
+
+        if($this->modelo_editar->tipo_tramite == 'normal' && $this->servicio['clave_ingreso'] == 'DC19')
+            $this->flags['tipo_servicio'] = false;
 
     }
 
