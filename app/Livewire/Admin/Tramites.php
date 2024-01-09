@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Constantes\Constantes;
 use App\Traits\ComponentesTrait;
+use App\Jobs\GenerarFolioTramite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
@@ -294,6 +295,15 @@ class Tramites extends Component
             $this->resetearTodo();
 
         }
+
+    }
+
+    public function generarNumeroControl(){
+
+        if($this->modelo_editar->id && !$this->modelo_editar->numero_control)
+            dispatch(new GenerarFolioTramite($this->modelo_editar->id));
+
+        $this->resetearTodo();
 
     }
 

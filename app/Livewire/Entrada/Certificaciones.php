@@ -251,8 +251,16 @@ class Certificaciones extends Component
             $this->flags['cantidad'] = true;
             $this->flags['tomo'] = true;
             $this->flags['registro'] = true;
+            $this->flags['tipo_servicio'] = true;
+            $this->flags['tipo_tramite'] = false;
 
-            $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
+        }else{
+
+            $this->flags['tipo_tramite'] = true;
+            $this->flags['cantidad'] = false;
+            $this->flags['tomo'] = false;
+            $this->flags['registro'] = false;
+            $this->flags['tipo_servicio'] = false;
 
         }
 
@@ -266,7 +274,7 @@ class Certificaciones extends Component
 
         $this->updatedModeloEditarTipoServicio();
 
-        if($this->tramiteAdicionado->servicio->clave_ingreso == 'DL13' || $this->tramiteAdicionado->servicio->clave_ingreso == 'DL14'){
+        if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14', 'DC93'])){
 
             $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
 
@@ -378,9 +386,6 @@ class Certificaciones extends Component
             $this->modelo_editar->monto = $this->servicio[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
 
             $this->flags['cantidad'] = true;
-
-            if($this->modelo_editar->adiciona)
-                $this->flags['tipo_servicio'] = false;
 
         }
 

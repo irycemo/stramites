@@ -456,6 +456,20 @@
 
             <div class="flex gap-3">
 
+                @if(!$modelo_editar->numero_control)
+
+                    <x-button-gray
+                        wire:click="generarNumeroControl"
+                        wire:loading.attr="disabled"
+                        wire:target="generarNumeroControl">
+
+                        <img wire:loading wire:target="generarNumeroControl" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                        <span>Generar número de control</span>
+                    </x-button-gray>
+
+                @endif
+
                 @if(!$modelo_editar->fecha_pago)
 
                     @can('Validar pago')

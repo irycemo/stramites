@@ -425,7 +425,7 @@
 
                                 <div class="mb-2">
 
-                                    <Label class="text-lg tracking-widest rounded-xl border-gray-500">Cantidad</Label>
+                                    <Label class="text-lg tracking-widest rounded-xl border-gray-500">@if(in_array($this->servicio['clave_ingreso'], ['DL13', 'DL14'])) Cantidad de páginas @else Cantidad @endif</Label>
                                 </div>
 
                                 <div>
