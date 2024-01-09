@@ -253,14 +253,9 @@ class InscripcionesPropiedad extends Component
         $this->modelo_editar->distrito = $this->tramiteAdicionado->distrito;
         $this->modelo_editar->seccion = $this->tramiteAdicionado->seccion;
         $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
+        $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
 
         $this->updatedModeloEditarTipoServicio();
-
-        if($this->tramiteAdicionado->servicio->clave_ingreso == 'DL13' || $this->tramiteAdicionado->servicio->clave_ingreso == 'DL14'){
-
-            $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
-
-        }
 
     }
 

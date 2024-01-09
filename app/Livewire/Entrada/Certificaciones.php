@@ -417,14 +417,17 @@ class Certificaciones extends Component
 
         if($this->modelo_editar->tipo_servicio == 'ordinario'){
 
-            $this->modelo_editar->monto = $this->servicio['ordinario'] * $this->modelo_editar->cantidad;
-
-            if($this->modelo_editar->monto == 0){
+            if($this->servicio['ordinario'] == 0){
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio ordinario para el servicio seleccionado."]);
 
                 $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
             }
+
+            $this->modelo_editar->monto = $this->servicio['ordinario'] * $this->modelo_editar->cantidad;
 
             if($this->modelo_editar->tipo_tramite == 'complemento'){
 
@@ -434,8 +437,6 @@ class Certificaciones extends Component
         }
         elseif($this->modelo_editar->tipo_servicio == 'urgente'){
 
-            $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
-
             if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
 
                 $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
@@ -443,12 +444,17 @@ class Certificaciones extends Component
                 $this->modelo_editar->tipo_servicio = null;
             }
 
-            if($this->modelo_editar->monto == 0){
+            if($this->servicio['urgente'] == 0){
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio urgente para el servicio seleccionado."]);
 
                 $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
             }
+
+            $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
 
             if($this->modelo_editar->tipo_tramite == 'complemento' && $this->tramiteAdicionado->tipo_servicio == 'urgente'){
 
@@ -458,8 +464,6 @@ class Certificaciones extends Component
         }
         elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
 
-            $this->modelo_editar->monto = $this->servicio['extra_urgente'] * $this->modelo_editar->cantidad;
-
             if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
 
                 $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 11:00 hrs."]);
@@ -467,12 +471,17 @@ class Certificaciones extends Component
                 $this->modelo_editar->tipo_servicio = null;
             }
 
-            if($this->modelo_editar->monto == 0){
+            if($this->servicio['extra_urgente']  == 0){
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente para el servicio seleccionado."]);
 
                 $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
             }
+
+            $this->modelo_editar->monto = $this->servicio['extra_urgente'] * $this->modelo_editar->cantidad;
 
         }
 
