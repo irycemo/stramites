@@ -76,8 +76,8 @@ class Certificaciones extends Component
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
-                                                    $this->servicio['clave_ingreso'] == 'DL14' && $this->modelo_editar->adiciona ||
-                                                    $this->servicio['clave_ingreso'] == 'DL13' && $this->modelo_editar->adiciona
+                                                    $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && $this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'] ||
+                                                    $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && $this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']
                                                 ),
          ];
     }
