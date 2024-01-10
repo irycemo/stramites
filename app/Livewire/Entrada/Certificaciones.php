@@ -270,23 +270,23 @@ class Certificaciones extends Component
             $this->flags['distrito'] = false;
             $this->flags['seccion'] = false;
 
-        }
+            $this->modelo_editar->solicitante = $this->tramiteAdicionado->solicitante;
+            $this->modelo_editar->nombre_solicitante = $this->tramiteAdicionado->nombre_solicitante;
+            $this->modelo_editar->tomo = $this->tramiteAdicionado->tomo;
+            $this->modelo_editar->registro = $this->tramiteAdicionado->registro;
+            $this->modelo_editar->distrito = $this->tramiteAdicionado->distrito;
+            $this->modelo_editar->seccion = $this->tramiteAdicionado->seccion;
+            $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
 
-        $this->modelo_editar->solicitante = $this->tramiteAdicionado->solicitante;
-        $this->modelo_editar->nombre_solicitante = $this->tramiteAdicionado->nombre_solicitante;
-        $this->modelo_editar->tomo = $this->tramiteAdicionado->tomo;
-        $this->modelo_editar->registro = $this->tramiteAdicionado->registro;
-        $this->modelo_editar->distrito = $this->tramiteAdicionado->distrito;
-        $this->modelo_editar->seccion = $this->tramiteAdicionado->seccion;
-        $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
+            if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
+
+                $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
+
+            }
+
+        }
 
         $this->updatedModeloEditarTipoServicio();
-
-        if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
-
-            $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
-
-        }
 
     }
 
