@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
-use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 
 class Tramites extends Component
@@ -39,6 +38,8 @@ class Tramites extends Component
     public $numero_de_control;
     public $tramite;
     public $modalVer = false;
+    public $año;
+    public $años;
 
     public Tramite $modelo_editar;
 
@@ -317,32 +318,40 @@ class Tramites extends Component
 
         $this->distritos = Constantes::DISTRITOS;
 
+        $this->años = Constantes::AÑOS;
+
     }
 
     public function render()
     {
 
         $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio')
-                                ->where('solicitante', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('nombre_solicitante', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('folio_real', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('numero_propiedad', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('numero_control', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('numero_escritura', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('numero_notaria', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere(function($q){
-                                    return $q->whereHas('creadoPor', function($q){
-                                        return $q->where('name', 'LIKE', '%' . $this->search . '%');
-                                    });
+                                ->when(isset($this->año) && $this->año != "", function($q){
+                                    return $q->orWhere('año', $this->año);
+
                                 })
-                                ->orWhere(function($q){
-                                    return $q->whereHas('servicio', function($q){
-                                        return $q->where('nombre', 'LIKE', '%' . $this->search . '%');
-                                    });
+                                ->where(function($q){
+                                    $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('nombre_solicitante', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('folio_real', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('numero_propiedad', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('numero_control', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('numero_escritura', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('numero_notaria', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere(function($q){
+                                            return $q->whereHas('creadoPor', function($q){
+                                                return $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                            });
+                                        })
+                                        ->orWhere(function($q){
+                                            return $q->whereHas('servicio', function($q){
+                                                return $q->where('nombre', 'LIKE', '%' . $this->search . '%');
+                                            });
+                                        });
                                 })
                                 ->orderBy($this->sort, $this->direction)
                                 ->paginate($this->pagination);

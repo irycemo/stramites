@@ -8,6 +8,15 @@
 
             <div class="flex gap-3">
 
+                <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="año">
+
+                    <option value="" selected>Año</option>
+                    @foreach ($años as $año)
+                        <option value="{{ $año }}">{{ $año }}</option>
+                    @endforeach
+
+                </x-input-select>
+
                 <input type="text" wire:model.live.debounce.500ms="search" placeholder="Buscar" class="bg-white rounded-full text-sm">
 
                 <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="pagination">
@@ -31,6 +40,7 @@
 
             <x-slot name="head">
 
+                <x-table.heading sortable wire:click="sortBy('año')" :direction="$sort === 'año' ? $direction : null">Año</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('numero_control')" :direction="$sort === 'numero_control' ? $direction : null">Número de Control</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('estado')" :direction="$sort === 'estado' ? $direction : null">Estado</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('id_servicio')" :direction="$sort === 'id_servicio' ? $direction : null">Servicio</x-table.heading>
@@ -54,9 +64,17 @@
 
                         <x-table.cell>
 
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Año</span>
+
+                            {{ $tramite->año }}
+
+                        </x-table.cell>
+
+                        <x-table.cell>
+
                             <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de Control</span>
 
-                            {{ $tramite->año }}-{{ $tramite->numero_control }}
+                            {{ $tramite->numero_control }}
 
                         </x-table.cell>
 
