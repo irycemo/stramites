@@ -378,7 +378,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de oficio</span>
 
-                                {{ $tramite->numero_oficio ?? 'N/A' }}
+                                {{ $tramite->numero_oficio ? $tramite->numero_oficio : 'N/A' }}
 
                             </x-table.cell>
 
@@ -386,7 +386,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Tomo gravamen</span>
 
-                                {{ $tramite->tomo_gravamen ?? 'N/A' }}
+                                {{ $tramite->tomo_gravamen ? $tramite->tomo_gravamen : 'N/A' }}
 
                             </x-table.cell>
 
@@ -394,7 +394,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registro gravamen</span>
 
-                                {{ $tramite->registro_gravamen ?? 'N/A' }}
+                                {{ $tramite->registro_gravamen ? $tramite->registro_gravamen : 'N/A' }}
 
                             </x-table.cell>
 
@@ -426,7 +426,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de inmuebles</span>
 
-                                {{ $tramite->numero_inmuebles ?? 'N/A' }}
+                                {{ $tramite->numero_inmuebles ? $tramite->numero_inmuebles : 'N/A' }}
 
                             </x-table.cell>
 
@@ -434,7 +434,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de escritura</span>
 
-                                {{ $tramite->numero_escritura ?? 'N/A' }}
+                                {{ $tramite->numero_escritura ? $tramite->numero_escritura : 'N/A' }}
 
                             </x-table.cell>
 
@@ -442,7 +442,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Notaria</span>
 
-                                {{ $tramite->numero_notaria ?? 'N/A' }} {{ $tramite->nombre_notario ?? '' }}
+                                {{ $tramite->numero_notaria ? $tramite->numero_notaria . ' - ' . $tramite->nombre_notario : 'N/A' }}
 
                             </x-table.cell>
 
@@ -450,7 +450,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Valor de la propiedad</span>
 
-                                {{ $tramite->valor_propiedad ?? 'N/A' }}
+                                {{ $tramite->valor_propiedad ? $tramite->valor_propiedad : 'N/A' }}
 
                             </x-table.cell>
 
@@ -498,7 +498,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Observaciones</span>
 
-                                {{ $tramite->observaciones ?? 'N/A' }}
+                                {{ $tramite->observaciones ? $tramite->observaciones : 'N/A' }}
 
                             </x-table.cell>
 
