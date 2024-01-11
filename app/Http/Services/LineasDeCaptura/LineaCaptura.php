@@ -182,7 +182,7 @@ class LineaCaptura
                         <RFC>XXXX0001XXX</RFC>
                         <NOMBRE_RAZON>". $this->tramite->nombre_solicitante ."</NOMBRE_RAZON>
                         <DOMICILIO>Conocido</DOMICILIO>
-                        <OBSERVACIONES>Número de control: " . $this->tramite->numero_control . " Tomo: " . $this->tramite->tomo . " Registro: " . $this->tramite->registro . " Distrito: " . Constantes::DISTRITOS[$this->tramite->distrito] . " Sección: " . $this->tramite->seccion . " Tipo de servicio: " . $this->tramite->tipo_servicio . "</OBSERVACIONES>
+                        <OBSERVACIONES>Número de control: " . $this->tramite->año . '-' . $this->tramite->numero_control . " Tomo: " . $this->tramite->tomo . " Registro: " . $this->tramite->registro . " Distrito: " . Constantes::DISTRITOS[$this->tramite->distrito] . " Sección: " . $this->tramite->seccion . " Tipo de servicio: " . $this->tramite->tipo_servicio . "</OBSERVACIONES>
                     </ES_GEN_DATA>
                     <TB_CONCEPTOS>
                         <TP_INGRESO>". $this->tramite->servicio->clave_ingreso ."</TP_INGRESO>
