@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use Throwable;
+use App\Models\Tramite;
+use Illuminate\Bus\Batch;
 use App\Jobs\GenerarFolioTramite;
 use Illuminate\Support\Facades\Bus;
 
@@ -50,11 +53,25 @@ trait BatchTramiteTrait
 
         if($this->batch && $this->batch->finished()){
 
-            $this->batch->delete();
+            if($this->batch->failedJobs >= 1){
 
-            $this->job = false;
+                $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
-            $this->dispatch('imprimir_recibo', ['tramite' => $this->tramiteId]);
+                $this->batch->delete();
+
+                $this->job = false;
+
+                return;
+
+            }else{
+
+                $this->batch->delete();
+
+                $this->job = false;
+
+                $this->dispatch('imprimir_recibo', ['tramite' => $this->tramiteId]);
+
+            }
 
         }
 

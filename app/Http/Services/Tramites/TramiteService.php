@@ -31,11 +31,8 @@ class TramiteService{
 
         try {
 
-            $this->procesarLineaCaptura();
+            /* $this->procesarLineaCaptura(); */
 
-            $this->tramite->limite_de_pago = $this->fecha_vencimiento;
-            $this->tramite->orden_de_pago = $this->orden_de_pago;
-            $this->tramite->linea_de_captura = $this->linea;
             $this->tramite->estado = 'nuevo';
             $this->tramite->fecha_entrega = $this->calcularFechaEntrega();
             $this->tramite->monto = $this->calcularMonto();
