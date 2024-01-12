@@ -35,22 +35,16 @@ class ConcluidConsultasDiariamente extends Command
                                         $q->where('clave_ingreso', 'DC93');
                                     })
                                     ->whereIn('estado', ['pagado', 'nuevo', 'rechazado'])
-                                    ->whereDate('created_at', '>', $this->calcularDia())
+                                    ->whereDate('created_at', '<', $this->calcularDia())
                                     ->get();
 
             foreach($tramites as $item){
 
-                if($item->estado == 'nuevo'){
-
-                    $item->update(['estado' => 'expirado']);
-
-                }else{
-
-                    $item->update(['estado' => 'concluido']);
-
-                }
+                $item->update(['estado' => 'expirado']);
 
             }
+
+            info('Proceso para concluir consultas que tienen 3 dias desde su registro.');
 
         } catch (\Throwable $th) {
 
