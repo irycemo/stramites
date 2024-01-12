@@ -145,7 +145,7 @@
 
                                     <div>
 
-                                        <input type="text" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.nombre_solicitante">
+                                        <input type="text" class="bg-white rounded text-sm w-full" wire:model="modelo_editar.nombre_solicitante">
 
                                     </div>
 
@@ -171,7 +171,7 @@
 
                                     <div>
 
-                                        <select class="bg-white rounded text-sm w-full" wire:model.live="modelo_editar.nombre_solicitante">
+                                        <select class="bg-white rounded text-sm w-full" wire:model="modelo_editar.nombre_solicitante">
 
                                             <option value="" selected>Seleccione una opción</option>
 
@@ -207,7 +207,7 @@
 
                                     <div>
 
-                                        <select class="bg-white rounded text-sm w-full" wire:model.live="notaria">
+                                        <select class="bg-white rounded text-sm w-full" wire:model="notaria">
 
                                             <option value="" selected>Seleccione una opción</option>
 
@@ -231,13 +231,6 @@
 
                             @endif
 
-                            <div wire:loading.flex class="flex absolute top-1 right-1 items-center">
-                                <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                            </div>
-
                         </div>
 
                     @endif
@@ -258,7 +251,7 @@
 
                                     <div>
 
-                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.tomo">
+                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model="modelo_editar.tomo">
 
                                     </div>
 
@@ -280,7 +273,7 @@
 
                                     <div>
 
-                                        <x-checkbox wire:model.live="modelo_editar.tomo_bis"></x-checkbox>
+                                        <x-checkbox wire:model="modelo_editar.tomo_bis"></x-checkbox>
 
                                     </div>
 
@@ -310,7 +303,7 @@
 
                                     <div>
 
-                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.registro">
+                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model="modelo_editar.registro">
 
                                     </div>
 
@@ -332,7 +325,7 @@
 
                                     <div>
 
-                                        <x-checkbox wire:model.live="modelo_editar.registro_bis"></x-checkbox>
+                                        <x-checkbox wire:model="modelo_editar.registro_bis"></x-checkbox>
 
                                     </div>
 
@@ -359,7 +352,7 @@
 
                                 <div>
 
-                                    <select class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.distrito">
+                                    <select class="bg-white rounded text-sm w-full" wire:model="modelo_editar.distrito">
 
                                         <option value="" selected>Seleccione una opción</option>
 
@@ -395,7 +388,7 @@
 
                                 <div>
 
-                                    <select class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.seccion">
+                                    <select class="bg-white rounded text-sm w-full" wire:model="modelo_editar.seccion">
 
                                         <option value="" selected>Seleccione una opción</option>
 
@@ -455,7 +448,7 @@
 
                                 <div>
 
-                                    <input type="text" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.numero_oficio">
+                                    <input type="text" class="bg-white rounded text-sm w-full" wire:model="modelo_editar.numero_oficio">
 
                                 </div>
 
@@ -531,13 +524,6 @@
 
                         @endif
 
-                        <div wire:loading.flex class="flex absolute top-1 right-1 items-center">
-                            <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                        </div>
-
                     </div>
 
                     @if ($flags['observaciones'])
@@ -552,7 +538,7 @@
 
                             <div>
 
-                                <textarea rows="3" wire:model.lazy="modelo_editar.observaciones" class="bg-white rounded text-sm w-full"></textarea>
+                                <textarea rows="3" wire:model="modelo_editar.observaciones" class="bg-white rounded text-sm w-full"></textarea>
 
                             </div>
 
@@ -562,13 +548,6 @@
 
                                 @error('modelo_editar.movimiento_registral') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
 
-                            </div>
-
-                            <div wire:loading.flex class="flex absolute top-1 right-1 items-center">
-                                <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
                             </div>
 
                         </div>
