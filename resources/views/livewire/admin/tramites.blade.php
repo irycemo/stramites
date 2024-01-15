@@ -474,20 +474,6 @@
 
             <div class="flex gap-3">
 
-                @if(!$modelo_editar->movimiento_registral)
-
-                    <x-button-gray
-                        wire:click="enviarTramiteRpp"
-                        wire:loading.attr="disabled"
-                        wire:target="enviarTramiteRpp">
-
-                        <img wire:loading wire:target="enviarTramiteRpp" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
-
-                        <span>Enviar al Sistema RPP</span>
-                    </x-button-gray>
-
-                @endif
-
                 @if(!$modelo_editar->numero_control)
 
                     <x-button-gray
@@ -917,6 +903,20 @@
         <x-slot name="footer">
 
             <div class="flex gap-3">
+
+                @if(!$modelo_editar->movimiento_registral)
+
+                    <x-button-gray
+                        wire:click="enviarTramiteRpp"
+                        wire:loading.attr="disabled"
+                        wire:target="enviarTramiteRpp">
+
+                        <img wire:loading wire:target="enviarTramiteRpp" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                        <span>Enviar al Sistema RPP</span>
+                    </x-button-gray>
+
+                @endif
 
                 @if($modelo_editar->estado == 'nuevo')
 
