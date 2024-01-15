@@ -269,7 +269,7 @@ class Tramites extends Component
 
     public function enviarTramiteRpp(){
 
-        if($this->modelo_editar->adicionaAlTramite->servicio->clave_ingreso != 'DC93'){
+        if($this->modelo_editar->adicionaAlTramite && $this->modelo_editar->adicionaAlTramite->servicio->clave_ingreso != 'DC93'){
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite adiciona al trámite: " . $this->modelo_editar->adicionaAlTramite->numero_control . '-' . $this->modelo_editar->adicionaAlTramite->numero_control . ' no es posible enviarlo al Sistema RPP.']);
 
