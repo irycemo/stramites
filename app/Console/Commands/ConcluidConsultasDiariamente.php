@@ -35,7 +35,7 @@ class ConcluidConsultasDiariamente extends Command
                                         $q->where('clave_ingreso', 'DC93');
                                     })
                                     ->whereIn('estado', ['pagado', 'nuevo', 'rechazado'])
-                                    ->whereDate('created_at', '<', $this->calcularDia())
+                                    ->whereDate('created_at', '>', $this->calcularDia())
                                     ->get();
 
             foreach($tramites as $item){
@@ -44,11 +44,11 @@ class ConcluidConsultasDiariamente extends Command
 
             }
 
-            info('Proceso para concluir consultas que tienen 3 dias desde su registro.');
+            info('Proceso para concluir consultas que tienen 5 dias desde su registro concluido con éxito.');
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al concluir trámites. " . $th);
+            Log::error("Error en el proceso para concluir consultas que tienen 5 dias desde su registro. " . $th);
 
         }
 
@@ -58,7 +58,7 @@ class ConcluidConsultasDiariamente extends Command
 
         $actual = now();
 
-            for ($i=3; $i < 0; $i--) {
+            for ($i=5; $i < 0; $i--) {
 
                 $actual->subDay();
 

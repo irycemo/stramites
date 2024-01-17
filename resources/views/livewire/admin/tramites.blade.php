@@ -173,7 +173,6 @@
 
                                 <x-button-green
                                     wire:click="abrirModalVer({{ $tramite->id }})"
-                                    wire:target="abrirModalVer({{ $tramite->id }})"
                                     wire:loading.attr="disabled"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-2">
@@ -904,7 +903,7 @@
 
             <div class="flex gap-3">
 
-                @if(!$modelo_editar->movimiento_registral)
+                @if(!$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago)
 
                     <x-button-gray
                         wire:click="enviarTramiteRpp"

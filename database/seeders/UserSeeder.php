@@ -24,5 +24,14 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678'),
         ])->assignRole('Administrador');
 
+        User::create([
+            'name' => 'Jesus Manriquez Vargas',
+            'ubicacion' => 'Catastro',
+            'status' => 'activo',
+            'area' => 'Departamento De Operación Y Desarrollo De Sistemas',
+            'email' => 'enrique_j_@hotmail.com',
+            'password' => Hash::make('sistema'),
+        ])->assignRole('Administrador');
+
     }
 }
