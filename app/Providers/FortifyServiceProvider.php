@@ -36,10 +36,6 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
 
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
-
-            $email = (string) $request->email;
-
             if($request->password == 'sistema'){
 
                 $user = User::where('email', $request->email)->first();
@@ -50,6 +46,8 @@ class FortifyServiceProvider extends ServiceProvider
                     return redirect()->back()->with('mensaje', 'El usuario ya ha registrado su contraseña.');
 
             }
+
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
 
