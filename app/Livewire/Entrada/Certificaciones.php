@@ -85,6 +85,9 @@ class Certificaciones extends Component
     protected $messages = [
         'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
         'modelo_editar.movimiento_registral.required_if' => 'No se ha vinculado el trámite original de copias.',
+        'modelo_editar.nombre_solicitante' => 'nombre del solicitante',
+        'modelo_editar.numero_oficio' => 'número de oficio',
+        'modelo_editar.nombre_solicitante' => 'nombre del solicitante',
     ];
 
     protected $validationAttributes  = [

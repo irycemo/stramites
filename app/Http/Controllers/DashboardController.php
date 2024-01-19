@@ -20,7 +20,7 @@ class DashboardController extends Controller
                                         ->get();
 
             $tramites = Tramite::selectRaw('year(created_at) year, monthname(created_at) month, count(*) data, sum(monto) sum')
-                                    ->whereNotIn('estado', ['nuevo', 'expirado'])
+                                    ->whereNotNUll('fecha_pago')
                                     ->whereNotIn('id_servicio', [2,6])
                                     ->groupBy('year', 'month')
                                     ->orderBy('year', 'asc')
@@ -30,7 +30,7 @@ class DashboardController extends Controller
 
             $copias = Tramite::select('id', 'monto', 'adiciona', 'created_at')
                                 ->with('adicionaAlTramite')
-                                ->whereNotIn('estado', ['nuevo', 'expirado'])
+                                ->whereNotNUll('fecha_pago')
                                 ->whereIn('id_servicio', [2,6])
                                 ->get()
                                 ->map(function($tramite){

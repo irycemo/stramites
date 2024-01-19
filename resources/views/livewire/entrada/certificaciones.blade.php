@@ -251,7 +251,7 @@
 
                                     <div>
 
-                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model="modelo_editar.tomo">
+                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.tomo">
 
                                     </div>
 
@@ -303,7 +303,7 @@
 
                                     <div>
 
-                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model="modelo_editar.registro">
+                                        <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.registro">
 
                                     </div>
 
@@ -352,7 +352,7 @@
 
                                 <div>
 
-                                    <select class="bg-white rounded text-sm w-full" wire:model="modelo_editar.distrito">
+                                    <select class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.distrito">
 
                                         <option value="" selected>Seleccione una opción</option>
 
@@ -388,7 +388,7 @@
 
                                 <div>
 
-                                    <select class="bg-white rounded text-sm w-full" wire:model="modelo_editar.seccion">
+                                    <select class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.seccion">
 
                                         <option value="" selected>Seleccione una opción</option>
 
@@ -538,7 +538,7 @@
 
                             <div>
 
-                                <textarea rows="3" wire:model="modelo_editar.observaciones" class="bg-white rounded text-sm w-full"></textarea>
+                                <textarea rows="3" wire:model.lazy="modelo_editar.observaciones" class="bg-white rounded text-sm w-full"></textarea>
 
                             </div>
 
