@@ -312,15 +312,13 @@ class LineaCaptura
 
             if(isset($responseArray['SOAPBody']['SOAPFault']['detail']['sSystemError'])){
 
-                Log::error($error);
+                Log::error($responseArray);
 
                 throw new ErrorAlGenerarLineaDeCaptura('Error de conexión a SAP.');
 
             }
 
             if(!isset($responseArray['SOAPBody']['n0MT_ValidarLinCaptura_ECC_Sender']['DOC_PAGO'])){
-
-                Log::error($error);
 
                 throw new ErrorAlValidarLineaDeCaptura('No se encontro pago relacionado a la linea de captura.');
 
