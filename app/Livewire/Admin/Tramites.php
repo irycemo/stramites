@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Tramite;
+use App\Models\Configuracion;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Constantes\Constantes;
@@ -357,6 +358,25 @@ class Tramites extends Component
                                 ->paginate($this->pagination);
 
         return view('livewire.admin.tramites', compact('tramites'))->extends('layouts.admin');
+    }
+
+    function desactivarEntrada()
+    {
+
+        try {
+
+            $valor = Configuracion::first();
+
+            $valor ->update(['entrada' => !$valor->entrada]);
+
+            $this->dispatch('mostrarMensaje', ['success', "El área de entrada se " . ($valor->entrada ? 'habilito' : 'deshabilito') . ' con éxito']);
+
+        } catch (\Throwable $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+
+        }
+
     }
 
 }

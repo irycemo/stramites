@@ -30,6 +30,30 @@
 
             </div>
 
+            <div class="ml-3 relative z-50" x-data="{ open_drop_down:false }">
+
+                <div>
+
+                    <button x-on:click="open_drop_down=true" type="button" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 text-sm p-2 text-white rounded-full hidden md:block items-center justify-center focus:outline-gray-400 focus:outline-offset-2" id="tramites-menu" aria-expanded="false" aria-haspopup="true">
+
+                        <span class="sr-only">Abrir menú de tramites</span>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
+                        </svg>
+
+                    </button>
+
+                </div>
+
+                <div x-show="open_drop_down" x-on:click="open_drop_down=false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none focus:outline-offset-2" role="menu" aria-orientation="vertical" aria-labelledby="tramites-menu">
+
+                    <button type="button" wire:click="desactivarEntrada" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none" role="menuitem">Habilitar / deshabilitar entrada</button>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
@@ -570,6 +594,12 @@
                         <div class="rounded-lg bg-gray-100 py-1 px-2">
 
                             <p><strong>Servicio:</strong> {{ $modelo_editar->servicio->nombre }}</p>
+
+                        </div>
+
+                        <div class="rounded-lg bg-gray-100 py-1 px-2">
+
+                            <p><strong>Tipo de trámite:</strong> {{ Str::ucfirst($modelo_editar->tipo_tramite) }}</p>
 
                         </div>
 

@@ -4,6 +4,7 @@ namespace App\Livewire\Entrada;
 
 use App\Constantes\Constantes;
 use App\Models\Tramite;
+use App\Models\Configuracion;
 use Livewire\Component;
 use App\Models\Servicio;
 use App\Models\CategoriaServicio;
@@ -164,6 +165,9 @@ class Entrada extends Component
 
     public function render()
     {
-        return view('livewire.entrada.entrada')->extends('layouts.admin');
+        if(Configuracion::first()->entrada)
+            return view('livewire.entrada.entrada')->extends('layouts.admin');
+        else
+            return view('livewire.entrada.aviso')->extends('layouts.admin');
     }
 }
