@@ -231,8 +231,13 @@ class LineaCaptura
             $json = json_encode($xml);
             $responseArray = json_decode($json,true);
 
-            if(isset($responseArray['SOAPBody']['SOAPFault']['detail']['sSystemError']['text']))
+            if(isset($responseArray['SOAPBody']['SOAPFault']['detail']['sSystemError']['text'])){
+
+                Log::error($responseArray);
+
                 throw new ErrorAlGenerarLineaDeCaptura("Error al generar linea de captura.");
+
+            }
 
             return $responseArray;
 
@@ -305,8 +310,21 @@ class LineaCaptura
             $json = json_encode($xml);
             $responseArray = json_decode($json,true);
 
-            if(!isset($responseArray['SOAPBody']['n0MT_ValidarLinCaptura_ECC_Sender']['DOC_PAGO']))
+            if(isset($responseArray['SOAPBody']['SOAPFault']['detail']['sSystemError'])){
+
+                Log::error($error);
+
+                throw new ErrorAlGenerarLineaDeCaptura('Error de conexión a SAP.');
+
+            }
+
+            if(!isset($responseArray['SOAPBody']['n0MT_ValidarLinCaptura_ECC_Sender']['DOC_PAGO'])){
+
+                Log::error($error);
+
                 throw new ErrorAlValidarLineaDeCaptura('No se encontro pago relacionado a la linea de captura.');
+
+            }
 
             return $responseArray;
 
