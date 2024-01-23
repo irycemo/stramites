@@ -9,7 +9,7 @@
     </span>
 
     <p>
-        La Secretaría de finanzas y administración del estado de Michoacán informa que debido a complicaciones técnicas con el sistema SAP no es posible la generación o validación de líneas de captura por el momento.
+        La Secretaría de finanzas y administración del estado de Michoacán informa que debido a mantenimiento en la conectividad no es posible la generación o validación de líneas de captura por el momento.
     </p>
 
 </div>

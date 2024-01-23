@@ -218,8 +218,13 @@ class LineaCaptura
 
             $error = curl_error($ch);
 
-            if($error)
+            if($error){
+
+                Log::error($error);
+
                 throw new ErrorAlGenerarLineaDeCaptura('Error de conexión a SAP.');
+
+            }
 
             $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
             $xml = simplexml_load_string($xml);
@@ -287,8 +292,13 @@ class LineaCaptura
 
             $error = curl_errno($ch);
 
-            if($error)
-                throw new ErrorAlValidarLineaDeCaptura("Error de conexión a SAP.");
+            if($error){
+
+                Log::error($error);
+
+                throw new ErrorAlGenerarLineaDeCaptura('Error de conexión a SAP.');
+
+            }
 
             $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
             $xml = simplexml_load_string($xml);
