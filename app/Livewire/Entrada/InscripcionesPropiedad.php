@@ -140,7 +140,6 @@ class InscripcionesPropiedad extends Component
         $this->resetValidation();
 
         $this->reset([
-            'tramite',
             'adicionaTramite',
             'tramitesAdicionados',
             'tramiteAdicionadoSeleccionado',
