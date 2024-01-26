@@ -580,7 +580,7 @@ class Certificaciones extends Component
 
                         $tramite = (new TramiteService($this->modelo_editar))->crear();
 
-                    /* Copias que adicionan a otro tramite */
+                    /* Copias que adicionan a otras copias */
                     }else{
 
                         $tramite = (new TramiteService($this->modelo_editar))->crear();
