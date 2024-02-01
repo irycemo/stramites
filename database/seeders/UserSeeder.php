@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'ubicacion' => 'Catastro',
             'status' => 'activo',
             'area' => 'Departamento De Operación Y Desarrollo De Sistemas',
-            'email' => 'enrique_j_@hotmail.com',
+            'email' => 'subdirti.irycem@correo.michoacan.gob.mx	',
             'password' => Hash::make('sistema'),
         ])->assignRole('Administrador');
 

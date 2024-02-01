@@ -4,8 +4,10 @@ namespace App\Livewire\Admin;
 
 use App\Models\Uma;
 use Livewire\Component;
+use App\Models\Servicio;
 use Livewire\WithPagination;
 use App\Traits\ComponentesTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class Umas extends Component
@@ -44,14 +46,30 @@ class Umas extends Component
 
         try {
 
-            $this->modelo_editar->anual = $this->modelo_editar->diario * 30.4 *12;
-            $this->modelo_editar->mensual = $this->modelo_editar->diario * 30.4;
-            $this->modelo_editar->creado_por = auth()->user()->id;
-            $this->modelo_editar->save();
+                DB::transaction(function () {
 
-            $this->resetearTodo();
+                    $this->modelo_editar->anual = $this->modelo_editar->diario * 30.4 *12;
+                    $this->modelo_editar->mensual = $this->modelo_editar->diario * 30.4;
+                    $this->modelo_editar->creado_por = auth()->user()->id;
+                    $this->modelo_editar->save();
 
-            $this->dispatch('mostrarMensaje', ['success', "La UMA se creó con éxito."]);
+                    $servicios = Servicio::where('umas', '>', 0)->get();
+
+                    foreach ($servicios as $servicio) {
+
+                        $servicio->update([
+                            'ordinario' => round($servicio->umas * $this->modelo_editar->diario),
+                            'urgente' => round($servicio->umas * $this->modelo_editar->diario * 2),
+                            'extra_urgente' => round($servicio->umas * $this->modelo_editar->diario * 3),
+                        ]);
+
+                    }
+
+                    $this->dispatch('mostrarMensaje', ['success', "La UMA se creó con éxito."]);
+
+                    $this->resetearTodo();
+
+                });
 
         } catch (\Throwable $th) {
 
