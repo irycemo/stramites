@@ -305,6 +305,84 @@
 
             <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
 
+                @if ($flags['solicitante'])
+
+                    <div class="flex-row lg:flex lg:space-x-3 w-full">
+
+                        <x-input-group for="modelo_editar.solicitante" label="Solicitante" :error="$errors->first('modelo_editar.solicitante')" class="w-full" >
+
+                            <x-input-select id="modelo_editar.solicitante" wire:model.live="modelo_editar.solicitante" class="w-full" readonly>
+
+                                <option value="">Seleccione una opción</option>
+
+                                @foreach ($solicitantes as $item)
+
+                                    <option value="{{ $item }}">{{ $item }}</option>
+
+                                @endforeach
+
+                            </x-input-select>
+
+                        </x-input-group>
+
+                        @if ($flags['nombre_solicitante'])
+
+                            <x-input-group for="modelo_editar.nombre_solicitante" label="Nombre del solicitante" :error="$errors->first('modelo_editar.nombre_solicitante')" class="w-full">
+
+                                <x-input-text id="modelo_editar.nombre_solicitante" wire:model="modelo_editar.nombre_solicitante" />
+
+                            </x-input-group>
+
+                        @endif
+
+                        @if ($flags['dependencias'])
+
+                            <x-input-group for="modelo_editar.nombre_solicitante" label="Dependencia" :error="$errors->first('modelo_editar.nombre_solicitante')" class="w-full">
+
+                                <x-input-select id="modelo_editar.nombre_solicitante" wire:model="modelo_editar.nombre_solicitante" class="w-full">
+
+                                    <option value="">Seleccione una opción</option>
+
+                                    @foreach ($dependencias as $item)
+
+                                        <option value="{{ $item }}">{{ $item }}</option>
+
+                                    @endforeach
+
+                                </x-input-select>
+
+                            </x-input-group>
+
+                        @endif
+
+                        @if ($flags['notarias'])
+
+                            <x-input-group for="notaria" label="Notaira" :error="$errors->first('notaria')" class="w-full">
+
+                                <x-input-select id="notaria" wire:model="notaria" class="w-full">
+
+                                    <option value="">Seleccione una opción</option>
+
+                                    @foreach ($notarias as $item)
+
+                                        <option value="{{ $item }}">{{ $item }}</option>
+
+                                    @endforeach
+
+                                </x-input-select>
+
+                            </x-input-group>
+
+                        @endif
+
+                    </div>
+
+                @endif
+
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
+
                 @if($modelo_editar->numero_oficio)
 
                     <x-input-group for="modelo_editar.numero_oficio" label="Número de oficio" :error="$errors->first('modelo_editar.numero_oficio')" class="w-full">

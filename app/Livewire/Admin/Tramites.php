@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Notaria;
 use App\Models\Tramite;
-use App\Models\Configuracion;
 use Livewire\Component;
+use App\Models\Dependencia;
 use Livewire\WithPagination;
+use App\Models\Configuracion;
 use App\Constantes\Constantes;
 use App\Traits\ComponentesTrait;
 use App\Jobs\GenerarFolioTramite;
@@ -126,6 +128,48 @@ class Tramites extends Component
         'modelo_editar.numero_oficio' => 'número de oficio'
     ];
 
+    public function updatedModeloEditarSolicitante(){
+
+        $this->modelo_editar->nombre_solicitante = null;
+        $this->modelo_editar->nombre_notario = null;
+        $this->modelo_editar->numero_notaria = null;
+        $this->notaria = null;
+
+        $this->flags['nombre_solicitante'] = false;
+        $this->flags['dependencias'] = false;
+        $this->flags['notarias'] = false;
+
+        if($this->modelo_editar->solicitante == 'Usuario'){
+
+            $this->flags['nombre_solicitante'] = true;
+
+        }elseif($this->modelo_editar->solicitante == 'Notaría'){
+
+            $this->flags['notarias'] = true;
+
+        }elseif($this->modelo_editar->solicitante == 'Oficialia de partes'){
+
+            if(!auth()->user()->hasRole(['Oficialia de partes', 'Administrador'])){
+
+                $this->dispatch('mostrarMensaje', ['error', "No tienes permisos para esta opción."]);
+
+                $this->modelo_editar->solicitante = null;
+
+                return;
+
+            }
+
+            $this->flags['dependencias'] = true;
+            $this->flags['numero_oficio'] = true;
+
+        }else{
+
+            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
+
+        }
+
+    }
+
     public function crearModeloVacio(){
         $this->modelo_editar = Tramite::make();
     }
@@ -144,8 +188,11 @@ class Tramites extends Component
 
         foreach($this->modelo_editar->getAttributes() as $attribute => $value){
 
-            if($value)
-                $this->flags['' . $attribute] = true;
+            if($value){
+
+                $this->flags[$attribute] = true;
+
+            }
 
         };
 
@@ -309,6 +356,25 @@ class Tramites extends Component
 
     }
 
+    function desactivarEntrada()
+    {
+
+        try {
+
+            $valor = Configuracion::first();
+
+            $valor ->update(['entrada' => !$valor->entrada]);
+
+            $this->dispatch('mostrarMensaje', ['success', "El área de entrada se " . ($valor->entrada ? 'habilito' : 'deshabilito') . ' con éxito']);
+
+        } catch (\Throwable $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+
+        }
+
+    }
+
     public function mount(){
 
         array_push($this->fields, 'adicionaTramite', 'flags', 'modalVer');
@@ -320,6 +386,14 @@ class Tramites extends Component
         $this->distritos = Constantes::DISTRITOS;
 
         $this->años = Constantes::AÑOS;
+
+        $this->dependencias = Dependencia::orderBy('nombre')->get();
+
+        $this->notarias = Notaria::orderBy('numero')->get();
+
+        $this->solicitantes = Constantes::SOLICITANTES;
+
+        $this->secciones = Constantes::SECCIONES;
 
     }
 
@@ -358,25 +432,6 @@ class Tramites extends Component
                                 ->paginate($this->pagination);
 
         return view('livewire.admin.tramites', compact('tramites'))->extends('layouts.admin');
-    }
-
-    function desactivarEntrada()
-    {
-
-        try {
-
-            $valor = Configuracion::first();
-
-            $valor ->update(['entrada' => !$valor->entrada]);
-
-            $this->dispatch('mostrarMensaje', ['success', "El área de entrada se " . ($valor->entrada ? 'habilito' : 'deshabilito') . ' con éxito']);
-
-        } catch (\Throwable $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
-
-        }
-
     }
 
 }
