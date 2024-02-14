@@ -73,6 +73,8 @@ class GenerarFolioTramite implements ShouldQueue
     {
         if($this->tramite->adicionadoPor->count()){
 
+            if($this->tramite->adicionadoPor->first()->linea_de_captura) return;
+
             $this->tramite->adicionadoPor->first()->delete();
 
             $this->tramite->delete();

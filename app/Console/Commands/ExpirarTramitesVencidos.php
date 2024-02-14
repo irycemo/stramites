@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Tramite;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Http\Services\Tramites\TramiteService;
 
 class ExpirarTramitesVencidos extends Command
 {

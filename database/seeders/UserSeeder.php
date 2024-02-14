@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'status' => 'activo',
             'area' => 'Departamento De Operación Y Desarrollo De Sistemas',
             'email' => 'enrique_j_@hotmail.com',
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make('sistema'),
         ])->assignRole('Administrador');
 
         User::create([
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'ubicacion' => 'Catastro',
             'status' => 'activo',
             'area' => 'Departamento De Operación Y Desarrollo De Sistemas',
-            'email' => 'subdirti.irycem@correo.michoacan.gob.mx	',
+            'email' => 'subdirti.irycem@correo.michoacan.gob.mx',
             'password' => Hash::make('sistema'),
         ])->assignRole('Administrador');
 
