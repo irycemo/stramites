@@ -31,7 +31,7 @@ class CaducarTramites extends Command
 
             $tramites = Tramite::with('adicionaAlTramite')
                                     ->where('estado', 'nuevo')
-                                    ->whereDate('created_at', '>', $this->calcularDia())
+                                    ->whereDate('created_at', '<', $this->calcularDia())
                                     ->get();
 
             foreach($tramites as $item){
