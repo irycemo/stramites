@@ -34,7 +34,7 @@ class ExpirarCopias extends Command
                                     $q->whereIn('clave_ingreso', ['DL14', 'DL13']);
                                 })
                                 ->whereIn('estado', ['pagado', 'rechazado'])
-                                ->whereDate('fecha_pago', '>', now()->subMonth()->format('Y-m-d'))
+                                ->whereDate('fecha_pago', '<', now()->subMonth()->format('Y-m-d'))
                                 ->get();
 
             foreach($tramites as $item){

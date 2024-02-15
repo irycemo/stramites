@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Configuracion;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +33,10 @@ class UserSeeder extends Seeder
             'email' => 'subdirti.irycem@correo.michoacan.gob.mx',
             'password' => Hash::make('sistema'),
         ])->assignRole('Administrador');
+
+        Configuracion::create([
+            'entrada' => 1
+        ]);
 
     }
 }

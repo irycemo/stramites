@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         /* $schedule->command('expirar:tramites-vencidos')->daily(); */
         $schedule->command('concluir:consultas')->daily();
         $schedule->command('expirar:copias')->daily();
+        $schedule->command('caducar:tramites')->daily();
 
     }
 
