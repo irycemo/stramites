@@ -20,7 +20,7 @@ class CaducarTramites extends Command
      *
      * @var string
      */
-    protected $description = 'Proceso para caducar trámites sin pago de los últimos 10 dias';
+    protected $description = 'Proceso para caducar trámites sin pago de los últimos 10 días hábiles';
 
     /**
      * Execute the console command.
@@ -29,44 +29,42 @@ class CaducarTramites extends Command
     {
         try {
 
-            $tramites = Tramite::with('adicionaAlTramite')
-                                    ->where('estado', 'nuevo')
-                                    ->whereDate('created_at', '<', $this->calcularDia())
-                                    ->get();
+            $tramites = Tramite::where('estado', 'nuevo')->get();
 
             foreach($tramites as $item){
 
-                $item->update(['estado' => 'caducado']);
+                $fecha = $this->calcularDia($item->created_at);
+
+                if($fecha <= now())
+                    $item->update(['estado' => 'caducado']);
 
             }
 
-            info('Proceso para caducar trámites sin pago de los últimos 10 dias concluido con éxito.');
+            info('Proceso para caducar trámites sin pago de los últimos 10 días hábiles concluido con éxito.');
 
         } catch (\Throwable $th) {
 
-            Log::error("Error en el proceso para caducar trámites sin pago de los últimos 10 dias. " . $th);
+            Log::error("Error en el proceso para caducar trámites sin pago de los últimos 10 días hábiles. " . $th);
 
         }
 
     }
 
-    public function calcularDia(){
-
-        $actual = now();
+    public function calcularDia($fecha){
 
             for ($i=10; $i < 0; $i--) {
 
-                $actual->subDay();
+                $fecha->addDay();
 
-                while($actual->isWeekend()){
+                while($fecha->isWeekend()){
 
-                    $actual->subDay();
+                    $fecha->addDay();
 
                 }
 
             }
 
-            return $actual->toDateString();
+            return $fecha->toDateString();
 
     }
 
