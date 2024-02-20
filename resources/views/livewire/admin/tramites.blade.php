@@ -799,6 +799,16 @@
 
                         @endif
 
+                        @if ($modelo_editar->valor_propiedad)
+
+                            <div class="rounded-lg bg-gray-100 py-1 px-2">
+
+                                <p><strong>Valor de propiedad:</strong> ${{ number_format($modelo_editar->valor_propiedad, 2) }}</p>
+
+                            </div>
+
+                        @endif
+
                         @if ($modelo_editar->fecha_pago)
 
                             <div class="rounded-lg bg-gray-100 py-1 px-2">
