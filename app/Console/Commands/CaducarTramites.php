@@ -54,17 +54,17 @@ class CaducarTramites extends Command
 
             for ($i=10; $i < 0; $i--) {
 
-                $fecha->addDay();
+                $fecha->subDay();
 
                 while($fecha->isWeekend()){
 
-                    $fecha->addDay();
+                    $fecha->subDay();
 
                 }
 
             }
 
-            return $fecha->toDateString();
+            return $fecha;
 
     }
 

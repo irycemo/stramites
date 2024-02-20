@@ -20,7 +20,7 @@ class ConcluidConsultasDiariamente extends Command
      *
      * @var string
      */
-    protected $description = 'Tarea programada para concluir todos las consultas que se registrarón el día anterior';
+    protected $description = 'Tarea programada para concluir todos las consultas que llevan 5 dias desde su registro';
 
     /**
      * Execute the console command.
