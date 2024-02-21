@@ -33,9 +33,9 @@ class CaducarTramites extends Command
 
             foreach($tramites as $item){
 
-                $fecha = $this->calcularDia($item->created_at);
+                $fecha = $this->calcularDia();
 
-                if($fecha <= now())
+                if($fecha->gt($item->created_at))
                     $item->update(['estado' => 'caducado']);
 
             }
@@ -50,21 +50,23 @@ class CaducarTramites extends Command
 
     }
 
-    public function calcularDia($fecha){
+    public function calcularDia(){
 
-            for ($i=10; $i < 0; $i--) {
+        $fecha = now();
+
+        for ($i=10; $i < 0; $i--) {
+
+            $fecha->subDay();
+
+            while($fecha->isWeekend()){
 
                 $fecha->subDay();
 
-                while($fecha->isWeekend()){
-
-                    $fecha->subDay();
-
-                }
-
             }
 
-            return $fecha;
+        }
+
+        return $fecha;
 
     }
 
