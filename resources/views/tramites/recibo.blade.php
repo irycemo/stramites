@@ -67,12 +67,12 @@
             <p class="title">CALIFICACIÓN DE DOCUMENTO</p>
             <p><strong>Fecha:</strong> {{Carbon\Carbon::now()->format('d-m-Y')}}</p>
             <p><strong>No. Control:</strong> {{ $tramite->año }}-{{ $tramite->numero_control }}</p>
-            <p><strong>Solicitante:</strong> {{ $tramite->nombre_solicitante }}</p>
             <p><strong>Servicio:</strong> {{ $tramite->servicio->nombre }}
                 @if($tramite->adiciona)
-                    / {{ $tramite->adicionaAlTramite->servicio->nombre }}
+                    / {{ $tramite->adicionaAlTramite->servicio->nombre }} {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }}
                 @endif
             </p>
+            <p><strong>Solicitante:</strong> {{ $tramite->nombre_solicitante }}</p>
             <p><strong>Tipo de servicio:</strong> {{ $tramite->tipo_servicio }}</p>
             @if($tramite->tomo) <p><strong>Tomo:</strong> {{ $tramite->tomo }}, <strong>Registro:</strong> {{ $tramite->registro}}</p>@endif
             <p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}, <strong>Sección:</strong> {{ $tramite->seccion }}</p>

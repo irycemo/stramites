@@ -141,12 +141,12 @@
                             <p>{{ $tramite->solicitante }}</p>
                         @endif
                         <p>Número de control: {{ $tramite->año }}-{{ $tramite->numero_control }}</p>
-                        <p>Solicitante: {{ $tramite->nombre_solicitante }}</p>
                         <p>Servicio: {{ $tramite->servicio->nombre }}
                             @if($tramite->adiciona)
                                 / {{ $tramite->adicionaAlTramite->servicio->nombre }}
                             @endif
                         </p>
+                        <p>Solicitante: {{ $tramite->nombre_solicitante }}</p>
                         <p>Tipo de servicio: {{ $tramite->tipo_servicio }}</p>
                         <p>Orden de pago: {{ $tramite->orden_de_pago }}</p>
                         <p>Total a pagar: ${{ number_format($tramite->monto, 2) }}</p>
@@ -237,12 +237,12 @@
                             <p>{{ $tramite->solicitante }}</p>
                         @endif
                         <p>Número de control: {{ $tramite->año }}-{{ $tramite->numero_control }}</p>
-                        <p>Solicitante: {{ $tramite->nombre_solicitante }}</p>
                         <p>Servicio: {{ $tramite->servicio->nombre }}
                             @if($tramite->adiciona)
-                                / {{ $tramite->adicionaAlTramite->servicio->nombre }}
+                                / {{ $tramite->adicionaAlTramite->servicio->nombre }} {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }}
                             @endif
                         </p>
+                        <p>Solicitante: {{ $tramite->nombre_solicitante }}</p>
                         <p>Tipo de servicio: {{ $tramite->tipo_servicio }}</p>
                         <p>Orden de pago: {{ $tramite->orden_de_pago }}</p>
                         <p>Total a pagar: ${{ number_format($tramite->monto, 2) }}</p>
