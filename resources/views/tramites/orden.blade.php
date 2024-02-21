@@ -140,7 +140,7 @@
                         @if($tramite->solicitante == 'Oficialia de partes')
                             <p>{{ $tramite->solicitante }}</p>
                         @endif
-                        <p>Número de control: {{ $tramite->año }}-{{ $tramite->numero_control }}</p>
+                        <p>Número de control: {{ $tramite->año }}-{{ $tramite->numero_control }} @if($tramite->adiciona) / {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }} @endif</p>
                         <p>Servicio: {{ $tramite->servicio->nombre }}
                             @if($tramite->adiciona)
                                 / {{ $tramite->adicionaAlTramite->servicio->nombre }}
@@ -236,10 +236,10 @@
                         @if($tramite->solicitante == 'Oficialia de partes')
                             <p>{{ $tramite->solicitante }}</p>
                         @endif
-                        <p>Número de control: {{ $tramite->año }}-{{ $tramite->numero_control }}</p>
+                        <p>Número de control: {{ $tramite->año }}-{{ $tramite->numero_control }} @if($tramite->adiciona) / {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }} @endif</p>
                         <p>Servicio: {{ $tramite->servicio->nombre }}
                             @if($tramite->adiciona)
-                                / {{ $tramite->adicionaAlTramite->servicio->nombre }} {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }}
+                                / {{ $tramite->adicionaAlTramite->servicio->nombre }}
                             @endif
                         </p>
                         <p>Solicitante: {{ $tramite->nombre_solicitante }}</p>
