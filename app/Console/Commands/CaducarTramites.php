@@ -35,7 +35,7 @@ class CaducarTramites extends Command
 
                 $fecha = $this->calcularDia();
 
-                if($fecha->gt($item->created_at))
+                if($fecha->lte($item->created_at))
                     $item->update(['estado' => 'caducado']);
 
             }

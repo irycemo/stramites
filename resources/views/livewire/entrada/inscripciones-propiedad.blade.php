@@ -239,25 +239,25 @@
 
                             <x-input-group for="modelo_editar.folio_real" label="Folio real" :error="$errors->first('modelo_editar.folio_real')" class="">
 
-                                <x-input-text id="modelo_editar.folio_real" wire:model.lazy="modelo_editar.folio_real" />
+                                <x-input-text type="number" id="modelo_editar.folio_real" wire:model.lazy="modelo_editar.folio_real" />
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.tomo" label="Tomo" :error="$errors->first('modelo_editar.tomo')" class="">
 
-                                <x-input-text id="modelo_editar.tomo" wire:model.lazy="modelo_editar.tomo" />
+                                <x-input-text type="number" id="modelo_editar.tomo" wire:model.lazy="modelo_editar.tomo" />
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.registro" label="Registro" :error="$errors->first('modelo_editar.registro')" class="">
 
-                                <x-input-text id="modelo_editar.registro" wire:model.lazy="modelo_editar.registro" />
+                                <x-input-text type="number" id="modelo_editar.registro" wire:model.lazy="modelo_editar.registro" />
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.numero_propiedad" label="Número de propiedad" :error="$errors->first('modelo_editar.numero_propiedad')" class="">
 
-                                <x-input-text id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" />
+                                <x-input-text type="number" id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" />
 
                             </x-input-group>
 
@@ -359,7 +359,7 @@
 
                             <x-input-group for="modelo_editar.numero_documento" label="Número de documento" :error="$errors->first('modelo_editar.numero_documento')" class="w-full">
 
-                                <x-input-text id="modelo_editar.numero_documento" wire:model="modelo_editar.numero_documento" />
+                                <x-input-text type="number" id="modelo_editar.numero_documento" wire:model="modelo_editar.numero_documento" />
 
                             </x-input-group>
 
