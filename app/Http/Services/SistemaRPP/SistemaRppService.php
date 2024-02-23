@@ -46,8 +46,9 @@ class SistemaRppService{
                 'valor_propiedad' => $tramite->valor_propiedad,
                 'tipo_documento' => $tramite->tipo_documento,
                 'autoridad_cargo' => $tramite->autoridad_cargo,
-                'autoridad_nombre' => $tramite->numero_documento,
-                'fecha_emision' => $tramite->fecha_emision,
+                'autoridad_nombre' => $tramite->nombre_autoridad,
+                'numero_documento' => $tramite->numero_documento,
+                'fecha_emision' => $tramite->fecha_emision?->toDateString(),
                 'procedencia' => $tramite->procedencia,
             ]);
 
@@ -125,8 +126,9 @@ class SistemaRppService{
                 'movimiento_registral' => $tramite->movimiento_registral,
                 'tipo_documento' => $tramite->tipo_documento,
                 'autoridad_cargo' => $tramite->autoridad_cargo,
-                'autoridad_nombre' => $tramite->numero_documento,
-                'fecha_emision' => $tramite->fecha_emision,
+                'autoridad_nombre' => $tramite->nombre_autoridad,
+                'numero_documento' => $tramite->numero_documento,
+                'fecha_emision' => $tramite->fecha_emision?->toDateString(),
                 'procedencia' => $tramite->procedencia,
             ]);
 
@@ -156,6 +158,7 @@ class SistemaRppService{
 
             $response = Http::accept('application/json')->asForm()->post($url,[
                 'tipo_servicio' => $tramite->tipo_servicio,
+                'monto' => $tramite->monto,
                 'movimiento_registral' => $tramite->movimiento_registral,
             ]);
 
@@ -185,6 +188,7 @@ class SistemaRppService{
 
             $response = Http::accept('application/json')->asForm()->post($url,[
                 'numero_paginas' => $tramite->cantidad,
+                'monto' => $tramite->monto,
                 'movimiento_registral' => $tramite->movimiento_registral,
             ]);
 

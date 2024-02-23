@@ -29,14 +29,15 @@ class CaducarTramites extends Command
     {
         try {
 
-            $tramites = Tramite::where('estado', 'nuevo')->get();
+            $fecha = $this->calcularDia(10);
+
+            $tramites = Tramite::where('estado', 'nuevo')
+                                    ->whereDate('created_at', '<', $fecha)
+                                    ->get();
 
             foreach($tramites as $item){
 
-                $fecha = $this->calcularDia();
-
-                if($fecha->lte($item->created_at))
-                    $item->update(['estado' => 'caducado']);
+                $item->update(['estado' => 'caducado']);
 
             }
 
@@ -54,7 +55,7 @@ class CaducarTramites extends Command
 
         $fecha = now();
 
-        for ($i=10; $i < 0; $i--) {
+        for ($i = 0; $i < 10; $i++) {
 
             $fecha->subDay();
 
@@ -66,7 +67,7 @@ class CaducarTramites extends Command
 
         }
 
-        return $fecha;
+        return $fecha->toDateString();
 
     }
 
