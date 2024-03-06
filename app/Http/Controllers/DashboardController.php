@@ -20,7 +20,7 @@ class DashboardController extends Controller
                                         ->groupBy('estado')
                                         ->get();
 
-            $tramites = Tramite::with('adicionadoPor')->selectRaw('year(created_at) year, monthname(created_at) month, count(*) data, sum(monto) sum')
+            $tramites = Tramite::with('adicionadoPor')->selectRaw('id, year(created_at) year, monthname(created_at) month, count(*) data, sum(monto) sum')
                                     ->whereNotNUll('fecha_pago')
                                     ->whereNotIn('id_servicio', [2,6])
                                     ->groupBy('year', 'month')
