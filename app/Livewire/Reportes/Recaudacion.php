@@ -22,6 +22,15 @@ class Recaudacion extends Component
 
     public $tramites;
 
+    public $rpp;
+    public $regional1;
+    public $regional2;
+    public $regional3;
+    public $regional4;
+    public $regional5;
+    public $regional6;
+    public $regional7;
+
     public $montoConsultas;
 
     public $array = [];
@@ -36,13 +45,35 @@ class Recaudacion extends Component
 
     public function updated(){
 
-        $this->reset(['tramites']);
+        $this->reset([
+            'rpp',
+            'regional1',
+            'regional2',
+            'regional3',
+            'regional4',
+            'regional5',
+            'regional6',
+            'regional7',
+        ]);
+
+        $this->rpp = $this->tramites('RPP');
+        $this->regional1 = $this->tramites('Regional 1');
+        $this->regional2 = $this->tramites('Regional 2');
+        $this->regional3 = $this->tramites('Regional 3');
+        $this->regional4 = $this->tramites('Regional 4');
+        $this->regional5 = $this->tramites('Regional 5');
+        $this->regional6 = $this->tramites('Regional 6');
+        $this->regional7 = $this->tramites('Regional 7');
+
+    }
+
+    public function tramites($string){
 
         $count = 0;
         $count2 = 0;
 
         $conjunto = Tramite::with('servicio', 'adicionadoPor.servicio', 'creadoPor')
-                            ->whereNotNull('fecha_pago')
+                            /* ->whereNotNull('fecha_pago') */
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
                             })
@@ -54,10 +85,15 @@ class Recaudacion extends Component
                             ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
                                 return $q->where('tipo_servicio', $this->tipo_servicio);
                             })
-                            ->whereBetween('fecha_pago', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
+                            ->whereHas('creadoPor', function($q) use ($string){
+                                $q->where('ubicacion', $string);
+                            })
+                            /* ->whereBetween('fecha_pago', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59']) */
                             ->get();
 
-        $this->array = [];
+        $array = [];
+
+        $array2 = [];
 
         foreach($conjunto as $tramite){
 
@@ -67,14 +103,14 @@ class Recaudacion extends Component
 
                     $count ++;
 
-                    $this->array[$tramite->creadoPor->ubicacion][$tramite->adicionadoPor->first()->servicio->nombre] = $count;
+                    $array[$tramite->adicionadoPor->first()->servicio->nombre] = $count;
 
                 }
                 elseif($tramite->adicionadoPor->first()->id_servicio == 6){
 
                     $count2 ++;
 
-                    $this->array[$tramite->creadoPor->ubicacion][$tramite->adicionadoPor->first()->servicio->nombre] = $count2;
+                    $array[$tramite->adicionadoPor->first()->servicio->nombre] = $count2;
 
                 }
 
@@ -88,38 +124,29 @@ class Recaudacion extends Component
 
             $object->servicio = $tramite->servicio->nombre;
 
-            $object->ubicacion = $tramite->creadoPor->ubicacion;
-
             $object->monto = $tramite->monto;
 
             return $object;
 
         });
 
-        foreach ($this->ubicaciones as $ubicacion) {
+        foreach ($tramites as $tramite) {
 
-            foreach ($tramites as $tramite) {
-
-                $this->tramites[$ubicacion][$tramite->servicio] = $tramites->where('ubicacion', $ubicacion)->where('servicio', $tramite->servicio)->sum('monto');
-
-            }
+            $array2[$tramite->servicio] = $tramites->where('servicio', $tramite->servicio)->sum('monto');
 
         }
 
         if($this->servicio_id != 1){
 
+            foreach ($array as $key1 => $value) {
 
-            foreach ($this->array as $key1 => $item) {
-
-                foreach ($item as $key2 => $value) {
-
-                    $this->tramites[$key1][$key2] = (float)$this->tramites[$key1][$key2] - ($value * (float)Servicio::find(1)->ordinario);
-
-                }
+                $array2[$key1] = (float)$array2[$key1] - ($value * (float)Servicio::find(1)->ordinario);
 
             }
 
         }
+
+        return $array2;
 
     }
 

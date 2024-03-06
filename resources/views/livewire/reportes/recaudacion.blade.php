@@ -144,53 +144,325 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
-        @if($tramites)
+        @if($rpp)
 
-            @foreach($tramites as $key => $value)
+            <div class="bg-white rounded-xl mb-5 p-4">
 
-                <div class="bg-white rounded-xl mb-5 p-4">
+                <p class="text-center tracking-wider font-semibold">RPP</p>
 
-                    <p class="text-center tracking-wider font-semibold">{{ $key }}</p>
+                <table class="w-full overflow-x-auto table-fixed">
 
-                    <table class="w-full overflow-x-auto table-fixed">
+                    <tbody class="divide-y divide-gray-200">
 
-                        <tbody class="divide-y divide-gray-200">
+                        @php
+                            $total = 0;
+                        @endphp
 
-                            @php
-                                $total = 0;
-                            @endphp
+                        @foreach ($rpp as $key => $value)
 
-                            @foreach ($value as $key => $item)
-
-                                <tr class="text-gray-500 text-sm leading-relaxed">
-                                    <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                    <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item, 2) }}</p></td>
-                                </tr>
-
-                                @php
-
-                                    $total = $total + $item;
-
-                                @endphp
-
-                            @endforeach
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
 
                             @php
 
-                                echo " <tr class='text-gray-500 text-sm leading-relaxed'>
-                                            <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
-                                            <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
-                                        </tr>
-                                    ";
+                                $total = $total + $value;
+
                             @endphp
 
-                        </tbody>
+                        @endforeach
 
-                    </table>
+                        @php
 
-                </div>
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
 
-            @endforeach
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
+        @if($regional1)
+
+            <div class="bg-white rounded-xl mb-5 p-4">
+
+                <p class="text-center tracking-wider font-semibold">Regional 1</p>
+
+                <table class="w-full overflow-x-auto table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($regional1 as $key => $value)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $value;
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
+        @if($regional2)
+
+            <div class="bg-white rounded-xl mb-5 p-4">
+
+                <p class="text-center tracking-wider font-semibold">Regional 2</p>
+
+                <table class="w-full overflow-x-auto table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($regional2 as $key => $value)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $value;
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
+        @if($regional3)
+
+            <div class="bg-white rounded-xl mb-5 p-4">
+
+                <p class="text-center tracking-wider font-semibold">Regional 3</p>
+
+                <table class="w-full overflow-x-auto table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($regional3 as $key => $value)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $value;
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
+        @if($regional4)
+
+            <div class="bg-white rounded-xl mb-5 p-4">
+
+                <p class="text-center tracking-wider font-semibold">Regional 4</p>
+
+                <table class="w-full overflow-x-auto table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($regional4 as $key => $value)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $value;
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
+        @if($regional5)
+
+            <div class="bg-white rounded-xl mb-5 p-4">
+
+                <p class="text-center tracking-wider font-semibold">Regional 5</p>
+
+                <table class="w-full overflow-x-auto table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($regional5 as $key => $value)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $value;
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
+        @if($regional6)
+
+            <div class="bg-white rounded-xl mb-5 p-4">
+
+                <p class="text-center tracking-wider font-semibold">Regional 6</p>
+
+                <table class="w-full overflow-x-auto table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($regional6 as $key => $value)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $value;
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         @endif
 
