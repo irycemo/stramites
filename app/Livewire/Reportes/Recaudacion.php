@@ -69,13 +69,13 @@ class Recaudacion extends Component
 
     }
 
-    public function tramites($string){
+    public function tramites($ubicacion){
 
         $count = 0;
         $count2 = 0;
 
-        $conjunto = Tramite::with('servicio:id,nombre', 'adicionadoPor:id,adiciona,id_servicio', 'creadoPor:id:ubicacion')
-                            ->whereNotNull('fecha_pago')
+        $tramites = Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio', 'creadoPor:id:ubicacion')
+                            /* ->whereNotNull('fecha_pago') */
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
                             })
@@ -87,17 +87,17 @@ class Recaudacion extends Component
                             ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
                                 return $q->where('tipo_servicio', $this->tipo_servicio);
                             })
-                            ->whereHas('creadoPor', function($q) use ($string){
-                                $q->where('ubicacion', $string);
+                            ->whereHas('creadoPor', function($q) use ($ubicacion){
+                                $q->where('ubicacion', $ubicacion);
                             })
-                            ->whereBetween('fecha_pago', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
+                            /* ->whereBetween('fecha_pago', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59']) */
                             ->get();
 
         $array = [];
 
         $array2 = [];
 
-        foreach($conjunto as $tramite){
+        foreach($tramites as $tramite){
 
             if($tramite->id_servicio === 1 && $tramite->adicionadoPor->count() > 0){
 
@@ -105,14 +105,14 @@ class Recaudacion extends Component
 
                     $count ++;
 
-                    $array[$tramite->servicio->nombre] = $count;
+                    $array[$tramite->where('id_servicio', 2)->first()->servicio->nombre] = $count;
 
                 }
                 elseif($tramite->adicionadoPor->first()->id_servicio == 6){
 
                     $count2 ++;
 
-                    $array[$tramite->servicio->nombre] = $count2;
+                    $array[$tramite->where('id_servicio', 6)->first()->servicio->nombre] = $count2;
 
                 }
 
@@ -120,21 +120,11 @@ class Recaudacion extends Component
 
         }
 
-        $tramites = $conjunto->map(function($tramite){
-
-            $object = (object)[];
-
-            $object->servicio = $tramite->servicio->nombre;
-
-            $object->monto = $tramite->monto;
-
-            return $object;
-
-        });
-
         foreach ($tramites as $tramite) {
 
-            $array2[$tramite->servicio] = $tramites->where('servicio', $tramite->servicio)->sum('monto');
+            $array2[$tramite->servicio->nombre]['monto'] = $tramites->where('servicio', $tramite->servicio)->sum('monto');
+
+            $array2[$tramite->servicio->nombre]['cantidad'] = $tramites->where('servicio', $tramite->servicio)->count();
 
         }
 
@@ -142,7 +132,7 @@ class Recaudacion extends Component
 
             foreach ($array as $key1 => $value) {
 
-                $array2[$key1] = (float)$array2[$key1] - ($value * (float)Servicio::find(1)->ordinario);
+                $array2[$key1]['monto'] = (float)$array2[$key1]['monto'] - ($value * (float)Servicio::find(1)->ordinario);
 
             }
 
