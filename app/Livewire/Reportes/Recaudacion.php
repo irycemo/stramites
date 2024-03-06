@@ -45,6 +45,8 @@ class Recaudacion extends Component
 
     public function updated(){
 
+        set_time_limit(60);
+
         $this->reset([
             'rpp',
             'regional1',
