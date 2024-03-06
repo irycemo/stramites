@@ -74,7 +74,7 @@ class Recaudacion extends Component
         $count = 0;
         $count2 = 0;
 
-        $conjunto = Tramite::with('servicio', 'adicionadoPor.servicio', 'creadoPor')
+        $conjunto = Tramite::with('servicio:id,nombre', 'adicionadoPor:id,adiciona,id_servicio', 'creadoPor:id:ubicacion')
                             ->whereNotNull('fecha_pago')
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
@@ -105,14 +105,14 @@ class Recaudacion extends Component
 
                     $count ++;
 
-                    $array[$tramite->adicionadoPor->first()->servicio->nombre] = $count;
+                    $array[$tramite->servicio->nombre] = $count;
 
                 }
                 elseif($tramite->adicionadoPor->first()->id_servicio == 6){
 
                     $count2 ++;
 
-                    $array[$tramite->adicionadoPor->first()->servicio->nombre] = $count2;
+                    $array[$tramite->servicio->nombre] = $count2;
 
                 }
 
