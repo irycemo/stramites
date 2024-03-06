@@ -74,7 +74,7 @@ class Recaudacion extends Component
         $count = 0;
         $count2 = 0;
 
-        $conjunto = Tramite::with('servicio:id,nombre', 'adicionadoPor', 'creadoPor:id:ubicacion')
+        $conjunto = Tramite::with('servicio:id,nombre', 'adicionadoPor:id,adiciona,id_servicio', 'creadoPor:id:ubicacion')
                             ->whereNotNull('fecha_pago')
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
