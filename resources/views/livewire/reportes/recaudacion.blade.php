@@ -473,5 +473,51 @@
 
         @endif
 
+        @if($regional7)
+
+            <div class="shadow-lg bg-white rounded-xl mb-5 p-4">
+
+                <p class="text-center tracking-wider font-semibold">Regional 7</p>
+
+                <table class="w-full overflow-x-auto table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($regional7 as $key => $value)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($value, 2) }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $value;
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold text-right'><p>$"  . number_format($total, 2) . "</p></td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        @endif
+
     </div>
 </div>
