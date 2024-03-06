@@ -15,6 +15,7 @@
             <select class="bg-white rounded text-sm mb-3" wire:model.live="area">
                 <option selected value="">Selecciona una área</option>
                 <option value="tramites">Trámites</option>
+                <option value="recaudacion">Recaudación</option>
             </select>
 
         </div>
@@ -23,7 +24,13 @@
 
     @if ($verTramites)
 
-            @livewire('reportes.tramites', ['fecha1' => $this->fecha1, 'fecha2' => $this->fecha2, 'estado' => $this->estado])
+        @livewire('reportes.tramites', ['fecha1' => $this->fecha1, 'fecha2' => $this->fecha2, 'estado' => $this->estado])
+
+    @endif
+
+    @if ($verRecaudacion)
+
+        @livewire('reportes.recaudacion', ['fecha1' => $this->fecha1, 'fecha2' => $this->fecha2, 'estado' => $this->estado])
 
     @endif
 

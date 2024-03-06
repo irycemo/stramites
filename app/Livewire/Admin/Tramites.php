@@ -400,7 +400,7 @@ class Tramites extends Component
     public function render()
     {
 
-        $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio')
+        $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio.categoria')
                                 ->when(isset($this->año) && $this->año != "", function($q){
                                     return $q->orWhere('año', $this->año);
 

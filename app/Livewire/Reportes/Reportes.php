@@ -13,6 +13,7 @@ class Reportes extends Component
     public $estado;
 
     public $verTramites;
+    public $verRecaudacion;
 
     protected function rules(){
         return [
@@ -28,9 +29,17 @@ class Reportes extends Component
 
     public function updatedArea(){
 
-        if($this->area == 'tramites'){
+        if($this->area === 'tramites'){
 
             $this->verTramites = true;
+
+            $this->verRecaudacion = false;
+
+        }elseif($this->area === 'recaudacion'){
+
+            $this->verTramites = false;
+
+            $this->verRecaudacion = true;
 
         }
 

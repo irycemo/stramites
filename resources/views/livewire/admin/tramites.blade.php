@@ -67,6 +67,7 @@
                 <x-table.heading sortable wire:click="sortBy('año')" :direction="$sort === 'año' ? $direction : null">Año</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('numero_control')" :direction="$sort === 'numero_control' ? $direction : null">Número de Control</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('estado')" :direction="$sort === 'estado' ? $direction : null">Estado</x-table.heading>
+                <x-table.heading >Categoría</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('id_servicio')" :direction="$sort === 'id_servicio' ? $direction : null">Servicio</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('solicitante')" :direction="$sort === 'solicitante' ? $direction : null">Solicitante</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('folio_real')" :direction="$sort === 'folio_real' ? $direction : null">Folio real</x-table.heading>
@@ -107,6 +108,14 @@
                             <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Estado</span>
 
                             <span class="bg-{{ $tramite->estado_color }} py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($tramite->estado) }}</span>
+
+                        </x-table.cell>
+
+                        <x-table.cell>
+
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Categoría</span>
+
+                            {{ $tramite->servicio->categoria->nombre }}
 
                         </x-table.cell>
 
@@ -255,7 +264,7 @@
 
                     <x-table.row>
 
-                        <x-table.cell colspan="13">
+                        <x-table.cell colspan="14">
 
                             <div class="bg-white text-gray-500 text-center p-5 rounded-full text-lg">
 
@@ -275,7 +284,7 @@
 
                 <x-table.row>
 
-                    <x-table.cell colspan="13" class="bg-gray-50">
+                    <x-table.cell colspan="14" class="bg-gray-50">
 
                         {{ $tramites->links()}}
 

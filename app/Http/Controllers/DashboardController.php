@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Tramite;
+use App\Models\Servicio;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -19,7 +20,7 @@ class DashboardController extends Controller
                                         ->groupBy('estado')
                                         ->get();
 
-            $tramites = Tramite::selectRaw('year(created_at) year, monthname(created_at) month, count(*) data, sum(monto) sum')
+            $tramites = Tramite::with('adicionadoPor')->selectRaw('year(created_at) year, monthname(created_at) month, count(*) data, sum(monto) sum')
                                     ->whereNotNUll('fecha_pago')
                                     ->whereNotIn('id_servicio', [2,6])
                                     ->groupBy('year', 'month')
@@ -45,6 +46,8 @@ class DashboardController extends Controller
 
                                 });
 
+            $cantidad = Servicio::find(1)->ordinario;
+
             foreach($tramites as $tramite){
 
                 foreach($copias as $copia){
@@ -53,13 +56,15 @@ class DashboardController extends Controller
 
                         $tramite->sum += $copia->monto;
 
+                        if($tramite->id_servicio === 1 && $tramite->adicionadoPor->count() > 0)
+
+                            $tramite->sum - $cantidad;
+
                     }
 
                 }
 
             }
-
-
 
             $data = [];
 
