@@ -75,7 +75,7 @@ class Recaudacion extends Component
         $count2 = 0;
 
         $tramites = Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio', 'creadoPor:id:ubicacion')
-                            /* ->whereNotNull('fecha_pago') */
+                            ->whereNotNull('fecha_pago')
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
                             })
@@ -90,7 +90,7 @@ class Recaudacion extends Component
                             ->whereHas('creadoPor', function($q) use ($ubicacion){
                                 $q->where('ubicacion', $ubicacion);
                             })
-                            /* ->whereBetween('fecha_pago', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59']) */
+                            ->whereBetween('fecha_pago', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
                             ->get();
 
         $array = [];
