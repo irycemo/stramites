@@ -149,6 +149,12 @@
 
     </div>
 
+    <div class="md:flex md:flex-row flex-col p-4 bg-white rounded-xl">
+
+        <span class="text-xl tracking-widest">Total ${{ number_format($total, 2) }}</span>
+
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
 
         @if($rpp)

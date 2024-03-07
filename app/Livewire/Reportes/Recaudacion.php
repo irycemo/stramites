@@ -38,6 +38,8 @@ class Recaudacion extends Component
     public $cantidadCopiasCertificadas;
     public $cantidadCopiasSimples;
 
+    public $total;
+
     public function updatedCategoria(){
 
         $this->servicios = Servicio::where('estado', 'activo')
@@ -70,6 +72,8 @@ class Recaudacion extends Component
         $this->regional6 = $this->tramites('Regional 6');
         $this->regional7 = $this->tramites('Regional 7');
 
+        $this->total();
+
     }
 
     public function tramites($ubicacion){
@@ -94,8 +98,6 @@ class Recaudacion extends Component
                             ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
                             ->get();
 
-        $array = [];
-
         $array2 = [];
 
         $this->cantidadCopiasCertificadas = Tramite::whereHas('adicionadoPor', function ($q){
@@ -117,6 +119,7 @@ class Recaudacion extends Component
                                                 })
                                                 ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
                                                 ->count();
+
 
         foreach ($tramites as $tramite) {
 
@@ -143,6 +146,21 @@ class Recaudacion extends Component
         }
 
         return $array2;
+
+    }
+
+    public function total(){
+
+        $this->total =
+            collect($this->rpp)->sum('monto') +
+            collect($this->regional1)->sum('monto') +
+            collect($this->regional2)->sum('monto') +
+            collect($this->regional3)->sum('monto') +
+            collect($this->regional4)->sum('monto') +
+            collect($this->regional5)->sum('monto') +
+            collect($this->regional6)->sum('monto') +
+            collect($this->regional7)->sum('monto');
+
 
     }
 
