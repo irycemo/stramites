@@ -45,7 +45,7 @@ class Recaudacion extends Component
 
     public function updated(){
 
-        set_time_limit(60);
+        set_time_limit(120);
 
         $this->reset([
             'rpp',
@@ -74,23 +74,23 @@ class Recaudacion extends Component
         $count = 0;
         $count2 = 0;
 
-        $tramites = Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio', 'creadoPor:id:ubicacion')
+        $tramites = Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio')
                             ->whereNotNull('fecha_pago')
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
                             })
                             ->when(isset($this->categoria) && $this->categoria != "", function($q){
                                 return $q->whereHas('servicio', function($q){
-                                    $q->where('categoria_servicio_id', $this->categoria);
+                                    $q->select('id', 'nombre', 'categoria_servicio_id')->where('categoria_servicio_id', $this->categoria);
                                 });
                             })
                             ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
                                 return $q->where('tipo_servicio', $this->tipo_servicio);
                             })
-                            ->whereHas('creadoPor', function($q) use ($ubicacion){
-                                $q->where('ubicacion', $ubicacion);
+                            ->withWhereHas('creadoPor', function($q) use ($ubicacion){
+                                $q->select('id', 'ubicacion')->where('ubicacion', $ubicacion);
                             })
-                            ->whereBetween('fecha_pago', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
+                            ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
                             ->get();
 
         $array = [];
