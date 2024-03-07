@@ -220,7 +220,7 @@ class LineaCaptura
 
             if($error){
 
-                Log::error($error);
+                Log::error(curl_error($ch));
 
                 throw new ErrorAlGenerarLineaDeCaptura('Error de conexión a SAP.');
 

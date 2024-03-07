@@ -1,6 +1,6 @@
 <div>
 
-    <div class="shadow-lg md:flex flex-col md:flex-row justify-between md:space-x-3 items-center bg-white rounded-xl mb-5 p-4 relative" wire:loading.class.delay.longest="opacity-50">
+    <div class="shadow-lg md:flex flex-col md:flex-row justify-between md:space-x-3 items-center bg-white rounded-xl mb-5 p-4 relative z-40" wire:loading.class.delay.longest="opacity-50">
 
         <div wire:loading.flex class="flex absolute top-1 right-1 items-center z-50">
             <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
