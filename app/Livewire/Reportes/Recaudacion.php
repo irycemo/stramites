@@ -35,6 +35,9 @@ class Recaudacion extends Component
 
     public $array = [];
 
+    public $cantidadCopiasCertificadas;
+    public $cantidadCopiasSimples;
+
     public function updatedCategoria(){
 
         $this->servicios = Servicio::where('estado', 'activo')
@@ -71,10 +74,8 @@ class Recaudacion extends Component
 
     public function tramites($ubicacion){
 
-        $count = 0;
-        $count2 = 0;
-
         $tramites = Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio')
+                            ->select('id', 'id_servicio', 'adiciona', 'fecha_pago', 'tipo_servicio', 'monto', 'creado_por')
                             ->whereNotNull('fecha_pago')
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
@@ -97,30 +98,29 @@ class Recaudacion extends Component
 
         $array2 = [];
 
-        foreach($tramites as $tramite){
+        $this->cantidadCopiasCertificadas = Tramite::whereHas('adicionadoPor', function ($q){
+                                                    $q->where('id_servicio', 2);
+                                                })
+                                                ->where('id_servicio', 1)
+                                                ->whereHas('creadoPor', function($q) use ($ubicacion){
+                                                    $q->where('ubicacion', $ubicacion);
+                                                })
+                                                ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
+                                                ->count();
 
-            if($tramite->id_servicio === 1 && $tramite->adicionadoPor->count() > 0){
-
-                if($tramite->adicionadoPor->first()->id_servicio == 2){
-
-                    $count ++;
-
-                    $array[$tramite->where('id_servicio', 2)->first()->servicio->nombre] = $count;
-
-                }
-                elseif($tramite->adicionadoPor->first()->id_servicio == 6){
-
-                    $count2 ++;
-
-                    $array[$tramite->where('id_servicio', 6)->first()->servicio->nombre] = $count2;
-
-                }
-
-            }
-
-        }
+        $this->cantidadCopiasSimples = Tramite::whereHas('adicionadoPor', function ($q){
+                                                    $q->where('id_servicio', 6);
+                                                })
+                                                ->where('id_servicio', 1)
+                                                ->whereHas('creadoPor', function($q) use ($ubicacion){
+                                                    $q->where('ubicacion', $ubicacion);
+                                                })
+                                                ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
+                                                ->count();
 
         foreach ($tramites as $tramite) {
+
+            if(isset($array2[$tramite->servicio->nombre])) continue;
 
             $array2[$tramite->servicio->nombre]['monto'] = $tramites->where('servicio', $tramite->servicio)->sum('monto');
 
@@ -130,9 +130,13 @@ class Recaudacion extends Component
 
         if($this->servicio_id != 1){
 
-            foreach ($array as $key1 => $value) {
+            foreach ($array2 as $key => $item) {
 
-                $array2[$key1]['monto'] = (float)$array2[$key1]['monto'] - ($value * (float)Servicio::find(1)->ordinario);
+                if(str_contains($key, 'Copias simples'))
+                    $array2[$key]['monto'] = (float)$array2[$key]['monto'] - ($this->cantidadCopiasSimples * (float)Servicio::find(1)->ordinario);
+
+                if(str_contains($key, 'Copias certificadas'))
+                    $array2[$key]['monto'] = (float)$array2[$key]['monto'] - ($this->cantidadCopiasCertificadas * (float)Servicio::find(1)->ordinario);
 
             }
 
