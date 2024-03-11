@@ -107,6 +107,9 @@ class Recaudacion extends Component
                                                 ->whereHas('creadoPor', function($q) use ($ubicacion){
                                                     $q->where('ubicacion', $ubicacion);
                                                 })
+                                                ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
+                                                    return $q->where('tipo_servicio', $this->tipo_servicio);
+                                                })
                                                 ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
                                                 ->count();
 
@@ -116,6 +119,9 @@ class Recaudacion extends Component
                                                 ->where('id_servicio', 1)
                                                 ->whereHas('creadoPor', function($q) use ($ubicacion){
                                                     $q->where('ubicacion', $ubicacion);
+                                                })
+                                                ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
+                                                    return $q->where('tipo_servicio', $this->tipo_servicio);
                                                 })
                                                 ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
                                                 ->count();
