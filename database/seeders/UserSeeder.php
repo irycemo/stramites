@@ -34,6 +34,15 @@ class UserSeeder extends Seeder
             'password' => Hash::make('sistema'),
         ])->assignRole('Administrador');
 
+        User::create([
+            'name' => 'Sistema RPP',
+            'ubicacion' => 'RPP',
+            'status' => 'activo',
+            'area' => 'Dirección del Registro Público de la Propiedad',
+            'email' => 'sistemarpp@gmail.com',
+            'password' => Hash::make('sistema'),
+        ])->assignRole('Sistemas');
+
         Configuracion::create([
             'entrada' => 1
         ]);

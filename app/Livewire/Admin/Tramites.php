@@ -319,7 +319,7 @@ class Tramites extends Component
 
         if($this->modelo_editar->adicionaAlTramite && $this->modelo_editar->adicionaAlTramite->servicio->clave_ingreso != 'DC93'){
 
-            $this->dispatch('mostrarMensaje', ['success', "El trámite adiciona al trámite: " . $this->modelo_editar->adicionaAlTramite->numero_control . '-' . $this->modelo_editar->adicionaAlTramite->numero_control . ' no es posible enviarlo al Sistema RPP.']);
+            $this->dispatch('mostrarMensaje', ['error', "El trámite adiciona al trámite: " . $this->modelo_editar->adicionaAlTramite->numero_control . '-' . $this->modelo_editar->adicionaAlTramite->numero_control . ' no es posible enviarlo al Sistema RPP.']);
 
             return;
 
@@ -353,6 +353,31 @@ class Tramites extends Component
             dispatch(new GenerarFolioTramite($this->modelo_editar->id));
 
         $this->resetearTodo();
+
+    }
+
+    public function reactivarTramtie(Tramite $modelo){
+
+        try{
+
+            if($modelo->estado === 'caducado'){
+
+                $modelo->update(['estado' => 'nuevo']);
+
+            }elseif($modelo->estado === 'expirado' && $modelo->fecha_pago){
+
+                $modelo->update(['estado' => 'pagado']);
+
+            }
+
+            $this->dispatch('mostrarMensaje', ['success', "El trámite se reactivó con éxito."]);
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al reactivar trámite  por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+
+        }
 
     }
 

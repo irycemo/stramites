@@ -10,13 +10,22 @@ use Illuminate\Http\Client\ConnectionException;
 
 class SistemaRppService{
 
+    public $token;
+
+    public function __construct()
+    {
+
+        $this->token = env('SISTEMA_RPP_SERVICE_TOKEN');
+
+    }
+
     public function insertarSistemaRpp($tramite){
 
         $url = env('SISTEMA_RPP_SERVICE_INSERT');
 
         try {
 
-            $response = Http::accept('application/json')->asForm()->post($url,[
+            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
                 'monto' => $tramite->monto,
                 'solicitante' => $tramite->solicitante,
                 'nombre_solicitante' => $tramite->nombre_solicitante,
@@ -95,7 +104,7 @@ class SistemaRppService{
 
         try {
 
-            $response = Http::accept('application/json')->asForm()->post($url,[
+            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
                 'monto' => $tramite->monto,
                 'solicitante' => $tramite->solicitante,
                 'nombre_solicitante' => $tramite->nombre_solicitante,
@@ -156,7 +165,7 @@ class SistemaRppService{
 
         try {
 
-            $response = Http::accept('application/json')->asForm()->post($url,[
+            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
                 'tipo_servicio' => $tramite->tipo_servicio,
                 'monto' => $tramite->monto,
                 'movimiento_registral' => $tramite->movimiento_registral,
@@ -186,7 +195,7 @@ class SistemaRppService{
 
         try {
 
-            $response = Http::accept('application/json')->asForm()->post($url,[
+            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
                 'numero_paginas' => $tramite->cantidad,
                 'monto' => $tramite->monto,
                 'movimiento_registral' => $tramite->movimiento_registral,

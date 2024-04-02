@@ -16,15 +16,15 @@ use App\Http\Controllers\Api\TramitesController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('finalizar_tramite', [TramitesController::class, 'finalizar']);
+
+    Route::post('rechazar_tramite', [TramitesController::class, 'rechazar']);
+
+    Route::post('acredita_pago', SapControllerApi::class);
+
 });
-
-Route::post('finalizar_tramite', [TramitesController::class, 'finalizar']);
-
-Route::post('rechazar_tramite', [TramitesController::class, 'rechazar']);
-
-Route::post('acredita_pago', SapControllerApi::class);
 
 Route::fallback(function(){
     return response()->json([
