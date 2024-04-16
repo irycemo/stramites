@@ -57,7 +57,7 @@ class SistemaRppService{
                 'autoridad_cargo' => $tramite->autoridad_cargo,
                 'autoridad_nombre' => $tramite->nombre_autoridad,
                 'numero_documento' => $tramite->numero_documento,
-                'fecha_emision' => $tramite->fecha_emision?->toDateString(),
+                'fecha_emision' => $tramite->fecha_emision,
                 'procedencia' => $tramite->procedencia,
             ]);
 
@@ -137,7 +137,7 @@ class SistemaRppService{
                 'autoridad_cargo' => $tramite->autoridad_cargo,
                 'autoridad_nombre' => $tramite->nombre_autoridad,
                 'numero_documento' => $tramite->numero_documento,
-                'fecha_emision' => $tramite->fecha_emision?->toDateString(),
+                'fecha_emision' => $tramite->fecha_emision,
                 'procedencia' => $tramite->procedencia,
             ]);
 

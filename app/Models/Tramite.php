@@ -23,7 +23,6 @@ class Tramite extends Model implements Auditable
         'limite_de_pago' => 'date',
         'fecha_entrega' => 'date',
         'fecha_pago' => 'date',
-        'fecha_emision' => 'date'
     ];
 
     public function getEstadoColorAttribute()
