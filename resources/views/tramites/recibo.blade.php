@@ -10,7 +10,7 @@
 <style>
 
     @page{
-        size:58mm 125mm;
+        size:58mm 165mm;
         margin: 5;
     }
 
@@ -30,7 +30,7 @@
     }
 
     .content{
-        font-size: 10px;
+        font-size: 14px;
     }
 
     .content p{
