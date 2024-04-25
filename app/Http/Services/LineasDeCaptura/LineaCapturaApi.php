@@ -40,7 +40,7 @@ class LineaCapturaApi
                         "TP_DIVERSO" => "RPP",
                         "RFC" => "XXXX0001XXX",
                         "NOMBRE_RAZON" => $this->tramite->nombre_solicitante,
-                        "OBSERVACIONES" => $this->tramite->año . '-' . $this->tramite->folio . '-' . $this->tramite->usuario . ' Fecha de entrega: ' . $this->tramite->fecha_entrega->format('d-m-Y') . ' pagando el ' . $this->tramite->created_at->format('d-m-Y')
+                        "OBSERVACIONES" => $this->tramite->año . '-' . $this->tramite->numero_control  . ' Fecha de entrega: ' . $this->tramite->fecha_entrega->format('d-m-Y') . ' pagando el ' . $this->tramite->created_at->format('d-m-Y')
                     ],
                     "TB_CONCEPTOS" => [
                         "TP_INGRESO" => $this->tramite->servicio->clave_ingreso,
