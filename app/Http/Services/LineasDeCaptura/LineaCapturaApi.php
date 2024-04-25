@@ -37,7 +37,7 @@ class LineaCapturaApi
                     "ES_GEN_DATA" => [
                         "TP_PROCESAMIENTO" => "2",
                         "TP_DATOMAESTRO" => "E",
-                        "TP_DIVERSO" => "CATASTRO",
+                        "TP_DIVERSO" => "RPP",
                         "RFC" => "XXXX0001XXX",
                         "NOMBRE_RAZON" => $this->tramite->nombre_solicitante,
                         "OBSERVACIONES" => $this->tramite->año . '-' . $this->tramite->folio . '-' . $this->tramite->usuario . ' Fecha de entrega: ' . $this->tramite->fecha_entrega->format('d-m-Y') . ' pagando el ' . $this->tramite->created_at->format('d-m-Y')
