@@ -13,8 +13,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\Exceptions\ErrorAlGenerarLineaDeCaptura;
-use App\Http\Services\LineasDeCaptura\LineaCaptura;
 use App\Http\Services\SistemaRPP\SistemaRppService;
+use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 
 class GenerarFolioTramite implements ShouldQueue
 {
@@ -103,17 +103,11 @@ class GenerarFolioTramite implements ShouldQueue
 
         }
 
-        $array = (new LineaCaptura($this->tramite))->generarLineaDeCaptura();
+        $array = (new LineaCapturaApi($this->tramite))->generarLineaDeCaptura();
 
-        $this->tramite->orden_de_pago = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['ES_OPAG']['NRO_ORD_PAGO'];
-
-        $this->tramite->linea_de_captura = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['ES_OPAG']['LINEA_CAPTURA'];
-
-        $this->tramite->limite_de_pago = $this->convertirFecha($array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['ES_OPAG']['FECHA_VENCIMIENTO']);
-
-        /* $this->oxxo_cod = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['TB_CONV_BANCARIOS'][1]['COD_BANCO'];
-
-        $this->oxxo_conv = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['TB_CONV_BANCARIOS'][1]['COD_CONVENIO']; */
+        $this->tramite->orden_de_pago = $array['ES_OPAG']['NRO_ORD_PAGO'];
+        $this->tramite->linea_de_captura = $array['ES_OPAG']['LINEA_CAPTURA'];
+        $this->tramite->limite_de_pago = $this->convertirFecha($array['ES_OPAG']['FECHA_VENCIMIENTO']);
 
     }
 

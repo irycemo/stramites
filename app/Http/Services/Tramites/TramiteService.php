@@ -9,8 +9,8 @@ use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Exceptions\ErrorAlGenerarLineaDeCaptura;
 use App\Exceptions\ErrorAlValidarLineaDeCaptura;
-use App\Http\Services\LineasDeCaptura\LineaCaptura;
 use App\Http\Services\SistemaRPP\SistemaRppService;
+use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 
 class TramiteService{
 
@@ -101,13 +101,11 @@ class TramiteService{
 
         }
 
-        $array = (new LineaCaptura($this->tramite))->generarLineaDeCaptura();
+        $array = (new LineaCapturaApi($this->tramite))->generarLineaDeCaptura();
 
-        $this->orden_de_pago = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['ES_OPAG']['NRO_ORD_PAGO'];
-
-        $this->linea = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['ES_OPAG']['LINEA_CAPTURA'];
-
-        $this->fecha_vencimiento = $this->convertirFecha($array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['ES_OPAG']['FECHA_VENCIMIENTO']);
+        $this->tramite->orden_de_pago = $array['ES_OPAG']['NRO_ORD_PAGO'];
+        $this->tramite->linea = $array['ES_OPAG']['LINEA_CAPTURA'];
+        $this->tramite->fecha_vencimiento = $this->convertirFecha($array['ES_OPAG']['FECHA_VENCIMIENTO']);
 
         /* $this->oxxo_cod = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['TB_CONV_BANCARIOS'][1]['COD_BANCO'];
 
@@ -194,11 +192,10 @@ class TramiteService{
 
         try {
 
-            $array = (new LineaCaptura($this->tramite))->validarLineaDeCaptura();
+            $array = (new LineaCapturaApi($this->tramite))->validarLineaDeCaptura();
 
-            $fecha = $array['SOAPBody']['n0MT_ValidarLinCaptura_ECC_Sender']['FEC_PAGO'];
-
-            $documento = $array['SOAPBody']['n0MT_ValidarLinCaptura_ECC_Sender']['DOC_PAGO'];
+            $fecha = $this->convertirFecha($array['FEC_PAGO']);
+            $documento = $array['DOC_PAGO'];
 
             $this->tramite->update([
                 'estado' => 'pagado',
