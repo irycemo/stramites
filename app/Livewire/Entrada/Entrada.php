@@ -31,6 +31,7 @@ class Entrada extends Component
     public $flags = [
         'Certificaciones' => false,
         'InscripcionesPropiedad' => false,
+        'Gravamenes' => false,
     ];
 
     protected $listeners = [
@@ -96,6 +97,8 @@ class Entrada extends Component
         $componente = match($categoria){
                             'Certificaciones' => 'Certificaciones',
                             'Inscripciones - Propiedad' => 'InscripcionesPropiedad',
+                            'Inscripciones - Gravamenes' => 'Gravamenes',
+                            'Cancelación - Gravamenes' => 'Gravamenes',
                             default => 'No encontrada',
 
                         };

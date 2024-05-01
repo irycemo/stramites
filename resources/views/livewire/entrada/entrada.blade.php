@@ -152,6 +152,12 @@
 
         @endif
 
+        @if($flags['Gravamenes'])
+
+            @livewire('entrada.gravamenes', ['servicio' => $servicio, 'tramite' => $tramite])
+
+        @endif
+
     </div>
 
 </div>

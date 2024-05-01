@@ -152,6 +152,7 @@
                         <p>Total a pagar: ${{ number_format($tramite->monto, 2) }}</p>
                         @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
                         <p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}, Sección: {{ $tramite->seccion}}</p>
+                        @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
                         @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}} <br>@endif
                         @if($tramite->observaciones)
                             <p>Observaciones:{{ $tramite->observaciones }}</p>
@@ -248,6 +249,7 @@
                         <p>Total a pagar: ${{ number_format($tramite->monto, 2) }}</p>
                         @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
                         <p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}, Sección: {{ $tramite->seccion}}</p>
+                        @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
                         @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}} <br>@endif
                         @if($tramite->observaciones)
                             <p>Observaciones:{{ $tramite->observaciones }}</p>
