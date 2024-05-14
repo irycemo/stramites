@@ -46,6 +46,8 @@ class SistemaRppService{
                 'tomo_bis' => $tramite->tomo_bis,
                 'registro' => $tramite->registro,
                 'registro_bis' => $tramite->registro_bis,
+                'tomo_gravamen' => $tramite->tomo_gravamen,
+                'registro_gravamen' => $tramite->registro_gravamen,
                 'observaciones' => $tramite->observaciones,
                 'numero_paginas' => $tramite->cantidad,
                 'numero_inmuebles' => $tramite->numero_inmuebles,
@@ -59,6 +61,7 @@ class SistemaRppService{
                 'numero_documento' => $tramite->numero_documento,
                 'fecha_emision' => $tramite->fecha_emision,
                 'procedencia' => $tramite->procedencia,
+                'asiento_registral' => $tramite->asiento_registral
             ]);
 
         } catch (ConnectionException $th) {

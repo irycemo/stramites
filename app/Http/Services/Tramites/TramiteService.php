@@ -242,7 +242,8 @@ class TramiteService{
             }else{
 
                 /* Consultas */
-                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+                if($this->tramite->servicio->categoria->nombre === 'Certificaciones')
+                    (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
             }
 
