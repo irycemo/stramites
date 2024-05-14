@@ -37,10 +37,6 @@ class InscripcionesPropiedad extends Component
     public $notarias;
     public $notaria;
 
-    public $tramiteCreado;
-    public $batchId;
-    public $job = false;
-
     public $valor_propiedad = ['D115','D116', 'D113', 'D114'];
     public $numero_inmuebles = ['D123', 'D120', 'D121', 'D122','D119', 'D124', 'D125', 'D126'];
 
@@ -545,9 +541,9 @@ class InscripcionesPropiedad extends Component
 
             DB::transaction(function (){
 
-                $this->tramiteCreado = (new TramiteService($this->modelo_editar))->crear();
+                $tramite = (new TramiteService($this->modelo_editar))->crear();
 
-                $this->dispatch('crearBatch', $this->tramiteCreado->id);
+                $this->dispatch('imprimir_recibo', $tramite->id);
 
                 $this->dispatch('reset');
 
@@ -566,7 +562,6 @@ class InscripcionesPropiedad extends Component
             Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-            $this->resetearTodo($borrado = true);
 
         }
 

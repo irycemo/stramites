@@ -125,7 +125,7 @@ class TramiteExport implements FromCollection, WithProperties, WithDrawings, Sho
     public function map($tramite): array
     {
         return [
-            $tramite->año. '-' .$tramite->numero_control,
+            $tramite->año. '-' .$tramite->numero_control. '-' .$tramite->usuario,
             $tramite->estado,
             $tramite->servicio->nombre,
             $tramite->solicitante . ' / ' . $tramite->nombre_solicitante,

@@ -9,7 +9,6 @@ use App\Models\Servicio;
 use App\Models\Dependencia;
 use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
-use App\Jobs\GenerarFolioTramite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
@@ -546,13 +545,13 @@ class Certificaciones extends Component
         $consulta = $this->modelo_editar->replicate();
         $consulta->id_servicio = $servicio->id;
         $consulta->estado = 'nuevo';
-        $consulta->año = now()->format('Y');
         $consulta->tipo_servicio = 'ordinario';
         $consulta->monto = $this->modelo_editar->solicitante == 'Oficialia de partes' ? 0 : $servicio->ordinario;
+        $consulta->año = now()->format('Y');
+        $consulta->usuario = auth()->user()->clave;
+        $consulta->numero_control = (Tramite::where('año', $consulta->año)->where('usuario', $consulta->usuario)->max('numero_control') ?? 0) + 1;
 
         $tramite = (new TramiteService($consulta))->crear();
-
-        dispatch(new GenerarFolioTramite($consulta->id));
 
         return $tramite;
 
@@ -594,7 +593,7 @@ class Certificaciones extends Component
 
                 }
 
-                $this->dispatch('crearBatch', $tramite->id);
+                $this->dispatch('imprimir_recibo', $tramite->id);
 
                 $this->dispatch('reset');
 
@@ -607,14 +606,12 @@ class Certificaciones extends Component
         } catch (TramiteServiceException $th) {
 
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
-            $this->resetearTodo($borrado = true);
 
         } catch (\Throwable $th) {
 
             Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-            $this->resetearTodo($borrado = true);
 
         }
 

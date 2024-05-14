@@ -31,11 +31,14 @@ class TramiteService{
 
         try {
 
-            /* $this->procesarLineaCaptura(); */
+            $this->procesarLineaCaptura();
 
             $this->tramite->estado = 'nuevo';
             $this->tramite->fecha_entrega = $this->calcularFechaEntrega();
             $this->tramite->monto = $this->calcularMonto();
+            $this->tramite->año = now()->format('Y');
+            $this->tramite->usuario = auth()->user()->clave;
+            $this->tramite->numero_control = (Tramite::where('año', $this->tramite->año)->where('usuario', $this->tramite->usuario)->max('numero_control') ?? 0) + 1;
 
             $this->tramite->save();
 
@@ -87,13 +90,13 @@ class TramiteService{
     public function procesarLineaCaptura():void
     {
 
-        if($this->tramite->solicitante == 'Oficialia de partes'){
+        if($this->tramite->solicitante == 'Oficialia de partes' || $this->tramite->solicitante == 'SAT'){
 
-            $this->orden_de_pago = 0;
+            $this->tramite->orden_de_pago = 0;
 
-            $this->linea = 0;
+            $this->tramite->linea_de_captura = 0;
 
-            $this->fecha_vencimiento = now()->toDateString();
+            $this->tramite->limite_de_pago = now()->toDateString();
 
             $this->tramite->fecha_prelacion = now()->toDateString();
 
@@ -104,8 +107,8 @@ class TramiteService{
         $array = (new LineaCapturaApi($this->tramite))->generarLineaDeCaptura();
 
         $this->tramite->orden_de_pago = $array['ES_OPAG']['NRO_ORD_PAGO'];
-        $this->tramite->linea = $array['ES_OPAG']['LINEA_CAPTURA'];
-        $this->tramite->fecha_vencimiento = $this->convertirFecha($array['ES_OPAG']['FECHA_VENCIMIENTO']);
+        $this->tramite->linea_de_captura = $array['ES_OPAG']['LINEA_CAPTURA'];
+        $this->tramite->limite_de_pago = $this->convertirFecha($array['ES_OPAG']['FECHA_VENCIMIENTO']);
 
         /* $this->oxxo_cod = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['TB_CONV_BANCARIOS'][1]['COD_BANCO'];
 

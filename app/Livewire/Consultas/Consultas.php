@@ -21,6 +21,7 @@ class Consultas extends Component
 
     public $años;
     public $año;
+    public $usuario;
     public $numero_control;
     public $tramite;
     public Tramite $modelo_editar;
@@ -87,9 +88,10 @@ class Consultas extends Component
         $this->validate([
             'numero_control' => 'required',
             'año' => 'required',
+            'usuario' => 'required'
         ]);
 
-        $this->tramite = Tramite::where('numero_control', $this->numero_control)->where('año', $this->año)->first();
+        $this->tramite = Tramite::where('numero_control', $this->numero_control)->where('año', $this->año)->where('usuario', $this->usuario)->first();
 
         $this->numero_control = null;
 
@@ -103,7 +105,7 @@ class Consultas extends Component
 
         $this->crearModeloVacio();
 
-        array_push($this->fields, 'numero_control', 'tramite');
+        array_push($this->fields, 'numero_control', 'usuario', 'tramite');
 
     }
 

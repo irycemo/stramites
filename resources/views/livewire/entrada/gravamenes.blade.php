@@ -375,7 +375,7 @@
 
                         <div class="rounded-lg bg-gray-100 py-1 px-2">
 
-                            <p><strong>Número de control:</strong> {{ $tramite->año }}-{{ $tramite->numero_control }} </p>
+                            <p><strong>Número de control:</strong> {{ $tramite->año }}-{{ $tramite->numero_control }}-{{ $tramite->usuario }} </p>
 
                         </div>
 

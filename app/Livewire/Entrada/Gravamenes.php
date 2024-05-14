@@ -36,8 +36,6 @@ class Gravamenes extends Component
     public $notarias;
     public $notaria;
 
-    public $tramiteCreado;
-
     public $flags = [
         'adiciona' => true,
         'solicitante' => true,
@@ -266,9 +264,9 @@ class Gravamenes extends Component
 
             DB::transaction(function (){
 
-                $this->tramiteCreado = (new TramiteService($this->modelo_editar))->crear();
+                $tramite = (new TramiteService($this->modelo_editar))->crear();
 
-                $this->dispatch('crearBatch', $this->tramiteCreado->id);
+                $this->dispatch('imprimir_recibo', $tramite->id);
 
                 $this->dispatch('reset');
 

@@ -66,6 +66,7 @@
 
                 <x-table.heading sortable wire:click="sortBy('año')" :direction="$sort === 'año' ? $direction : null">Año</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('numero_control')" :direction="$sort === 'numero_control' ? $direction : null">Número de Control</x-table.heading>
+                <x-table.heading sortable wire:click="sortBy('usuario')" :direction="$sort === 'usuario' ? $direction : null">Usuario</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('estado')" :direction="$sort === 'estado' ? $direction : null">Estado</x-table.heading>
                 <x-table.heading >Categoría</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('id_servicio')" :direction="$sort === 'id_servicio' ? $direction : null">Servicio</x-table.heading>
@@ -100,6 +101,14 @@
                             <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de Control</span>
 
                             {{ $tramite->numero_control }}
+
+                        </x-table.cell>
+
+                        <x-table.cell>
+
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Usuario</span>
+
+                            {{ $tramite->usuario }}
 
                         </x-table.cell>
 
@@ -688,7 +697,7 @@
 
                         <div class="rounded-lg bg-gray-100 py-1 px-2">
 
-                            <p><strong>Número de control:</strong> {{ $modelo_editar->año }}-{{ $modelo_editar->numero_control }}</p>
+                            <p><strong>Número de control:</strong> {{ $modelo_editar->año }}-{{ $modelo_editar->numero_control }}-{{ $modelo_editar->usuario }}</p>
 
                         </div>
 

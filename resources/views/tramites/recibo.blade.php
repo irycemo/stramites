@@ -66,7 +66,7 @@
 
             <p class="title">CALIFICACIÓN DE DOCUMENTO</p>
             <p><strong>Fecha:</strong> {{Carbon\Carbon::now()->format('d-m-Y')}}</p>
-            <p><strong>No. Control:</strong> {{ $tramite->año }}-{{ $tramite->numero_control }} @if($tramite->adiciona) / {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }} @endif</p>
+            <p><strong>No. Control:</strong> {{ $tramite->año }}-{{ $tramite->numero_control }}-{{ $tramite->usuario }} @if($tramite->adiciona) / {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }}-{{ $tramite->adicionaAlTramite->usuario }} @endif</p>
             <p><strong>Servicio:</strong> {{ $tramite->servicio->nombre }}
                 @if($tramite->adiciona)
                     / {{ $tramite->adicionaAlTramite->servicio->nombre }}
@@ -75,9 +75,10 @@
             <p><strong>Solicitante:</strong> {{ $tramite->nombre_solicitante }}</p>
             <p><strong>Tipo de servicio:</strong> {{ $tramite->tipo_servicio }}</p>
             @if($tramite->tomo) <p><strong>Tomo:</strong> {{ $tramite->tomo }}, <strong>Registro:</strong> {{ $tramite->registro}}</p>@endif
-            <p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}, <strong>Sección:</strong> {{ $tramite->seccion }}</p>
+            <p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}</p>
+            <p><strong>Sección:</strong> {{ $tramite->seccion }}</p>
             @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
-            @if($tramite->cantidad) <p>Cantidad:</strong> {{ $tramite->cantidad}} </p>@endif
+            @if($tramite->cantidad) <p><strong>Cantidad:</strong> {{ $tramite->cantidad}} </p>@endif
             <p><strong>Orden de pago:</strong> {{ $tramite->orden_de_pago }}</p>
             <p><strong>Linea de captura:</strong> {{ $tramite->linea_de_captura }}</p>
             <p><strong>Precalificó:</strong> {{ $tramite->creadoPor->name }}</p>

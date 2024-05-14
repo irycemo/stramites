@@ -1,7 +1,4 @@
 <div class="">
-    @if($job)
-        <div wire:poll.500ms="checkBatch"></div>
-    @endif
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
@@ -566,7 +563,7 @@
 
                         <div class="rounded-lg bg-gray-100 py-1 px-2">
 
-                            <p><strong>Número de control:</strong> {{ $tramite->año }}-{{ $tramite->numero_control }} </p>
+                            <p><strong>Número de control:</strong> {{ $tramite->año }}-{{ $tramite->numero_control }}-{{ $tramite->usuario }} </p>
 
                         </div>
 

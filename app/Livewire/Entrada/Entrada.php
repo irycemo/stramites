@@ -23,6 +23,7 @@ class Entrada extends Component
     public $servicio_seleccionado;
     public $tramite;
     public $numero_control;
+    public $usuario;
     public $año;
     public $años;
 
@@ -121,13 +122,14 @@ class Entrada extends Component
 
     public function buscarTramite(){
 
-        $this->validate(['numero_control' => 'required', 'año' => 'required']);
+        $this->validate(['numero_control' => 'required', 'año' => 'required', 'usuario' => 'required']);
 
         $this->reset('categoria_seleccionada', 'servicio_seleccionado', 'flags');
 
         $this->tramite = Tramite::with('servicio.categoria')
                                     ->where('año', $this->año)
                                     ->where('numero_control', $this->numero_control)
+                                    ->where('usuario', $this->usuario)
                                     ->whereIn('estado', ['nuevo', 'rechazado'])
                                     ->first();
 
@@ -168,9 +170,6 @@ class Entrada extends Component
 
     public function render()
     {
-        if(Configuracion::first()->entrada)
-            return view('livewire.entrada.entrada')->extends('layouts.admin');
-        else
-            return view('livewire.entrada.aviso')->extends('layouts.admin');
+        return view('livewire.entrada.entrada')->extends('layouts.admin');
     }
 }

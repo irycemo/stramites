@@ -304,7 +304,7 @@
 
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de control</span>
 
-                                {{ $tramite->año }}-{{ $tramite->numero_control }}
+                                {{ $tramite->año }}-{{ $tramite->numero_control }}-{{ $tramite->usuario }}
 
                             </x-table.cell>
 

@@ -41,7 +41,7 @@ class LineaCapturaApi
                         "TP_DIVERSO" => "RPP",
                         "RFC" => "XXXX0001XXX",
                         "NOMBRE_RAZON" => $this->tramite->nombre_solicitante,
-                        "OBSERVACIONES" => "Número de control: " . $this->tramite->año . '-' . $this->tramite->numero_control . " Tomo: " . $this->tramite->tomo . " Registro: " . $this->tramite->registro . " Distrito: " . Constantes::DISTRITOS[$this->tramite->distrito] . " Sección: " . $this->tramite->seccion . " Tipo de servicio: " . $this->tramite->tipo_servicio  . ' Fecha de entrega: ' . $this->tramite->fecha_entrega . ' pagando el ' . substr($this->tramite->created_at, 0, 10)
+                        "OBSERVACIONES" => "Número de control: " . $this->tramite->año . '-' . $this->tramite->numero_control . '-' . $this->tramite->usuario . " Tomo: " . $this->tramite->tomo . " Registro: " . $this->tramite->registro . " Distrito: " . Constantes::DISTRITOS[$this->tramite->distrito] . " Sección: " . $this->tramite->seccion . " Tipo de servicio: " . $this->tramite->tipo_servicio  . ' Fecha de entrega: ' . $this->tramite->fecha_entrega . ' pagando el ' . now()->format('d-m-Y')
                     ],
                     "TB_CONCEPTOS" => [
                         "TP_INGRESO" => $this->tramite->servicio->clave_ingreso,
