@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('consultar_tramites', [TramitesApiController::class, 'consultarTramites']);
 
+    Route::post('acreditar_tramite', [TramitesApiController::class, 'acreditarTramite']);
+
 });
 
 Route::fallback(function(){

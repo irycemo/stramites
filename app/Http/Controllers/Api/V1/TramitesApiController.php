@@ -78,12 +78,9 @@ class TramitesApiController extends Controller
 
     public function acreditarTramite(Request $request){
 
-        $validated = $request->validate([
-                                            'linea_de_captura' => 'required',
-                                            'folio_acreditacion' => 'required'
-                                        ]);
+        $validated = $request->validate(['linea_de_captura' => 'required']);
 
-        $tramite = Tramite::wehere('linea_de_captura', $validated['linea_de_captura'])->first();
+        $tramite = Tramite::where('linea_de_captura', $validated['linea_de_captura'])->first();
 
         if(!$tramite){
 
@@ -95,22 +92,9 @@ class TramitesApiController extends Controller
 
         try {
 
-            $array = (new LineaCapturaApi($tramite))->validarLineaDeCaptura();
+            (new TramiteService($tramite))->procesarPago();
 
-            $fecha = $this->convertirFecha($array['FEC_PAGO']);
-            $documento = $array['DOC_PAGO'];
-
-            $tramite->update([
-                'estado' => 'pagado',
-                'fecha_pago' => $this->convertirFecha($fecha),
-                'fecha_prelacion' => $this->convertirFecha($fecha),
-                'documento_de_pago' => $documento,
-                'fecha_entrega' => $this->calcularFechaEntrega()
-            ]);
-
-            return response()->json([
-                'mensaje' => 'Trámite acreditado',
-            ], 200);
+            return (new TramiteResource($tramite))->response()->setStatusCode(200);
 
         } catch (ErrorAlValidarLineaDeCaptura $th) {
 
@@ -123,6 +107,8 @@ class TramitesApiController extends Controller
             }
 
         } catch (\Throwable $th) {
+
+            Log::error("Error al acreditar pago api. " . $th);
 
             return response()->json([
                 'error' => 'Error al acreditar pago.',

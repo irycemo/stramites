@@ -329,6 +329,21 @@ class Certificaciones extends Component
             $this->modelo_editar->monto = 0;
             $this->modelo_editar->tipo_tramite = 'exento';
 
+        }elseif($this->modelo_editar->solicitante == 'SAT'){
+
+            if(!auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No tienes permisos para esta opción."]);
+
+                $this->modelo_editar->solicitante = null;
+
+                return;
+
+            }
+
+            $this->flags['dependencias'] = true;
+            $this->flags['numero_oficio'] = true;
+
         }elseif($this->modelo_editar->solicitante == "S.T.A.S.P.E."){
 
             $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;

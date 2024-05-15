@@ -42,6 +42,18 @@ class TramiteService{
 
             $this->tramite->save();
 
+            if($this->tramite->solicitante == 'Oficialia de partes' || $this->tramite->solicitante == 'SAT'){
+
+                $this->tramite->update([
+                    'estado' => 'pagado',
+                    'fecha_pago' => now(),
+                    'fecha_prelacion' => now()->toDateString(),
+                ]);
+
+                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+
+            }
+
             return $this->tramite;
 
         } catch (ErrorAlGenerarLineaDeCaptura $th) {
