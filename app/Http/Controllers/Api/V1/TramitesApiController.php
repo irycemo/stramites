@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TramiteRequest;
 use App\Http\Resources\TramiteResource;
 use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
@@ -125,6 +126,63 @@ class TramitesApiController extends Controller
 
             return response()->json([
                 'error' => 'Error al acreditar pago.',
+            ], 500);
+
+        }
+
+    }
+
+    public function finalizarTramite(TramiteRequest $request){
+
+        try {
+
+            $data = $request->validated();
+
+            $tramite = Tramite::where('año', $data['año'])->where('numero_control', $data['tramite'])->firstOrFail();
+
+            (new TramiteService($tramite))->cambiarEstado($data['estado']);
+
+            return response()->json([
+                'result' => 'success',
+                'data' => []
+            ], 200);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'result' => 'error',
+                'data' => $th->getMessage(),
+            ], 500);
+
+        }
+
+    }
+
+    public function rechazarTramite(TramiteRequest $request){
+
+        try {
+
+            $data = $request->validated();
+
+            $tramite = Tramite::where('año', $data['año'])->where('numero_control', $data['tramite'])->where('usuario', $data['usuario'])->firstOrFail();
+
+            $tramite->update([
+                        'estado' => 'rechazado',
+                        'observaciones' => $tramite->observaciones . '<|>' . $data['observaciones']
+                    ]);
+
+            (new TramiteService($tramite))->cambiarEstado('rechazado');
+
+            return response()->json([
+                'result' => 'success',
+                'data' => []
+            ], 200);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'result' => 'error',
+                'data' => $th->getMessage(),
             ], 500);
 
         }

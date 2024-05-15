@@ -20,11 +20,11 @@ use App\Http\Controllers\Api\V1\ServiciosApiController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::post('finalizar_tramite', [TramitesController::class, 'finalizar']);
-
-    Route::post('rechazar_tramite', [TramitesController::class, 'rechazar']);
-
     Route::post('acredita_pago', SapControllerApi::class);
+
+    Route::post('finalizar_tramite', [TramitesApiController::class, 'finalizarTramite']);
+
+    Route::post('rechazar_tramite', [TramitesApiController::class, 'rechazarTramite']);
 
     Route::get('consultar_servicios', [ServiciosApiController::class, 'consultarServicios']);
 

@@ -24,6 +24,7 @@ class TramiteRequest extends FormRequest
         return [
             'año' => 'required',
             'tramite' => 'required',
+            'usuario' => 'required',
             'observaciones' => 'nullable',
             'estado' => 'required'
         ];
