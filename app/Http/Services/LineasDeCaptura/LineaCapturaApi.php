@@ -55,7 +55,7 @@ class LineaCapturaApi
                     "TB_CONCEPTOS" => [
                         "TP_INGRESO" => $this->tramite->servicio->clave_ingreso,
                         "CANTIDAD" => $this->tramite->cantidad,
-                        "IMPORTE" => $this->tramite->monto
+                        "IMPORTE" => round($this->tramite->monto, 2)
                     ]
                 ]
             ]);

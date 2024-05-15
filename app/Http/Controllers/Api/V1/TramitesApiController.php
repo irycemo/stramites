@@ -11,6 +11,8 @@ use App\Http\Resources\TramiteResource;
 use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
 use App\Http\Services\Tramites\TramiteService;
+use App\Exceptions\ErrorAlValidarLineaDeCaptura;
+use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 
 class TramitesApiController extends Controller
 {
@@ -67,6 +69,62 @@ class TramitesApiController extends Controller
 
             return response()->json([
                 'error' => "No se pudo crear el trámite.",
+            ], 500);
+
+        }
+
+    }
+
+    public function acreditarTramite(Request $request){
+
+        $validated = $request->validate([
+                                            'linea_de_captura' => 'required',
+                                            'folio_acreditacion' => 'required'
+                                        ]);
+
+        $tramite = Tramite::wehere('linea_de_captura', $validated['linea_de_captura'])->first();
+
+        if(!$tramite){
+
+            return response()->json([
+                'error' => "Trámite no encontrado.",
+            ], 404);
+
+        }
+
+        try {
+
+            $array = (new LineaCapturaApi($tramite))->validarLineaDeCaptura();
+
+            $fecha = $this->convertirFecha($array['FEC_PAGO']);
+            $documento = $array['DOC_PAGO'];
+
+            $tramite->update([
+                'estado' => 'pagado',
+                'fecha_pago' => $this->convertirFecha($fecha),
+                'fecha_prelacion' => $this->convertirFecha($fecha),
+                'documento_de_pago' => $documento,
+                'fecha_entrega' => $this->calcularFechaEntrega()
+            ]);
+
+            return response()->json([
+                'mensaje' => 'Trámite acreditado',
+            ], 200);
+
+        } catch (ErrorAlValidarLineaDeCaptura $th) {
+
+            if(!$tramite){
+
+                return response()->json([
+                    'error' => $th->getMessage(),
+                ], 500);
+
+            }
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'error' => 'Error al acreditar pago.',
             ], 500);
 
         }

@@ -31,6 +31,7 @@ class SistemaRppService{
                 'nombre_solicitante' => $tramite->nombre_solicitante,
                 'año' => $tramite->año,
                 'tramite' => $tramite->numero_control,
+                'usuario' => $tramite->usuario,
                 'fecha_prelacion' => $tramite->fecha_prelacion,
                 'tipo_servicio' => $tramite->tipo_servicio,
                 'tipo_tramite' => $tramite->tipo_tramite,
@@ -113,6 +114,7 @@ class SistemaRppService{
                 'nombre_solicitante' => $tramite->nombre_solicitante,
                 'año' => $tramite->año,
                 'tramite' => $tramite->numero_control,
+                'usuario' => $tramite->usuario,
                 'fecha_prelacion' => now()->toDateString(), //Prelacion
                 'tipo_servicio' => $tramite->tipo_servicio,
                 'tipo_tramite' => $tramite->tipo_tramite,

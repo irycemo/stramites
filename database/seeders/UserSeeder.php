@@ -43,6 +43,16 @@ class UserSeeder extends Seeder
             'password' => Hash::make('sistema'),
         ])->assignRole('Sistemas');
 
+        User::create([
+            'id' => 67,
+            'name' => 'Sistema Trámites en Línea',
+            'ubicacion' => 'Catastro',
+            'status' => 'activo',
+            'area' => 'Dirección Catastro',
+            'email' => 'sistemaTramitesLineap@gmail.com',
+            'password' => Hash::make('sistema'),
+        ])->assignRole('Sistemas');
+
         Configuracion::create([
             'entrada' => 1
         ]);
