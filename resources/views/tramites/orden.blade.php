@@ -151,7 +151,7 @@
                         <p>Orden de pago: {{ $tramite->orden_de_pago }}</p>
                         <p>Total a pagar: ${{ number_format($tramite->monto, 2) }}</p>
                         @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
-                        <p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}, Sección: {{ $tramite->seccion}}</p>
+                        @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
                         @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
                         @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}} <br>@endif
                         @if($tramite->observaciones)
