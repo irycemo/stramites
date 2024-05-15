@@ -124,7 +124,7 @@ class TramitesApiController extends Controller
 
             $data = $request->validated();
 
-            $tramite = Tramite::where('año', $data['año'])->where('numero_control', $data['tramite'])->firstOrFail();
+            $tramite = Tramite::where('año', $data['año'])->where('numero_control', $data['tramite'])->where('usuario', $data['usuario'])->firstOrFail();
 
             (new TramiteService($tramite))->cambiarEstado($data['estado']);
 
