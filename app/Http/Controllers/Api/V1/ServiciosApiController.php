@@ -14,7 +14,7 @@ class ServiciosApiController extends Controller
 
         $validated = $request->validate(['ids' => 'required|array']);
 
-        return ServicioResource::collection(Servicio::find($validated['ids']))->response()->setStatusCode(200);
+        return ServicioResource::collection(Servicio::where('estado', 'activo')->whereIn('id', $validated['ids'])->get())->response()->setStatusCode(200);
 
     }
 

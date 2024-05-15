@@ -44,6 +44,7 @@
 
             <x-slot name="head">
 
+                <x-table.heading sortable wire:click="sortBy('clave')" :direction="$sort === 'clave' ? $direction : null">Clave</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('name')" :direction="$sort === 'name' ? $direction : null">Nombre</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('email')" :direction="$sort === 'email' ? $direction : null">Correo</x-table.heading>
                 <x-table.heading >Rol</x-table.heading>
@@ -61,6 +62,14 @@
                 @forelse ($usuarios as $usuario)
 
                     <x-table.row wire:loading.class.delaylongest="opacity-50" wire:key="row-{{ $usuario->id }}">
+
+                        <x-table.cell>
+
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Clave</span>
+
+                            {{ $usuario->clave }}
+
+                        </x-table.cell>
 
                         <x-table.cell>
 
