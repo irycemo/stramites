@@ -31,14 +31,14 @@ class TramiteService{
 
         try {
 
-            $this->procesarLineaCaptura();
-
             $this->tramite->estado = 'nuevo';
             $this->tramite->fecha_entrega = $this->calcularFechaEntrega();
             $this->tramite->monto = $this->calcularMonto();
             $this->tramite->año = now()->format('Y');
             $this->tramite->usuario = auth()->user()->clave;
             $this->tramite->numero_control = (Tramite::where('año', $this->tramite->año)->where('usuario', auth()->user()->clave)->max('numero_control') ?? 0) + 1;
+
+            $this->procesarLineaCaptura();
 
             $this->tramite->save();
 

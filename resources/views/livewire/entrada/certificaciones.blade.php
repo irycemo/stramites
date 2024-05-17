@@ -63,7 +63,7 @@
 
                                             @foreach ($tramitesAdicionados as $item)
 
-                                                <option value="{{ $item->id }}">{{ $item->año }}-{{ $item->numero_control }}</option>
+                                                <option value="{{ $item->id }}">{{ $item->año }}-{{ $item->numero_control }}-{{ $item->usuario }}</option>
 
                                             @endforeach
 

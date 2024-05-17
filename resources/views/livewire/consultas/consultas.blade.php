@@ -516,7 +516,7 @@
 
                             <div class="rounded-lg bg-gray-100 py-1 px-2">
 
-                                <p><strong>Fecha de emisión:</strong> {{ $modelo_editar->fecha_emision->format('d-m-Y') }}</p>
+                                <p><strong>Fecha de emisión:</strong> {{ $modelo_editar->fecha_emision }}</p>
 
                             </div>
 
