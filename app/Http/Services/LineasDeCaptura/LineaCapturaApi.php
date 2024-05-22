@@ -31,7 +31,7 @@ class LineaCapturaApi
 
         $url = env('SAP_GENERAR_LINEA_DE_CAPTURA_URL');
 
-        if($this->tramite->servicio->categoria->nombre === 'Comercio Inscripciones'){
+        if(in_array($this->tramite->servicio->categoria->nombre, ['Comercio Inscripciones', 'Inscripciones - Propiedad'])){
 
             $observaciones = "Numero de control: " . $this->tramite->año . '-' . $this->tramite->numero_control . '-' . $this->tramite->usuario .  " Tipo de servicio: " . $this->tramite->tipo_servicio  . ' Fecha de entrega: ' . $this->tramite->fecha_entrega . ' pagando el ' . now()->format('d-m-Y');
 

@@ -75,8 +75,8 @@
             <p><strong>Solicitante:</strong> {{ $tramite->nombre_solicitante }}</p>
             <p><strong>Tipo de servicio:</strong> {{ $tramite->tipo_servicio }}</p>
             @if($tramite->tomo) <p><strong>Tomo:</strong> {{ $tramite->tomo }}, <strong>Registro:</strong> {{ $tramite->registro}}</p>@endif
-            <p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}</p>
-            <p><strong>Sección:</strong> {{ $tramite->seccion }}</p>
+            @if($tramite->distrito)<p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}</p>@endif
+            @if($tramite->seccion)<p><strong>Sección:</strong> {{ $tramite->seccion }}</p>@endif
             @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
             @if($tramite->cantidad) <p><strong>Cantidad:</strong> {{ $tramite->cantidad}} </p>@endif
             <p><strong>Orden de pago:</strong> {{ $tramite->orden_de_pago }}</p>

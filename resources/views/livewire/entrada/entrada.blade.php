@@ -30,7 +30,7 @@
 
                             @foreach ($categorias as $item)
 
-                                <option value="{{ $item }}">{{ $item->nombre }}</option>
+                                <option value="{{ $item }}">{{ $loop->iteration }} - {{ $item->nombre }}</option>
 
                             @endforeach
 
@@ -60,7 +60,7 @@
 
                                     @foreach ($servicios as $item)
 
-                                        <option value="{{ $item }}">{{ $item->nombre }}</option>
+                                        <option value="{{ $item }}">{{ $loop->iteration }} - {{ $item->nombre }}</option>
 
                                     @endforeach
 

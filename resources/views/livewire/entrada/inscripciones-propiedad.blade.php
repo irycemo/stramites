@@ -242,25 +242,25 @@
 
                             <x-input-group for="modelo_editar.tomo" label="Tomo" :error="$errors->first('modelo_editar.tomo')" class="">
 
-                                <x-input-text type="number" id="modelo_editar.tomo" wire:model.lazy="modelo_editar.tomo" />
+                                <x-input-text type="number" id="modelo_editar.tomo" wire:model.lazy="modelo_editar.tomo" :readonly="$modelo_editar->folio_real != null"/>
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.registro" label="Registro" :error="$errors->first('modelo_editar.registro')" class="">
 
-                                <x-input-text type="number" id="modelo_editar.registro" wire:model.lazy="modelo_editar.registro" />
+                                <x-input-text type="number" id="modelo_editar.registro" wire:model.lazy="modelo_editar.registro" :readonly="$modelo_editar->folio_real != null"/>
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.numero_propiedad" label="Número de propiedad" :error="$errors->first('modelo_editar.numero_propiedad')" class="">
 
-                                <x-input-text type="number" id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" />
+                                <x-input-text type="number" id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" :readonly="$modelo_editar->folio_real != null"/>
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.distrito" label="Distrito" :error="$errors->first('modelo_editar.distrito')" class="">
 
-                                <x-input-select id="modelo_editar.distrito" wire:model.lazy="modelo_editar.distrito" class="w-full">
+                                <x-input-select id="modelo_editar.distrito" wire:model.lazy="modelo_editar.distrito" class="w-full" :disabled="$modelo_editar->folio_real != null ">
 
                                     <option value="" selected>Seleccione una opción</option>
 
@@ -276,7 +276,7 @@
 
                             <x-input-group for="modelo_editar.seccion" label="Seccion" :error="$errors->first('modelo_editar.seccion')" class="">
 
-                                <x-input-select id="modelo_editar.seccion" wire:model.lazy="modelo_editar.seccion" class="w-full">
+                                <x-input-select id="modelo_editar.seccion" wire:model.lazy="modelo_editar.seccion" class="w-full" :disabled="$modelo_editar->folio_real != null ">
 
                                     <option value="" selected>Seleccione una opción</option>
 
@@ -307,6 +307,7 @@
                                     <option value="">Seleccione una opción</option>
                                     <option value="escritura">Escritura</option>
                                     <option value="oficio">Oficio</option>
+                                    <option value="oficio_con_resolucion">Oficio con resolución</option>
                                     <option value="contrato">Contrato</option>
 
                                 </x-input-select>
@@ -322,6 +323,7 @@
                                     <option value="foraneo">Notario(a) foraneo</option>
                                     <option value="juez">Juez(a)</option>
                                     <option value="funcionario">Funcionario</option>
+                                    <option value="particular">Particular</option>
 
                                 </x-input-select>
 
@@ -356,7 +358,7 @@
 
                             <x-input-group for="modelo_editar.numero_documento" label="Número de documento" :error="$errors->first('modelo_editar.numero_documento')" class="w-full">
 
-                                <x-input-text type="number" id="modelo_editar.numero_documento" wire:model="modelo_editar.numero_documento" />
+                                <x-input-text  id="modelo_editar.numero_documento" wire:model="modelo_editar.numero_documento" />
 
                             </x-input-group>
 
@@ -914,6 +916,14 @@
                     @endif
 
                     <div class="mt-4 text-right">
+
+                        <div class="flex space-x-4 items-center">
+
+                            <x-checkbox wire:model="mantener"></x-checkbox>
+
+                            <Label>Mantener información</Label>
+
+                        </div>
 
                         @if ($editar)
 

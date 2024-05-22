@@ -11,9 +11,11 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
+use Exception;
 
 class InscripcionesPropiedad extends Component
 {
@@ -39,6 +41,8 @@ class InscripcionesPropiedad extends Component
 
     public $valor_propiedad = ['D115','D116', 'D113', 'D114'];
     public $numero_inmuebles = ['D123', 'D120', 'D121', 'D122','D119', 'D124', 'D125', 'D126'];
+
+    public $mantener = false;
 
     public $flags = [
         'adiciona' => true,
@@ -66,8 +70,8 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.tomo_bis' => 'nullable',
             'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => 'required',
-            'modelo_editar.seccion' => 'required',
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.tipo_servicio' => 'required',
@@ -78,7 +82,7 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => 'required',
             'modelo_editar.numero_documento' => 'required',
-            'modelo_editar.numero_propiedad' => 'required',
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
@@ -496,6 +500,22 @@ class InscripcionesPropiedad extends Component
 
     }
 
+    public function updatedModeloEditarFolioReal(){
+
+        if($this->modelo_editar->folio_real == ''){
+
+            $this->modelo_editar->folio_real = null;
+
+        }
+
+        $this->modelo_editar->tomo = null;
+        $this->modelo_editar->registro = null;
+        $this->modelo_editar->numero_propiedad = null;
+        $this->modelo_editar->distrito = null;
+        $this->modelo_editar->seccion = null;
+
+    }
+
     public function foraneo(){
 
         $foraneo = Servicio::where('clave_ingreso', 'D158')->first()[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
@@ -539,19 +559,29 @@ class InscripcionesPropiedad extends Component
 
         try {
 
+            $this->consultarFolioReal();
+
             DB::transaction(function (){
 
                 $tramite = (new TramiteService($this->modelo_editar))->crear();
 
                 $this->dispatch('imprimir_recibo', $tramite->id);
 
-                $this->dispatch('reset');
+                if(!$this->mantener){
 
-                $this->resetearTodo($borrado = true);
+                    $this->dispatch('reset');
+
+                    $this->resetearTodo($borrado = true);
+
+                }
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se creó con éxito."]);
 
         });
+
+        }catch (Exception $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
         }catch (TramiteServiceException $th) {
 
@@ -650,6 +680,51 @@ class InscripcionesPropiedad extends Component
     public function reimprimir(){
 
         $this->dispatch('imprimir_recibo', ['tramite' => $this->tramite->id]);
+
+    }
+
+    public function consultarFolioReal(){
+
+        try {
+
+            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
+                                'folio_real' => $this->modelo_editar->folio_real,
+                                'tomo' => $this->modelo_editar->tomo,
+                                'registro' => $this->modelo_editar->registro,
+                                'numero_propiedad' => $this->modelo_editar->numero_propiedad,
+                                'distrito' => $this->modelo_editar->distrito,
+                                'seccion' => $this->modelo_editar->seccion,
+                            ]);
+
+
+
+            $data = json_decode($response, true);
+
+            if($response->status() == 200){
+
+                $this->modelo_editar->folio_real = $data['data']['folio'];
+                $this->modelo_editar->tomo = $data['data']['tomo'];
+                $this->modelo_editar->registro = $data['data']['registro'];
+                $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+                $this->modelo_editar->distrito = $data['data']['distrito'];
+                $this->modelo_editar->seccion = $data['data']['seccion'];
+
+            }if($response->status() == 400){
+
+                throw new Exception("No se encontró el antecedente, verifique.");
+
+            }
+
+        } catch (\Throwable $th) {
+
+            Log::error("Errorr al consultar folio real al crear trámite " . $th);
+
+            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+
+        }
 
     }
 

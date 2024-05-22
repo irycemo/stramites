@@ -13,7 +13,6 @@ use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
 use App\Http\Services\Tramites\TramiteService;
 use App\Exceptions\ErrorAlValidarLineaDeCaptura;
-use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 
 class TramitesApiController extends Controller
 {
