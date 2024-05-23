@@ -17,6 +17,10 @@
 
                 </x-input-select>
 
+                <input type="text" wire:model.live.debounce.500ms="folio" placeholder="folio" class="bg-white rounded-full text-sm w-20">
+
+                <input type="text" wire:model.live.debounce.500ms="usuario" placeholder="Usuario" class="bg-white rounded-full text-sm w-20">
+
                 <input type="text" wire:model.live.debounce.500ms="search" placeholder="Buscar" class="bg-white rounded-full text-sm">
 
                 <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="pagination">

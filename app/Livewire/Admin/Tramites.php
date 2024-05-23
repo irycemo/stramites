@@ -42,6 +42,8 @@ class Tramites extends Component
     public $tramite;
     public $modalVer = false;
     public $año;
+    public $folio;
+    public $usuario;
     public $años;
 
     public Tramite $modelo_editar;
@@ -428,6 +430,14 @@ class Tramites extends Component
         $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio.categoria')
                                 ->when(isset($this->año) && $this->año != "", function($q){
                                     return $q->orWhere('año', $this->año);
+
+                                })
+                                ->when(isset($this->folio) && $this->folio != "", function($q){
+                                    return $q->orWhere('numero_control', $this->folio);
+
+                                })
+                                ->when(isset($this->usuario) && $this->usuario != "", function($q){
+                                    return $q->orWhere('usuario', $this->usuario);
 
                                 })
                                 ->where(function($q){
