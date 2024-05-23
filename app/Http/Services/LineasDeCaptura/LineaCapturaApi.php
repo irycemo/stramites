@@ -60,6 +60,8 @@ class LineaCapturaApi
                 ]
             ]);
 
+            info($response);
+
         } catch (\Throwable $th) {
 
             Log::error($th);
