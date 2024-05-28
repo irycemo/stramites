@@ -412,6 +412,16 @@
 
                         </div>
 
+                        @if ($modelo_editar->documento_de_pago)
+
+                            <div class="rounded-lg bg-gray-100 py-1 px-2">
+
+                                <p><strong>Documento de pago:</strong> {{ $modelo_editar->documento_de_pago }}</p>
+
+                            </div>
+
+                        @endif
+
                         <div class="rounded-lg bg-gray-100 py-1 px-2">
 
                             <p><strong>Registrado por:</strong> {{ $modelo_editar->creadoPor->name }} el {{ $modelo_editar->created_at }}</p>
