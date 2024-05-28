@@ -83,7 +83,7 @@ class SistemaRppService{
 
             if(!$tramite){
 
-                throw new SistemaRppServiceException('Error al actualizar movimiento registral del tramite: ' . $tramite->año . '-' . $tramite->numero_control . '.');
+                throw new SistemaRppServiceException('Error al actualizar movimiento registral del tramite: ' . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . '.');
 
             }
 
@@ -94,7 +94,7 @@ class SistemaRppService{
 
         }else{
 
-            Log::error("Error al insertar trámite en Sistema RPP. por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $tramite->año . '-' . $tramite->numero_control . '. ' . $response);
+            Log::error("Error al insertar trámite en Sistema RPP. por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . '. ' . $response);
 
             throw new SistemaRppServiceException("Error al insertar trámite en Sistema RPP.");
 
@@ -148,7 +148,7 @@ class SistemaRppService{
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al actualizar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            Log::error("Error al actualizar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             throw new SistemaRppServiceException("Error al comunicar con SistemaRPP.");
 
@@ -156,7 +156,7 @@ class SistemaRppService{
 
         if($response->status() != 200){
 
-            Log::error("Error al actualizar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+            Log::error("Error al actualizar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
 
             throw new SistemaRppServiceException("Error al actualizar información en Sistema RPP");
 
@@ -178,7 +178,7 @@ class SistemaRppService{
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al actualizar tipo de servicio en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            Log::error("Error al actualizar tipo de servicio en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             throw new SistemaRppServiceException("Error al comunicar con SistemaRPP.");
 
@@ -186,7 +186,7 @@ class SistemaRppService{
 
         if($response->status() != 200){
 
-            Log::error("Error al actualizar tipo de servicio en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". ". $response);
+            Log::error("Error al actualizar tipo de servicio en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". ". $response);
 
             throw new SistemaRppServiceException("Error al cambiar tipo de servicio en Sistema RPP.");
 
@@ -208,7 +208,7 @@ class SistemaRppService{
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al actualizar páginas en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            Log::error("Error al actualizar páginas en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             throw new SistemaRppServiceException("Error al comunicar con SistemaRPP.");
 
@@ -216,7 +216,7 @@ class SistemaRppService{
 
         if($response->status() != 200){
 
-            Log::error("Error al actualizar páginas en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". ". $response);
+            Log::error("Error al actualizar páginas en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". ". $response);
 
             throw new SistemaRppServiceException("Error al actualizar número de páginas en Sistema RPP.");
 
