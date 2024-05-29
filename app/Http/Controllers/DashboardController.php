@@ -15,6 +15,8 @@ class DashboardController extends Controller
 
         if(auth()->user()->hasRole('Administrador')){
 
+            return view('dashboard');
+
             $tramtiesEstado = Tramite::selectRaw('estado, count(estado) count')
                                         ->whereMonth('created_at', Carbon::now()->month)
                                         ->groupBy('estado')
