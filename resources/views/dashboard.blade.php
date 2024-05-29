@@ -4,7 +4,11 @@
 
     @if(auth()->user()->hasRole('Administrador'))
 
-        <div class=" mb-10">
+        <div class="mx-auto flex justify-center items-center h-full">
+            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="w-96">
+        </div>
+
+        {{-- <div class=" mb-10">
 
             <h2 class="text-2xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-semibold mb-6  bg-white">Estadisticas del mes actual</h2>
 
@@ -28,8 +32,6 @@
 
                     </div>
 
-                    {{-- <a href="{{ route('reportes') . "?estado=nuevo&" . "area=tramites&fecha1=" . now()->startOfMonth()->format('Y-m-d') . "&fecha2=" . now()->endOfMonth()->format('Y-m-d') }}" class="mx-auto rounded-full border border-blue-600 py-1 px-4 text-blue-500 hover:bg-blue-600 hover:text-white transition-all ease-in-out"> Ver trámites</a> --}}
-
                 </div>
 
                 <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-green-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
@@ -49,8 +51,6 @@
                         <h5 class="text-blueGray-400 uppercase font-semibold text-center  tracking-widest md:tracking-normal">Pagados</h5>
 
                     </div>
-
-                    {{-- <a href="{{ route('reportes') . "?estado=pagado&" . "area=tramites&fecha1=" . now()->startOfMonth()->format('Y-m-d') . "&fecha2=" . now()->endOfMonth()->format('Y-m-d')  }}" class="mx-auto rounded-full border border-green-600 py-1 px-4 text-green-500 hover:bg-green-600 hover:text-white transition-all ease-in-out"> Ver trámites</a> --}}
 
                 </div>
 
@@ -72,8 +72,6 @@
 
                     </div>
 
-                    {{-- <a href="{{ route('reportes') . "?estado=concluido&" . "area=tramites&fecha1=" . now()->startOfMonth()->format('Y-m-d') . "&fecha2=" . now()->endOfMonth()->format('Y-m-d') }}" class="mx-auto rounded-full border border-gray-600 py-1 px-4 text-gray-500 hover:bg-gray-600 hover:text-white transition-all ease-in-out"> Ver trámites</a> --}}
-
                 </div>
 
                 <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-red-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
@@ -93,8 +91,6 @@
                         <h5 class="text-blueGray-400 uppercase font-semibold text-center  tracking-widest md:tracking-normal">Rechazados</h5>
 
                     </div>
-
-                    {{-- <a href="{{ route('reportes') . "?estado=rechazado&" . "area=tramites&fecha1=" . now()->startOfMonth()->format('Y-m-d') . "&fecha2=" . now()->endOfMonth()->format('Y-m-d') }}" class="mx-auto rounded-full border border-red-600 py-1 px-4 text-red-500 hover:bg-red-600 hover:text-white transition-all ease-in-out"> Ver trámites</a> --}}
 
                 </div>
 
@@ -116,8 +112,6 @@
 
                     </div>
 
-                    {{-- <a href="{{ route('reportes') . "?estado=expirado&" . "area=tramites&fecha1=" . now()->startOfMonth()->format('Y-m-d') . "&fecha2=" . now()->endOfMonth()->format('Y-m-d') }}" class="mx-auto rounded-full border border-red-600 py-1 px-4 text-red-500 hover:bg-red-600 hover:text-white transition-all ease-in-out"> Ver trámites</a> --}}
-
                 </div>
 
             </div>
@@ -134,7 +128,7 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
     @else
 
