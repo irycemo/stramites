@@ -140,7 +140,7 @@
 
 @endsection
 
-@if(auth()->user()->hasRole('Administrador'))
+{{-- @if(auth()->user()->hasRole('Administrador'))
 
     @push('scripts')
 
@@ -250,4 +250,4 @@
 
     @endpush
 
-@endif
+@endif --}}
