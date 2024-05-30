@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Entrada;
 
+use Exception;
 use App\Models\Notaria;
 use App\Models\Tramite;
 use Livewire\Component;
@@ -11,7 +12,9 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use App\Exceptions\TramiteServiceException;
+use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -40,6 +43,7 @@ class Certificaciones extends Component
     public $mantener = false;
 
     public $flags = [
+        'antecedente' => false,
         'adiciona' => false,
         'solicitante' => true,
         'nombre_solicitante' => false,
@@ -68,14 +72,16 @@ class Certificaciones extends Component
             'modelo_editar.tomo_bis' => 'nullable',
             'modelo_editar.registro' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'),
             'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => 'required',
-            'modelo_editar.seccion' => 'required',
+            'modelo_editar.distrito' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93'])),
+            'modelo_editar.seccion' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93'])),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
+            'modelo_editar.folio_real' => 'nullable',
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
                                                     $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])
@@ -131,8 +137,7 @@ class Certificaciones extends Component
             'editar',
         ]);
 
-        if($borrado)
-            $this->crearModeloVacio();
+        if($borrado) $this->crearModeloVacio();
 
         if($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'){
 
@@ -140,6 +145,13 @@ class Certificaciones extends Component
             $this->flags['tomo'] = true;
             $this->flags['registro'] = true;
             $this->flags['adiciona'] = true;
+            $this->flags['observaciones'] = true;
+
+        }elseif($this->servicio['clave_ingreso'] == 'DL07'){
+
+            $this->flags['distrito'] = false;
+            $this->flags['seccion'] = false;
+            $this->flags['antecedente'] = true;
             $this->flags['observaciones'] = true;
 
         }
@@ -412,7 +424,7 @@ class Certificaciones extends Component
 
             $this->modelo_editar->monto = $this->servicio[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
 
-            $this->flags['cantidad'] = true;
+            /* $this->flags['cantidad'] = true; */
 
         }
 
@@ -548,6 +560,22 @@ class Certificaciones extends Component
 
     }
 
+    public function updatedModeloEditarFolioReal(){
+
+        if($this->modelo_editar->folio_real == ''){
+
+            $this->modelo_editar->folio_real = null;
+
+        }
+
+        $this->modelo_editar->tomo = null;
+        $this->modelo_editar->registro = null;
+        $this->modelo_editar->numero_propiedad = null;
+        $this->modelo_editar->distrito = null;
+        $this->modelo_editar->seccion = null;
+
+    }
+
     public function crearTramiteConsulta():Tramite
     {
 
@@ -604,6 +632,12 @@ class Certificaciones extends Component
                     }
 
                 /* Consultas */
+                }elseif($this->servicio['clave_ingreso'] == 'DL07'){
+
+                    $this->consultarFolioReal();
+
+                    $tramite = (new TramiteService($this->modelo_editar))->crear();
+
                 }else{
 
                     $tramite = (new TramiteService($this->modelo_editar))->crear();
@@ -622,7 +656,7 @@ class Certificaciones extends Component
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se creó con éxito."]);
 
-        });
+            });
 
         } catch (TramiteServiceException $th) {
 
@@ -717,6 +751,51 @@ class Certificaciones extends Component
     public function reimprimir(){
 
         $this->dispatch('imprimir_recibo', ['tramite' => $this->tramite->id]);
+
+    }
+
+    public function consultarFolioReal(){
+
+        try {
+
+            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
+                                'folio_real' => $this->modelo_editar->folio_real,
+                                'tomo' => $this->modelo_editar->tomo,
+                                'registro' => $this->modelo_editar->registro,
+                                'numero_propiedad' => $this->modelo_editar->numero_propiedad,
+                                'distrito' => $this->modelo_editar->distrito,
+                                'seccion' => $this->modelo_editar->seccion,
+                            ]);
+
+
+
+            $data = json_decode($response, true);
+
+            if($response->status() == 200){
+
+                $this->modelo_editar->folio_real = $data['data']['folio'];
+                $this->modelo_editar->tomo = $data['data']['tomo'];
+                $this->modelo_editar->registro = $data['data']['registro'];
+                $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+                $this->modelo_editar->distrito = $data['data']['distrito'];
+                $this->modelo_editar->seccion = $data['data']['seccion'];
+
+            }if($response->status() == 400){
+
+                throw new Exception("No se encontró el antecedente, verifique.");
+
+            }
+
+        } catch (\Throwable $th) {
+
+            Log::error("Errorr al consultar folio real al crear trámite " . $th);
+
+            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+
+        }
 
     }
 
