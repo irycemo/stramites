@@ -22,6 +22,8 @@ class DashboardController extends Controller
 
             $tramites = cache()->get('graficaRecaudacion');
 
+            if(!$tramites) $$tramites = [];
+
             $data = [];
 
             $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
