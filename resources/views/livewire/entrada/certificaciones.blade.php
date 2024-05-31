@@ -9,9 +9,10 @@
 
                 <div>
 
+                    <div>
                     @if ($flags['adiciona'])
 
-                        <div class="flex space-x-3 bg-white p-4 rounded-lg mb-3 shadow-md relative" wire:loading.class.delay.longest="opacity-50">
+                        <div class="flex justify-around space-x-3 bg-white p-4 rounded-lg mb-3 shadow-md relative" wire:loading.class.delay.longest="opacity-50">
 
                             <div class="flex space-x-4 items-center">
 
@@ -23,59 +24,34 @@
 
                             @if($adicionaTramite)
 
-                                <div class="flex-auto mr-1">
+                                <div class="inline-flex">
 
-                                    <div class="flex space-x-4 items-center">
+                                    <select class="bg-white rounded-l text-sm border border-r-transparent  focus:ring-0" wire:model="año">
+                                        @foreach ($años as $año)
 
-                                        <Label>Seleccione el trámite</Label>
+                                            <option value="{{ $año }}">{{ $año }}</option>
 
-                                    </div>
+                                        @endforeach
+                                    </select>
 
-                                    <div
-                                        x-data = "{ model: @entangle('modelo_editar.adiciona') }"
-                                        x-init ="
-                                            select2 = $($refs.select)
-                                                .select2({
-                                                    placeholder: 'Número de control',
-                                                    width: '100%',
-                                                })
+                                    <input type="number" class="bg-white text-sm w-20 focus:ring-0 @error('folio') border-red-500 @enderror" wire:model="folio">
 
-                                            select2.on('change', function(){
-                                                $wire.set('modelo_editar.adiciona', $(this).val())
-                                            })
+                                    <input type="number" class="bg-white text-sm w-20 border-l-0 focus:ring-0 @error('usuario') border-red-500 @enderror" wire:model="usuario">
 
-                                            select2.on('keyup', function(e) {
-                                                if (e.keyCode === 13){
-                                                    $wire.set('modelo_editar.adiciona', $('.select2').val())
-                                                }
-                                            });
+                                    <button
+                                        wire:click="buscarTramiteAdiciona"
+                                        wire:loading.attr="disabled"
+                                        wire:target="buscarTramiteAdiciona"
+                                        type="button"
+                                        class="bg-blue-400 hover:shadow-lg text-white font-bold px-4 rounded-r text-sm hover:bg-blue-700 focus:outline-blue-400 focus:outline-offset-2">
 
-                                            $watch('model', (value) => {
-                                                select2.val(value).trigger('change');
-                                            });
-                                        "
-                                        wire:ignore>
+                                        <img wire:loading wire:target="buscarTramiteAdiciona" class="mx-auto h-5 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
 
-                                        <select
-                                            class="bg-white rounded text-sm w-full z-50"
-                                            wire:model.live="modelo_editar.adiciona"
-                                            x-ref="select">
+                                        <svg wire:loading.remove wire:target="buscarTramiteAdiciona" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                        </svg>
 
-                                            @foreach ($tramitesAdicionados as $item)
-
-                                                <option value="{{ $item->id }}">{{ $item->año }}-{{ $item->numero_control }}-{{ $item->usuario }}</option>
-
-                                            @endforeach
-
-                                        </select>
-
-                                    </div>
-
-                                    <div>
-
-                                        @error('modelo_editar.adiciona') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
-
-                                    </div>
+                                    </button>
 
                                 </div>
 
@@ -90,7 +66,14 @@
 
                         </div>
 
+                        <div class="w-full">
+
+                            @error('modelo_editar.adiciona') <span class="error text-sm text-red-500 bg-white p-1 rounded-lg mb-3 shadow-md mt-1 w-full inline-flex">{{ $message }}</span> @enderror
+
+                        </div>
+
                     @endif
+                </div>
 
                     {{-- Solicitante - Nombre del solicitante --}}
                     @if ($flags['solicitante'])

@@ -4,11 +4,7 @@
 
     @if(auth()->user()->hasRole('Administrador'))
 
-        <div class="mx-auto flex justify-center items-center h-full">
-            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="w-96">
-        </div>
-
-        {{-- <div class=" mb-10">
+        <div class=" mb-10">
 
             <h2 class="text-2xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-semibold mb-6  bg-white">Estadisticas del mes actual</h2>
 
@@ -128,7 +124,7 @@
 
             </div>
 
-        </div> --}}
+        </div>
 
     @else
 
@@ -140,7 +136,7 @@
 
 @endsection
 
-{{-- @if(auth()->user()->hasRole('Administrador'))
+@if(auth()->user()->hasRole('Administrador'))
 
     @push('scripts')
 
@@ -250,4 +246,5 @@
 
     @endpush
 
-@endif --}}
+@endif
+

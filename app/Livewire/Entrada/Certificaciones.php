@@ -28,6 +28,11 @@ class Certificaciones extends Component
     public $servicio;
     public $tramite;
 
+    public $años;
+    public $año;
+    public $folio;
+    public $usuario;
+
     public $adicionaTramite;
     public $tramitesAdicionados;
     public $tramiteAdicionadoSeleccionado;
@@ -81,7 +86,7 @@ class Certificaciones extends Component
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93'])),
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
                                                     $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])
@@ -206,103 +211,7 @@ class Certificaciones extends Component
             $this->flags['observaciones'] = true;
             $this->flags['adiciona'] = true;
 
-            $this->dispatch('select2', ['id', $this->getId()]);
-
-            /* Copias certificadas y simples */
-            if($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'){
-
-                $this->tramitesAdicionados = Tramite::whereIn('estado', ['pagado', 'rechazado'])
-                                                ->whereIn('id_servicio', [1, $this->servicio['id']])
-                                                ->whereDoesntHave('adicionaAlTramite', function($q){
-                                                    $q->where('adiciona', '!=',  1);
-                                                })
-                                                ->get();
-
-            }else
-
-                $this->tramitesAdicionados = Tramite::whereIn('estado', ['pagado', 'rechazado'])
-                                                    ->where('id_servicio', $this->servicio['id'])
-                                                    ->get();
-
         }
-
-    }
-
-    public function updatedModeloEditarAdiciona(){
-
-        $this->tramiteAdicionado = Tramite::find($this->modelo_editar->adiciona);
-
-        if(!$this->tramiteAdicionado){
-
-            $this->dispatch('mostrarMensaje', ['error', "Error al consultar trámite"]);
-
-            $this->modelo_editar->adiciona = null;
-
-            return;
-
-        }
-
-        if(!$this->tramiteAdicionado->movimiento_registral){
-
-            $this->dispatch('mostrarMensaje', ['error', "El trámite " . $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . " no esta dado de alta en Sistema RPP"]);
-
-            $this->modelo_editar->adiciona = null;
-
-            return;
-
-        }
-
-        if($this->tramiteAdicionado->adicionadoPor->count() >= 5){
-
-            $this->dispatch('mostrarMensaje', ['error', "El trámite " .  $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . " tiene 5 tramites adicionados"]);
-
-            $this->modelo_editar->adiciona = null;
-
-            return;
-
-        }
-
-        if($this->tramiteAdicionado->servicio->clave_ingreso == 'DC93'){
-
-            $this->flags['cantidad'] = true;
-            $this->flags['tomo'] = true;
-            $this->flags['registro'] = true;
-            $this->flags['tipo_servicio'] = true;
-            $this->flags['tipo_tramite'] = false;
-            $this->flags['distrito'] = true;
-            $this->flags['seccion'] = true;
-            $this->flags['solicitante'] = true;
-            $this->flags['nombre_solicitante'] = true;
-
-        }else{
-
-            $this->flags['nombre_solicitante'] = false;
-            $this->flags['solicitante'] = false;
-            $this->flags['tipo_tramite'] = true;
-            $this->flags['cantidad'] = false;
-            $this->flags['tomo'] = false;
-            $this->flags['registro'] = false;
-            $this->flags['tipo_servicio'] = false;
-            $this->flags['distrito'] = false;
-            $this->flags['seccion'] = false;
-
-            $this->modelo_editar->solicitante = $this->tramiteAdicionado->solicitante;
-            $this->modelo_editar->nombre_solicitante = $this->tramiteAdicionado->nombre_solicitante;
-            $this->modelo_editar->tomo = $this->tramiteAdicionado->tomo;
-            $this->modelo_editar->registro = $this->tramiteAdicionado->registro;
-            $this->modelo_editar->distrito = $this->tramiteAdicionado->distrito;
-            $this->modelo_editar->seccion = $this->tramiteAdicionado->seccion;
-            $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
-
-            if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
-
-                $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
-
-            }
-
-        }
-
-        $this->updatedModeloEditarTipoServicio();
 
     }
 
@@ -428,8 +337,12 @@ class Certificaciones extends Component
 
         }
 
-        if($this->modelo_editar->tipo_tramite == 'normal' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']))
+        if($this->modelo_editar->tipo_tramite == 'normal' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
+
             $this->flags['tipo_servicio'] = false;
+            $this->flags['cantidad'] = true;
+
+        }
 
     }
 
@@ -799,6 +712,92 @@ class Certificaciones extends Component
 
     }
 
+    public function buscarTramiteAdiciona(){
+
+        $this->tramiteAdicionado = Tramite::where('año', $this->año)
+                                        ->where('numero_control', $this->folio)
+                                        ->where('usuario', $this->usuario)
+                                        ->whereIn('estado', ['pagado', 'rechazado'])
+                                        ->whereHas('servicio', function($q){
+                                            $q->whereIn('clave_ingreso', ['DC93','DL13', 'DL14']);
+                                        })
+                                        ->first();
+
+        if(!$this->tramiteAdicionado){
+
+            $this->dispatch('mostrarMensaje', ['error', "No se encontro el trámite."]);
+
+            $this->modelo_editar->adiciona = null;
+
+            $this->updatedAdicionaTramite();
+
+            return;
+
+        }
+
+        if(!$this->tramiteAdicionado->movimiento_registral){
+
+            $this->dispatch('mostrarMensaje', ['error', "El trámite " . $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . '-' . $this->tramiteAdicionado->usuario . " no esta dado de alta en Sistema RPP"]);
+
+            $this->modelo_editar->adiciona = null;
+
+            return;
+
+        }
+
+        if($this->tramiteAdicionado->servicio->clave_ingreso == 'DC93'){
+
+            if($this->tramiteAdicionado->adicionadoPor->count() >= 5){
+
+                $this->dispatch('mostrarMensaje', ['error', "El trámite " .  $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . '-' . $this->tramiteAdicionado->usuario . " tiene 5 tramites adicionados"]);
+
+                $this->modelo_editar->adiciona = null;
+
+                return;
+
+            }
+
+            $this->flags['cantidad'] = true;
+            $this->flags['tomo'] = true;
+            $this->flags['registro'] = true;
+            $this->flags['tipo_servicio'] = true;
+            $this->flags['tipo_tramite'] = false;
+            $this->flags['distrito'] = true;
+            $this->flags['seccion'] = true;
+            $this->flags['solicitante'] = true;
+            $this->flags['nombre_solicitante'] = true;
+
+        }else{
+
+            $this->flags['nombre_solicitante'] = false;
+            $this->flags['solicitante'] = false;
+            $this->flags['tipo_tramite'] = true;
+            $this->flags['cantidad'] = true;
+            $this->flags['tomo'] = false;
+            $this->flags['registro'] = false;
+            $this->flags['tipo_servicio'] = false;
+            $this->flags['distrito'] = false;
+            $this->flags['seccion'] = false;
+
+            $this->modelo_editar->solicitante = $this->tramiteAdicionado->solicitante;
+            $this->modelo_editar->nombre_solicitante = $this->tramiteAdicionado->nombre_solicitante;
+            $this->modelo_editar->tomo = $this->tramiteAdicionado->tomo;
+            $this->modelo_editar->registro = $this->tramiteAdicionado->registro;
+            $this->modelo_editar->distrito = $this->tramiteAdicionado->distrito;
+            $this->modelo_editar->seccion = $this->tramiteAdicionado->seccion;
+            $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
+
+            if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
+
+                $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
+
+            }
+
+        }
+
+        $this->updatedModeloEditarTipoServicio();
+    }
+
     public function mount(){
 
         $this->solicitantes = Constantes::SOLICITANTES;
@@ -817,11 +816,35 @@ class Certificaciones extends Component
 
         }
 
-        $this->dependencias = Dependencia::orderBy('nombre')->get();
-
-        $this->notarias = Notaria::orderBy('numero')->get();
-
         $this->resetearTodo($borrado = true);
+
+        $this->años = Constantes::AÑOS;
+
+        $this->año = now()->format('Y');
+
+        if(!cache()->get('dependencias')){
+
+            $this->dependencias = Dependencia::orderBy('nombre')->get();
+
+            cache()->put('dependencias', $this->dependencias);
+
+        }else{
+
+            $this->dependencias = cache()->get('dependencias');
+
+        }
+
+        if(!cache()->get('notarias')){
+
+            $this->notarias = Notaria::orderBy('numero')->get();
+
+            cache()->put('notarias', $this->notarias);
+
+        }else{
+
+            $this->notarias = cache()->get('notarias');
+
+        }
 
     }
 

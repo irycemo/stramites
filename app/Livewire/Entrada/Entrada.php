@@ -56,8 +56,6 @@ class Entrada extends Component
 
         }
 
-        $this->categoria = json_decode($this->categoria_seleccionada, true);
-
         $this->servicios = Servicio::with('categoria')->where('categoria_servicio_id', $this->categoria['id'])->where('estado', 'activo')->orderBy('nombre')->get();
 
         $this->reset(['servicio_seleccionado', 'servicio', 'servicio_seleccionado', 'flags']);
@@ -162,7 +160,17 @@ class Entrada extends Component
 
         $this->años = Constantes::AÑOS;
 
-        $this->categorias = CategoriaServicio::orderBy('nombre')->get();
+        if(!cache()->get('categorias')){
+
+            $this->categorias = CategoriaServicio::orderBy('nombre')->get();
+
+            cache()->put('categorias', $this->categorias);
+
+        }else{
+
+            $this->categorias = cache()->get('categorias');
+
+        }
 
         $this->año = now()->format('Y');
 

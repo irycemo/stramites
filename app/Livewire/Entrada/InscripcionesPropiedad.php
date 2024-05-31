@@ -746,9 +746,29 @@ class InscripcionesPropiedad extends Component
 
         }
 
-        $this->dependencias = Dependencia::orderBy('nombre')->get();
+        if(!cache()->get('dependencias')){
 
-        $this->notarias = Notaria::orderBy('numero')->get();
+            $this->dependencias = Dependencia::orderBy('nombre')->get();
+
+            cache()->put('dependencias', $this->dependencias);
+
+        }else{
+
+            $this->dependencias = cache()->get('dependencias');
+
+        }
+
+        if(!cache()->get('notarias')){
+
+            $this->notarias = Notaria::orderBy('numero')->get();
+
+            cache()->put('notarias', $this->notarias);
+
+        }else{
+
+            $this->notarias = cache()->get('notarias');
+
+        }
 
         $this->resetearTodo($borrado = true);
 
