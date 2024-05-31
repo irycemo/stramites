@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('concluir:consultas')->daily();
         $schedule->command('expirar:copias')->daily();
         $schedule->command('caducar:tramites')->daily();
-        $schedule->command('cache:recaudacion')->everyMinute();
+        $schedule->command('cache:recaudacion')->daily();
 
     }
 

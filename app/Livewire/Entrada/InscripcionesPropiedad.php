@@ -45,7 +45,7 @@ class InscripcionesPropiedad extends Component
     public $mantener = false;
 
     public $flags = [
-        'adiciona' => true,
+        'adiciona' => false,
         'solicitante' => true,
         'nombre_solicitante' => false,
         'antecedente' => true,
