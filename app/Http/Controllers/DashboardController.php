@@ -22,7 +22,7 @@ class DashboardController extends Controller
 
             $tramites = cache()->get('graficaRecaudacion');
 
-            if(!$tramites) $$tramites = [];
+            if(!$tramites) $tramites = [];
 
             $data = [];
 
