@@ -82,6 +82,7 @@ class Gravamenes extends Component
             'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.numero_inmuebles' => 'nullable',
+            'modelo_editar.asiento_registral' => 'nullable',
             'modelo_editar.foraneo' => 'required',
             'modelo_editar.tomo_gravamen' => Rule::requiredIf($this->servicio['clave_ingreso'] === 'DL66'),
             'modelo_editar.registro_gravamen' => Rule::requiredIf($this->servicio['clave_ingreso'] === 'DL66'),
@@ -145,6 +146,8 @@ class Gravamenes extends Component
             $this->crearModeloVacio();
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
+
+        $this->modelo_editar->monto = $this->servicio['ordinario'];
 
         if($this->servicio['clave_ingreso'] === 'DL66'){
 
@@ -217,6 +220,7 @@ class Gravamenes extends Component
             $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
 
         }
+
 
     }
 
