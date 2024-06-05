@@ -46,6 +46,8 @@ class Dependencias extends Component
             $this->modelo_editar->creado_por = auth()->user()->id;
             $this->modelo_editar->save();
 
+            cache()->forget('dependencias');
+
             $this->resetearTodo();
 
             $this->dispatch('mostrarMensaje', ['success', "La dependencia se creó con éxito."]);
@@ -68,6 +70,8 @@ class Dependencias extends Component
             $this->modelo_editar->save();
 
             $this->resetearTodo();
+
+            cache()->forget('dependencias');
 
             $this->dispatch('mostrarMensaje', ['success', "La dependencia se actualizó con éxito."]);
 

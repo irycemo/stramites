@@ -49,6 +49,8 @@ class Notarias extends Component
             $this->modelo_editar->creado_por = auth()->user()->id;
             $this->modelo_editar->save();
 
+            cache()->forget('notarias');
+
             $this->resetearTodo();
 
             $this->dispatch('mostrarMensaje', ['success', "La notaria se creó con éxito."]);
@@ -71,6 +73,8 @@ class Notarias extends Component
             $this->modelo_editar->save();
 
             $this->resetearTodo();
+
+            cache()->forget('notarias');
 
             $this->dispatch('mostrarMensaje', ['success', "La notaria se actualizó con éxito."]);
 

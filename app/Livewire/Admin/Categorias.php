@@ -54,6 +54,8 @@ class Categorias extends Component
 
             $this->resetearTodo();
 
+            cache()->forget('categorias');
+
             $this->dispatch('mostrarMensaje', ['success', "La categoría se creó con éxito."]);
 
         } catch (\Throwable $th) {
@@ -74,6 +76,8 @@ class Categorias extends Component
             $this->modelo_editar->save();
 
             $this->resetearTodo();
+
+            cache()->forget('categorias');
 
             $this->dispatch('mostrarMensaje', ['success', "La categoría se actualizó con éxito."]);
 
