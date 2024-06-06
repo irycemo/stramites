@@ -16,7 +16,7 @@ use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 
-class Gravamenes extends Component
+class Varios extends Component
 {
 
     public Tramite $modelo_editar;
@@ -26,11 +26,6 @@ class Gravamenes extends Component
     public $servicio;
     public $tramite;
 
-    public $adicionaTramite;
-    public $tramitesAdicionados;
-    public $tramiteAdicionadoSeleccionado;
-    public $tramiteAdicionado;
-
     public $solicitantes;
     public $secciones;
     public $distritos;
@@ -38,21 +33,26 @@ class Gravamenes extends Component
     public $notarias;
     public $notaria;
 
+    public $mantener = false;
+
     public $flags = [
-        'adiciona' => true,
+        'antecedente' => false,
+        'adiciona' => false,
         'solicitante' => true,
         'nombre_solicitante' => false,
-        'antecedente' => true,
-        'documento' => true,
+        'seccion' => true,
+        'numero_oficio' => false,
+        'tomo' => false,
+        'registro' => false,
+        'distrito' => true,
+        'cantidad' => false,
+        'numero_inmuebles' => false,
         'dependencias' => false,
         'notarias' => false,
-        'tipo_servicio' => true,
-        'observaciones' => true,
+        'tipo_servicio' => false,
+        'observaciones' => false,
         'tipo_tramite' => false,
-        'valor_propiedad' => false,
-        'numero_inmuebles' => false,
-        'numero_oficio' => false,
-        'antecedente_gravamen' => false
+        'documento' => false
     ];
 
     protected function rules(){
@@ -61,6 +61,7 @@ class Gravamenes extends Component
             'modelo_editar.id_servicio' => 'required',
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
+            'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
             'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.tomo_bis' => 'nullable',
             'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null),
@@ -68,31 +69,19 @@ class Gravamenes extends Component
             'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.monto' => 'nullable',
-            'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
-            'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
+            'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
-            'modelo_editar.movimiento_registral' => 'nullable',
-            'modelo_editar.procedencia' => 'nullable',
-            'modelo_editar.fecha_emision' => 'required',
-            'modelo_editar.numero_documento' => 'required',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.nombre_autoridad' => 'required',
-            'modelo_editar.autoridad_cargo' => 'required',
-            'modelo_editar.tipo_documento' => 'required',
-            'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_inmuebles' => 'nullable',
-            'modelo_editar.asiento_registral' => 'nullable',
-            'modelo_editar.foraneo' => 'required',
-            'modelo_editar.tomo_gravamen' => Rule::requiredIf($this->servicio['clave_ingreso'] === 'DL66'),
-            'modelo_editar.registro_gravamen' => Rule::requiredIf($this->servicio['clave_ingreso'] === 'DL66'),
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
          ];
     }
 
     protected $messages = [
-        'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
+        'modelo_editar.nombre_solicitante' => 'nombre del solicitante',
+        'modelo_editar.numero_oficio' => 'número de oficio',
+        'modelo_editar.nombre_solicitante' => 'nombre del solicitante',
     ];
 
     protected $validationAttributes  = [
@@ -100,22 +89,13 @@ class Gravamenes extends Component
         'modelo_editar.registro_bis' => 'registro bis',
         'modelo_editar.tipo_servicio' => 'tipo de servicio',
         'modelo_editar.numero_control' => 'número de control',
-        'modelo_editar.numero_propiedad' => 'número de propiedad',
-        'modelo_editar.adiciona' => 'trámite',
         'modelo_editar.seccion' => 'sección',
         'modelo_editar.numero_oficio' => 'número de oficio',
-        'modelo_editar.numero_documento' => 'número de documento',
-        'modelo_editar.folio_real' => 'folio_real',
-        'modelo_editar.tipo_documento' => 'tipo de documento',
-        'modelo_editar.nombre_autoridad' => 'nombre de la autoridad',
-        'modelo_editar.autoridad_cargo' => 'cargo de la autoridad',
-        'modelo_editar.fecha_emision' => 'fecha de emisión',
-        'modelo_editar.valor_propiedad' => 'valor de la propiedad',
     ];
 
     protected $listeners = [
         'cambioServicio' => 'cambiarFlags',
-        'cargarTramite' => 'cargarTramite'
+        'cargarTramite' => 'cargarTramite',
     ];
 
     public function crearModeloVacio(){
@@ -123,8 +103,7 @@ class Gravamenes extends Component
         $this->modelo_editar = Tramite::make([
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
-            'tipo_servicio' => 'ordinario',
-            'foraneo' => false
+            'tipo_servicio' => 'ordinario'
         ]);
 
     }
@@ -136,26 +115,22 @@ class Gravamenes extends Component
         $this->resetValidation();
 
         $this->reset([
-            'adicionaTramite',
-            'tramitesAdicionados',
-            'tramiteAdicionadoSeleccionado',
-            'tramiteAdicionado',
             'flags',
             'editar',
         ]);
 
-        if($borrado)
-            $this->crearModeloVacio();
+        if($borrado) $this->crearModeloVacio();
 
-        $this->modelo_editar->id_servicio = $this->servicio['id'];
+        if($this->servicio['clave_ingreso'] == 'DL09'){
 
-        $this->modelo_editar->monto = $this->servicio['ordinario'];
-
-        if($this->servicio['clave_ingreso'] === 'DL66'){
-
-            $this->flags['antecedente_gravamen'] = true;
+            $this->flags['distrito'] = false;
+            $this->flags['seccion'] = false;
+            $this->flags['antecedente'] = true;
+            $this->flags['observaciones'] = true;
 
         }
+
+        $this->modelo_editar->id_servicio = $this->servicio['id'];
 
     }
 
@@ -185,6 +160,9 @@ class Gravamenes extends Component
         $this->flags['nombre_solicitante'] = false;
         $this->flags['dependencias'] = false;
         $this->flags['notarias'] = false;
+        $this->flags['numero_oficio'] = false;
+
+        $this->modelo_editar->tipo_tramite = 'normal';
 
         if($this->modelo_editar->solicitante == 'Usuario'){
 
@@ -212,6 +190,21 @@ class Gravamenes extends Component
             $this->modelo_editar->monto = 0;
             $this->modelo_editar->tipo_tramite = 'exento';
 
+        }elseif($this->modelo_editar->solicitante == 'SAT'){
+
+            if(!auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No tienes permisos para esta opción."]);
+
+                $this->modelo_editar->solicitante = null;
+
+                return;
+
+            }
+
+            $this->flags['dependencias'] = true;
+            $this->flags['numero_oficio'] = true;
+
         }elseif($this->modelo_editar->solicitante == "S.T.A.S.P.E."){
 
             $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
@@ -223,20 +216,141 @@ class Gravamenes extends Component
 
         }
 
+        $this->updatedModeloEditarTipoServicio();
 
     }
 
-    public function updatedModeloEditarAutoridadCargo(){
+    public function updatedModeloEditarTipoTramite(){
 
-        if($this->modelo_editar->autoridad_cargo == 'foraneo'){
+        if(!$this->modelo_editar->tipo_servicio){
 
-            $this->modelo_editar->foraneo = true;
+            $this->dispatch('mostrarMensaje', ['error', "Es necesario indique el tipo de servicio."]);
 
-        }else{
-
-            $this->modelo_editar->foraneo = false;
+            return;
 
         }
+
+        if($this->modelo_editar->tipo_tramite == 'exento'){
+
+            $this->modelo_editar->monto = 0;
+
+        }elseif($this->modelo_editar->tipo_tramite == 'complemento'){
+
+            $this->modelo_editar->tipo_tramite = 'normal';
+
+            $this->updatedModeloEditarTipoTramite();
+
+        }elseif($this->modelo_editar->tipo_tramite == 'normal'){
+
+            $this->modelo_editar->monto = $this->servicio[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
+
+        }
+
+        if($this->modelo_editar->tipo_tramite == 'normal'){
+
+            $this->flags['tipo_servicio'] = false;
+            $this->flags['cantidad'] = true;
+
+        }
+
+    }
+
+    public function updatedModeloEditarTipoServicio(){
+
+        if($this->modelo_editar->id_servicio == ""){
+
+            $this->dispatch('mostrarMensaje', ['error', "Debe seleccionar un servicio."]);
+
+            $this->modelo_editar->tipo_servicio = 'ordinario';
+
+            $this->modelo_editar->solicitante = null;
+
+            return;
+        }
+
+        if($this->modelo_editar->tipo_servicio == 'ordinario'){
+
+            if($this->servicio['ordinario'] == 0){
+
+                $this->dispatch('mostrarMensaje', ['error', "No hay servicio ordinario para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = $this->servicio['ordinario'] * $this->modelo_editar->cantidad;
+
+            if($this->modelo_editar->tipo_tramite == 'complemento'){
+
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+            }
+
+        }
+        elseif($this->modelo_editar->tipo_servicio == 'urgente'){
+
+            if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
+
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+            }
+
+            if($this->servicio['urgente'] == 0){
+
+                $this->dispatch('mostrarMensaje', ['error', "No hay servicio urgente para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
+
+            if($this->modelo_editar->tipo_tramite == 'complemento'){
+
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+            }
+
+        }
+        elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
+
+            if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 11:00 hrs."]);
+
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+            }
+
+            if($this->servicio['extra_urgente']  == 0){
+
+                $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = $this->servicio['extra_urgente'] * $this->modelo_editar->cantidad;
+
+        }
+
+        if($this->modelo_editar->solicitante == 'Oficialia de partes'){
+
+            $this->modelo_editar->monto = 0;
+
+        }
+
+        $this->updatedModeloEditarTipoTramite();
+
+    }
+
+    public function updatedModeloEditarCantidad(){
+
+        $this->updatedModeloEditarTipoServicio();
 
     }
 
@@ -262,6 +376,22 @@ class Gravamenes extends Component
 
     }
 
+    public function updatedModeloEditarFolioReal(){
+
+        if($this->modelo_editar->folio_real == ''){
+
+            $this->modelo_editar->folio_real = null;
+
+        }
+
+        $this->modelo_editar->tomo = null;
+        $this->modelo_editar->registro = null;
+        $this->modelo_editar->numero_propiedad = null;
+        $this->modelo_editar->distrito = null;
+        $this->modelo_editar->seccion = null;
+
+    }
+
     public function crear(){
 
         $this->validate();
@@ -276,13 +406,21 @@ class Gravamenes extends Component
 
                 $this->dispatch('imprimir_recibo', $tramite->id);
 
-                $this->dispatch('reset');
+                if(!$this->mantener){
 
-                $this->resetearTodo($borrado = true);
+                    $this->dispatch('reset');
+
+                    $this->resetearTodo($borrado = true);
+
+                }
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se creó con éxito."]);
 
         });
+
+        }catch (Exception $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
         }catch (TramiteServiceException $th) {
 
@@ -293,7 +431,6 @@ class Gravamenes extends Component
             Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-            $this->resetearTodo($borrado = true);
 
         }
 
@@ -309,6 +446,12 @@ class Gravamenes extends Component
         $this->servicio = $this->modelo_editar->servicio;
 
         $this->flags['solicitante'] = false;
+        $this->flags['tipo_tramite'] = false;
+        $this->flags['tipo_servicio'] = false;
+        $this->flags['cantidad'] = false;
+        $this->flags['adiciona'] = false;
+        $this->flags['tomo'] = false;
+        $this->flags['registro'] = false;
         $this->flags['observaciones'] = true;
 
         $this->editar = true;
@@ -326,10 +469,6 @@ class Gravamenes extends Component
             $this->resetearTodo($borrado = true);
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite se actualizó con éxito."]);
-
-        } catch (SistemaRppServiceException $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
         } catch (TramiteServiceException $th) {
 
@@ -365,7 +504,7 @@ class Gravamenes extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al validar el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            Log::error("Error al validar el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . '-' . $this->modelo_editar->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
             $this->resetearTodo();
@@ -442,15 +581,36 @@ class Gravamenes extends Component
 
         }
 
-        $this->dependencias = Dependencia::orderBy('nombre')->get();
-
-        $this->notarias = Notaria::orderBy('numero')->get();
-
         $this->resetearTodo($borrado = true);
+
+        if(!cache()->get('dependencias')){
+
+            $this->dependencias = Dependencia::orderBy('nombre')->get();
+
+            cache()->put('dependencias', $this->dependencias);
+
+        }else{
+
+            $this->dependencias = cache()->get('dependencias');
+
+        }
+
+        if(!cache()->get('notarias')){
+
+            $this->notarias = Notaria::orderBy('numero')->get();
+
+            cache()->put('notarias', $this->notarias);
+
+        }else{
+
+            $this->notarias = cache()->get('notarias');
+
+        }
+
     }
 
     public function render()
     {
-        return view('livewire.entrada.gravamenes');
+        return view('livewire.entrada.varios');
     }
 }

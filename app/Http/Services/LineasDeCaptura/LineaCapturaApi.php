@@ -31,14 +31,19 @@ class LineaCapturaApi
 
         $url = env('SAP_GENERAR_LINEA_DE_CAPTURA_URL');
 
-        if(in_array($this->tramite->servicio->categoria->nombre, ['Comercio Inscripciones', 'Inscripciones - Propiedad'])){
+        $observaciones = "Numero de control: " . $this->tramite->año . '-' . $this->tramite->numero_control . '-' . $this->tramite->usuario .  " Tipo de servicio: " . $this->tramite->tipo_servicio  . ' Fecha de entrega: ' . $this->tramite->fecha_entrega . ' pagando el ' . now()->format('d-m-Y');
 
-            $observaciones = "Numero de control: " . $this->tramite->año . '-' . $this->tramite->numero_control . '-' . $this->tramite->usuario .  " Tipo de servicio: " . $this->tramite->tipo_servicio  . ' Fecha de entrega: ' . $this->tramite->fecha_entrega . ' pagando el ' . now()->format('d-m-Y');
+        if($this->tramite->tomo)
+            $observaciones = $observaciones . " Tomo: " . $this->tramite->tomo;
 
-        }else{
+        if($this->tramite->registro)
+            $observaciones = $observaciones . " Registro: " . $this->tramite->registro;
 
-            $observaciones = "Numero de control: " . $this->tramite->año . '-' . $this->tramite->numero_control . '-' . $this->tramite->usuario . " Tomo: " . $this->tramite->tomo . " Registro: " . $this->tramite->registro . " Distrito: " . Constantes::DISTRITOS[$this->tramite->distrito] . " Sección: " . $this->tramite->seccion . " Tipo de servicio: " . $this->tramite->tipo_servicio  . ' Fecha de entrega: ' . $this->tramite->fecha_entrega . ' pagando el ' . now()->format('d-m-Y');
-        }
+        if($this->tramite->distrito)
+            $observaciones = $observaciones . " Distrito: " . Constantes::DISTRITOS[$this->tramite->distrito];
+
+        if($this->tramite->seccion)
+            $observaciones = $observaciones . " Sección: " . $this->tramite->seccion;
 
         try {
 

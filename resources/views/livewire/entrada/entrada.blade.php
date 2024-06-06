@@ -145,6 +145,12 @@
 
         @endif
 
+        @if($flags['Varios'])
+
+            @livewire('entrada.varios', ['servicio' => $servicio, 'tramite' => $tramite])
+
+        @endif
+
     </div>
 
 </div>

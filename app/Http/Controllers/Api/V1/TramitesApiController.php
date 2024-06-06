@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TramiteRequest;
 use App\Http\Resources\TramiteResource;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
 use App\Http\Services\Tramites\TramiteService;
@@ -169,6 +170,35 @@ class TramitesApiController extends Controller
                 'result' => 'error',
                 'data' => $th->getMessage(),
             ], 500);
+
+        }
+
+    }
+
+    public function consultarArchivo(Request $request){
+
+        $tramite = Tramite::where('año', $request['año'])
+                            ->where('numero_control', $request['tramite'])
+                            ->where('usuario', $request['usuario'])
+                            ->first();
+
+        if(!$tramite){
+
+            abort(404, 'Page not found');
+
+        }
+
+        if(env('LOCAL') === "0" || env('LOCAL') === "2"){
+
+            return response()->json([
+                'url' => Storage::disk('tramites')->url($tramite->file->url)
+            ], 200);
+
+        }else{
+
+            return response()->json([
+                'url' => Storage::disk('s3')->url('tramites/' . $tramite->file->url)
+            ], 200);
 
         }
 

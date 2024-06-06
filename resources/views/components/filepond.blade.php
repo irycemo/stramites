@@ -13,15 +13,15 @@
             FilePond.registerPlugin(FilePondPluginFileValidateSize);
             FilePond.registerPlugin(FilePondPluginFileValidateType);
             FilePond.setOptions({
-                acceptedFileTypes: ['application/pdf'],
+                acceptedFileTypes: {{ isset($attributes['accept']) ? $attributes['accept'] : 'null' }},
                 allowMultiple: {{ isset($attributes['multiple']) ? 'true' : 'false' }},
                 allowFileSizeValidation: true,
                 server: {
                     process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
-                        @this.upload('{{ $attributes['wire:model'] }}', file, load, error, progress);
+                        @this.upload('{{ $attributes['wire:model.live'] }}', file, load, error, progress);
                     },
                     revert: (filename, load) => {
-                        @this.removeUpload('{{ $attributes['wire:model'] }}', filename, load);
+                        @this.removeUpload('{{ $attributes['wire:model.live'] }}', filename, load);
                     }
                 },
                 labelFileTypeNotAllowed: 'Formato de archivo invalido',
@@ -48,8 +48,8 @@
                 labelMaxFileSizeExceeded: 'El archivo es demasiado grande',
                 labelMaxTotalFileSizeExceeded: 'El archivo es demasiado grande',
                 labelMaxFileSize: 'Tamaño máximo {filesize}',
-                maxFileSize: '50MB',
-                maxTotalFileSize: '50MB'
+                maxFileSize: '100MB',
+                maxTotalFileSize: '100MB'
             });
 
             this.addEventListener('removeFiles', e => {

@@ -383,7 +383,7 @@ class Tramites extends Component
 
     }
 
-    function desactivarEntrada()
+    public function desactivarEntrada()
     {
 
         try {
@@ -399,6 +399,18 @@ class Tramites extends Component
             $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
 
         }
+
+    }
+
+    public function simularPago(){
+
+        $this->modelo_editar->update([
+            'estado' => 'pagado',
+            'fecha_prelacion' => now()->toDateString(),
+            'fecha_entrega' => now()->toDateString(),
+            'fecha_pago'  => now()->toDateString(),
+            'orden_de_pago'  => '300082157991',
+        ]);
 
     }
 

@@ -1079,6 +1079,20 @@
 
             <div class="flex gap-3">
 
+                @if(env('LOCAL') === "0" || env('LOCAL') === "2")
+
+                    <x-button-gray
+                        wire:click="simularPago"
+                        wire:loading.attr="disabled"
+                        wire:target="simularPago">
+
+                        <img wire:loading wire:target="simularPago" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                        <span>Simular pago</span>
+                    </x-button-gray>
+
+                @endif
+
                 @if($modelo_editar->solicitante === 'Oficialia de partes' || !$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago)
 
                     <x-button-gray

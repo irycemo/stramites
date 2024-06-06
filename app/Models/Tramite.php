@@ -53,8 +53,8 @@ class Tramite extends Model implements Auditable
         return $this->belongsTo(Servicio::class, 'id_servicio');
     }
 
-    public function files(){
-        return $this->morphMany(File::class, 'fileable');
+    public function file(){
+        return $this->morphOne(File::class, 'fileable');
     }
 
     public function recibidoPor(){
