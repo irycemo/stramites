@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
 
     Route::get('umas', Umas::class)->middleware('permission:Lista de umas')->name('umas');
 
-    Route::get('tramites', Tramites::class)->middleware('permission:Lista de trámites')->name('tramites');
+    Route::get('tramites_lista', Tramites::class)->middleware('permission:Lista de trámites')->name('tramites');
     Route::get('tramites/recibo/{tramite}', [TramitesController::class, 'recibo'])->name('tramites.recibo');
     Route::get('tramites/orden/{tramite}', [TramitesController::class, 'orden'])->name('tramites.orden');
 
