@@ -55,7 +55,7 @@ class LineaCapturaApi
                         "TP_DIVERSO" => "RPP",
                         "RFC" => "XXXX0001XXX",
                         "NOMBRE_RAZON" => $this->tramite->nombre_solicitante,
-                        "OBSERVACIONES" => $observaciones,
+                        "OBSERVACIONES" => "",
                     ],
                     "TB_CONCEPTOS" => [
                         "TP_INGRESO" => $this->tramite->servicio->clave_ingreso,
@@ -76,6 +76,16 @@ class LineaCapturaApi
         }
 
         $data = json_decode($response, true);
+
+        if(isset($data['mensaje']) && $data['mensaje'] == 'Error al consumir servicio'){
+
+            Log::error($data['mensaje'] . ' EN SAP');
+
+            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+
+            return;
+
+        }
 
         if(isset($data['ES_MSJ']['TpMens'])){
 

@@ -33,7 +33,8 @@ class Entrada extends Component
         'Certificaciones' => false,
         'InscripcionesPropiedad' => false,
         'Gravamenes' => false,
-        'Varios' => false
+        'Varios' => false,
+        'Sentencias' => false
     ];
 
     protected $listeners = [
@@ -102,6 +103,7 @@ class Entrada extends Component
                             'Inscripciones - Gravamenes' => 'Gravamenes',
                             'Cancelación - Gravamenes' => 'Gravamenes',
                             'Varios , Arrendamientos, Avisos Preventivos' => 'Varios',
+                            'Sentencias' => 'Gravamenes',
                             default => 'No encontrada',
 
                         };
