@@ -182,6 +182,34 @@ class Recepcion extends Component
 
     }
 
+    public function recibir(){
+
+        try {
+
+            DB::transaction(function () {
+
+                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+
+            });
+
+            $this->dispatch('mostrarMensaje', ['success', "El trámite se envió correctamente a Sistema RPP."]);
+
+            $this->resetearTodo();
+
+        } catch (SistemaRppServiceException $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al guardar documento del trámite id: " . $this->selected_id . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+            $this->resetearTodo();
+
+        }
+
+    }
+
     public function mount(){
 
         $this->años = Constantes::AÑOS;
