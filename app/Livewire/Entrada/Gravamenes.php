@@ -38,6 +38,8 @@ class Gravamenes extends Component
     public $notarias;
     public $notaria;
 
+    public $mantener = false;
+
     public $flags = [
         'adiciona' => true,
         'solicitante' => true,
@@ -276,9 +278,13 @@ class Gravamenes extends Component
 
                 $this->dispatch('imprimir_recibo', $tramite->id);
 
-                $this->dispatch('reset');
+                if(!$this->mantener){
 
-                $this->resetearTodo($borrado = true);
+                    $this->dispatch('reset');
+
+                    $this->resetearTodo($borrado = true);
+
+                }
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se creó con éxito."]);
 

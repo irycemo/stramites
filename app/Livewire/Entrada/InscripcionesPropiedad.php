@@ -58,6 +58,8 @@ class InscripcionesPropiedad extends Component
         'valor_propiedad' => false,
         'numero_inmuebles' => false,
         'numero_oficio' => false,
+        'distrito' => false,
+        'cantidad' => false,
     ];
 
     protected function rules(){
@@ -66,9 +68,9 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.id_servicio' => 'required',
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
-            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D731'),
             'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D731'),
             'modelo_editar.registro_bis' => 'nullable',
             'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
@@ -82,7 +84,7 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => 'required',
             'modelo_editar.numero_documento' => 'required',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D731'),
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
@@ -128,7 +130,8 @@ class InscripcionesPropiedad extends Component
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
             'tipo_servicio' => 'ordinario',
-            'foraneo' => false
+            'foraneo' => false,
+            'seccion' => 'Propiedad'
         ]);
 
     }
@@ -160,6 +163,15 @@ class InscripcionesPropiedad extends Component
         if(in_array($this->servicio['clave_ingreso'], $this->numero_inmuebles)){
 
             $this->flags['numero_inmuebles'] = true;
+
+        }
+
+        if($this->servicio['clave_ingreso'] == 'D731'){
+
+            $this->flags['antecedente'] = false;
+            $this->flags['distrito'] = true;
+            $this->flags['seccion'] = true;
+            $this->flags['cantidad'] = true;
 
         }
 
@@ -559,7 +571,7 @@ class InscripcionesPropiedad extends Component
 
         try {
 
-            $this->consultarFolioReal();
+            if($this->servicio['clave_ingreso'] != 'D731') $this->consultarFolioReal();
 
             DB::transaction(function (){
 

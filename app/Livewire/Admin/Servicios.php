@@ -28,7 +28,7 @@ class Servicios extends Component
             'modelo_editar.tipo' => 'required',
             'modelo_editar.estado' => 'required',
             'modelo_editar.material' => 'required',
-            'modelo_editar.clave_ingreso' => 'required|unique:servicios,clave_ingreso,' . $this->modelo_editar->id,
+            'modelo_editar.clave_ingreso' => 'required',
             'modelo_editar.umas' => 'numeric|nullable|min:0',
             'modelo_editar.ordinario' => 'required|numeric|nullable',
             'modelo_editar.urgente' => 'numeric|nullable|min:0',
