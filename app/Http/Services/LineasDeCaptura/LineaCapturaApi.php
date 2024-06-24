@@ -131,6 +131,18 @@ class LineaCapturaApi
 
         $data = json_decode($response, true);
 
+        info($data);
+
+        if(isset($data['mensaje']) && $data['mensaje'] == 'Acceso denegado ocurrio un error'){
+
+            Log::error($data['mensaje'] . ' EN SAP');
+
+            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+
+            return;
+
+        }
+
         if(isset($data['ES_MSJ'])){
 
             Log::error($data['ES_MSJ']['V1_MENS'] . ' EN SAP');

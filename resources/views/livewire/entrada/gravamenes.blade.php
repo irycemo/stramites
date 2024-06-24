@@ -545,14 +545,6 @@
 
                     @endif
 
-                    <div class="flex space-x-4 items-center">
-
-                        <x-checkbox wire:model="mantener"></x-checkbox>
-
-                        <Label>Mantener información</Label>
-
-                    </div>
-
                     <div class="mt-4 text-right">
 
                         @if ($tramite->estado == 'nuevo' || $tramite->estado == 'rechazado')
@@ -734,6 +726,14 @@
                     @endif
 
                     <div class="mt-4 text-right">
+
+                        <div class="flex space-x-4 items-center">
+
+                            <x-checkbox wire:model="mantener"></x-checkbox>
+
+                            <Label>Mantener información</Label>
+
+                        </div>
 
                         @if ($editar)
 

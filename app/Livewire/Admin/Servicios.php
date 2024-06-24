@@ -181,8 +181,7 @@ class Servicios extends Component
                                 ->orWhere('umas', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('ordinario', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('operacion_principal', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('operacion_parcial', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('clave_ingreso', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('urgente', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere('extra_urgente', 'LIKE', '%' . $this->search . '%')
                                 ->orWhere(function($q){
