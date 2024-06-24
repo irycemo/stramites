@@ -119,6 +119,8 @@ class LineaCapturaApi
 
             $response = Http::withBasicAuth($this->soapUserApi, $this->soapPasswordApi)->get($url .'/' . $this->tramite->linea_de_captura);
 
+            info($response);
+
         } catch (\Throwable $th) {
 
             Log::error($th);
