@@ -131,7 +131,7 @@ class LineaCapturaApi
 
         if($response->status() != 200){
 
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new ErrorAlValidarLineaDeCaptura("Error de comunicación con SAP.");
 
             return;
 
@@ -143,7 +143,7 @@ class LineaCapturaApi
 
             Log::error($data['mensaje'] . ' EN SAP');
 
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new ErrorAlValidarLineaDeCaptura("Error de comunicación con SAP.");
 
             return;
 
