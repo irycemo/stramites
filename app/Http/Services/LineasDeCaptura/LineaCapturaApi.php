@@ -119,8 +119,6 @@ class LineaCapturaApi
 
             $response = Http::withBasicAuth($this->soapUserApi, $this->soapPasswordApi)->get($url .'/' . $this->tramite->linea_de_captura);
 
-            info($response);
-
         } catch (\Throwable $th) {
 
             Log::error($th);
@@ -131,9 +129,15 @@ class LineaCapturaApi
 
         }
 
-        $data = json_decode($response, true);
+        if($response->status() != 200){
 
-        info($data);
+            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+
+            return;
+
+        }
+
+        $data = json_decode($response, true);
 
         if(isset($data['mensaje']) && $data['mensaje'] == 'Acceso denegado ocurrio un error'){
 
