@@ -103,7 +103,7 @@ class Entrega extends Component
     public function render()
     {
 
-        $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio', 'files', 'recibidoPor')
+        $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio', 'recibidoPor')
                                 ->whereIn('estado', ['concluido', 'recibido'])
                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                     $q->where('distrito', 2);
