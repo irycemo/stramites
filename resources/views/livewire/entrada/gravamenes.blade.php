@@ -156,7 +156,7 @@
 
                         <x-h4>Antecedente de propiedad</x-h4>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white p-4 rounded-lg mb-3 shadow-md">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white p-4 rounded-lg mb-3 shadow-md" wire:loading.class.delay.longest="opacity-50">
 
                             <x-input-group for="modelo_editar.folio_real" label="Folio real" :error="$errors->first('modelo_editar.folio_real')" class="">
 
@@ -166,25 +166,25 @@
 
                             <x-input-group for="modelo_editar.tomo" label="Tomo" :error="$errors->first('modelo_editar.tomo')" class="">
 
-                                <x-input-text type="number" id="modelo_editar.tomo" wire:model.lazy="modelo_editar.tomo" />
+                                <x-input-text type="number" id="modelo_editar.tomo" wire:model.lazy="modelo_editar.tomo" :readonly="$modelo_editar->folio_real != null"/>
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.registro" label="Registro" :error="$errors->first('modelo_editar.registro')" class="">
 
-                                <x-input-text type="number" id="modelo_editar.registro" wire:model.lazy="modelo_editar.registro" />
+                                <x-input-text type="number" id="modelo_editar.registro" wire:model.lazy="modelo_editar.registro" :readonly="$modelo_editar->folio_real != null"/>
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.numero_propiedad" label="Número de propiedad" :error="$errors->first('modelo_editar.numero_propiedad')" class="">
 
-                                <x-input-text type="number" id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" />
+                                <x-input-text type="number" id="modelo_editar.numero_propiedad" wire:model.lazy="modelo_editar.numero_propiedad" :readonly="$modelo_editar->folio_real != null"/>
 
                             </x-input-group>
 
                             <x-input-group for="modelo_editar.distrito" label="Distrito" :error="$errors->first('modelo_editar.distrito')" class="">
 
-                                <x-input-select id="modelo_editar.distrito" wire:model.lazy="modelo_editar.distrito" class="w-full">
+                                <x-input-select id="modelo_editar.distrito" wire:model.lazy="modelo_editar.distrito" class="w-full" :disabled="$modelo_editar->folio_real != null ">
 
                                     <option value="" selected>Seleccione una opción</option>
 
@@ -200,7 +200,7 @@
 
                             <x-input-group for="modelo_editar.seccion" label="Seccion" :error="$errors->first('modelo_editar.seccion')" class="">
 
-                                <x-input-select id="modelo_editar.seccion" wire:model.lazy="modelo_editar.seccion" class="w-full">
+                                <x-input-select id="modelo_editar.seccion" wire:model.lazy="modelo_editar.seccion" class="w-full" :disabled="$modelo_editar->folio_real != null ">
 
                                     <option value="" selected>Seleccione una opción</option>
 
@@ -327,6 +327,67 @@
                         </div>
 
                     @endif
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative" wire:loading.class.delay.longest="opacity-50">
+
+                        @if($flags['numero_oficio'])
+
+                            <div class="flex-auto bg-white p-4 rounded-lg mb-3 shadow-md">
+
+                                <div class="mb-2">
+
+                                    <Label class="text-lg tracking-widest rounded-xl border-gray-500">Número de oficio</Label>
+                                </div>
+
+                                <div>
+
+                                    <input type="text" class="bg-white rounded text-sm w-full" wire:model="modelo_editar.numero_oficio">
+
+                                </div>
+
+                                <div>
+
+                                    @error('modelo_editar.numero_oficio') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+                        @if($flags['tipo_servicio'])
+
+                            <div class="flex-auto bg-white p-4 rounded-lg mb-3 shadow-md">
+
+                                <div class="mb-2">
+
+                                    <Label class="text-lg tracking-widest rounded-xl border-gray-500">Tipo de servicio</Label>
+                                </div>
+
+                                <div>
+
+                                    <select class="bg-white rounded text-sm w-full" wire:model.live="modelo_editar.tipo_servicio">
+
+                                        <option value="" selected>Seleccione una opción</option>
+                                        <option value="ordinario">Ordinario</option>
+                                        <option value="urgente">Urgente</option>
+                                        <option value="extra_urgente">Extra Urgente</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div>
+
+                                    @error('modelo_editar.tipo_servicio') <span class="error text-sm text-red-500">{{ $message }}</span> @enderror
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+                    </div>
 
                     @if ($flags['observaciones'])
 

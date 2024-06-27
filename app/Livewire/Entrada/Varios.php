@@ -520,44 +520,34 @@ class Varios extends Component
 
     public function consultarFolioReal(){
 
-        try {
-
-            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                            ->accept('application/json')
-                            ->asForm()
-                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
-                                'folio_real' => $this->modelo_editar->folio_real,
-                                'tomo' => $this->modelo_editar->tomo,
-                                'registro' => $this->modelo_editar->registro,
-                                'numero_propiedad' => $this->modelo_editar->numero_propiedad,
-                                'distrito' => $this->modelo_editar->distrito,
-                                'seccion' => $this->modelo_editar->seccion,
-                            ]);
+        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                        ->accept('application/json')
+                        ->asForm()
+                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
+                            'folio_real' => $this->modelo_editar->folio_real,
+                            'tomo' => $this->modelo_editar->tomo,
+                            'registro' => $this->modelo_editar->registro,
+                            'numero_propiedad' => $this->modelo_editar->numero_propiedad,
+                            'distrito' => $this->modelo_editar->distrito,
+                            'seccion' => $this->modelo_editar->seccion,
+                        ]);
 
 
 
-            $data = json_decode($response, true);
+        $data = json_decode($response, true);
 
-            if($response->status() == 200){
+        if($response->status() == 200){
 
-                $this->modelo_editar->folio_real = $data['data']['folio'];
-                $this->modelo_editar->tomo = $data['data']['tomo'];
-                $this->modelo_editar->registro = $data['data']['registro'];
-                $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
-                $this->modelo_editar->distrito = $data['data']['distrito'];
-                $this->modelo_editar->seccion = $data['data']['seccion'];
+            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->tomo = $data['data']['tomo'];
+            $this->modelo_editar->registro = $data['data']['registro'];
+            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+            $this->modelo_editar->distrito = $data['data']['distrito'];
+            $this->modelo_editar->seccion = $data['data']['seccion'];
 
-            }if($response->status() == 400){
+        }if($response->status() == 404){
 
-                throw new Exception("No se encontró el antecedente, verifique.");
-
-            }
-
-        } catch (\Throwable $th) {
-
-            Log::error("Errorr al consultar folio real al crear trámite " . $th);
-
-            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+            throw new Exception("No se encontró el antecedente, verifique.");
 
         }
 

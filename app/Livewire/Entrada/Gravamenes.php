@@ -184,9 +184,14 @@ class Gravamenes extends Component
         $this->modelo_editar->numero_notaria = null;
         $this->notaria = null;
 
+        $this->modelo_editar->tipo_tramite = 'normal';
+
+        $this->updatedModeloEditarTipoServicio();
+
         $this->flags['nombre_solicitante'] = false;
         $this->flags['dependencias'] = false;
         $this->flags['notarias'] = false;
+        $this->flags['numero_oficio'] = false;
 
         if($this->modelo_editar->solicitante == 'Usuario'){
 
@@ -242,6 +247,123 @@ class Gravamenes extends Component
 
     }
 
+    public function updatedModeloEditarTipoServicio(){
+
+        if($this->modelo_editar->id_servicio == ""){
+
+            $this->dispatch('mostrarMensaje', ['error', "Debe seleccionar un servicio."]);
+
+            $this->modelo_editar->tipo_servicio = null;
+
+            $this->modelo_editar->solicitante = null;
+
+            return;
+        }
+
+        if($this->modelo_editar->tipo_servicio == 'ordinario'){
+
+            if($this->servicio['ordinario'] == 0){
+
+                $this->dispatch('mostrarMensaje', ['error', "No hay servicio ordinario para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = $this->servicio['ordinario'] * $this->modelo_editar->cantidad;
+
+            if($this->modelo_editar->tipo_tramite == 'complemento'){
+
+                $this->modelo_editar->tipo_servicio = null;
+            }
+
+        }
+        elseif($this->modelo_editar->tipo_servicio == 'urgente'){
+
+            if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+            }
+
+            if($this->servicio['urgente'] == 0){
+
+                $this->dispatch('mostrarMensaje', ['error', "No hay servicio urgente para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
+
+            if($this->modelo_editar->tipo_tramite == 'complemento' && $this->tramiteAdicionado->tipo_servicio == 'urgente'){
+
+                $this->modelo_editar->tipo_servicio = null;
+            }
+
+        }
+        elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
+
+            if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 11:00 hrs."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+            }
+
+            if(!$this->modelo_editar->folio_real){
+
+                $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente sin folio real."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
+            }
+
+            if($this->servicio['extra_urgente']  == 0){
+
+                $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = $this->servicio['extra_urgente'] * $this->modelo_editar->cantidad;
+
+        }
+
+        if($this->modelo_editar->solicitante == 'Oficialia de partes'){
+
+            $this->modelo_editar->monto = 0;
+
+        }
+
+    }
+
+    public function updatedModeloEditarFolioReal(){
+
+        if($this->modelo_editar->folio_real == ''){
+
+            $this->modelo_editar->folio_real = null;
+
+        }
+
+        $this->modelo_editar->tomo = null;
+        $this->modelo_editar->registro = null;
+        $this->modelo_editar->numero_propiedad = null;
+        $this->modelo_editar->distrito = null;
+        $this->modelo_editar->seccion = null;
+
+    }
+
     public function updatedNotaria(){
 
         if($this->notaria == ""){
@@ -291,6 +413,10 @@ class Gravamenes extends Component
         });
 
         }catch (TramiteServiceException $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+
+        } catch (Exception $th) {
 
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
@@ -387,44 +513,34 @@ class Gravamenes extends Component
 
     public function consultarFolioReal(){
 
-        try {
-
-            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                            ->accept('application/json')
-                            ->asForm()
-                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
-                                'folio_real' => $this->modelo_editar->folio_real,
-                                'tomo' => $this->modelo_editar->tomo,
-                                'registro' => $this->modelo_editar->registro,
-                                'numero_propiedad' => $this->modelo_editar->numero_propiedad,
-                                'distrito' => $this->modelo_editar->distrito,
-                                'seccion' => $this->modelo_editar->seccion,
-                            ]);
+        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                        ->accept('application/json')
+                        ->asForm()
+                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
+                            'folio_real' => $this->modelo_editar->folio_real,
+                            'tomo' => $this->modelo_editar->tomo,
+                            'registro' => $this->modelo_editar->registro,
+                            'numero_propiedad' => $this->modelo_editar->numero_propiedad,
+                            'distrito' => $this->modelo_editar->distrito,
+                            'seccion' => $this->modelo_editar->seccion,
+                        ]);
 
 
 
-            $data = json_decode($response, true);
+        $data = json_decode($response, true);
 
-            if($response->status() == 200){
+        if($response->status() == 200){
 
-                $this->modelo_editar->folio_real = $data['data']['folio'];
-                $this->modelo_editar->tomo = $data['data']['tomo'];
-                $this->modelo_editar->registro = $data['data']['registro'];
-                $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
-                $this->modelo_editar->distrito = $data['data']['distrito'];
-                $this->modelo_editar->seccion = $data['data']['seccion'];
+            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->tomo = $data['data']['tomo'];
+            $this->modelo_editar->registro = $data['data']['registro'];
+            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+            $this->modelo_editar->distrito = $data['data']['distrito'];
+            $this->modelo_editar->seccion = $data['data']['seccion'];
 
-            }if($response->status() == 400){
+        }if($response->status() == 404){
 
-                throw new Exception("No se encontró el antecedente, verifique.");
-
-            }
-
-        } catch (\Throwable $th) {
-
-            Log::error("Errorr al consultar folio real al crear trámite " . $th);
-
-            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+            throw new Exception("No se encontró el antecedente, verifique.");
 
         }
 
