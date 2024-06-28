@@ -55,7 +55,7 @@ class LineaCapturaApi
                         "TP_DIVERSO" => "RPP",
                         "RFC" => "XXXX0001XXX",
                         "NOMBRE_RAZON" => $this->tramite->nombre_solicitante,
-                        "OBSERVACIONES" => "",
+                        "OBSERVACIONES" => $observaciones,
                     ],
                     "TB_CONCEPTOS" => [
                         "TP_INGRESO" => $this->tramite->servicio->clave_ingreso,

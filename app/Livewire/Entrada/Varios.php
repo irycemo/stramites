@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Exceptions\TramiteServiceException;
-use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 
 class Varios extends Component
@@ -155,6 +154,7 @@ class Varios extends Component
         $this->modelo_editar->nombre_solicitante = null;
         $this->modelo_editar->nombre_notario = null;
         $this->modelo_editar->numero_notaria = null;
+        $this->modelo_editar->tipo_tramite = 'normal';
         $this->notaria = null;
 
         $this->flags['nombre_solicitante'] = false;

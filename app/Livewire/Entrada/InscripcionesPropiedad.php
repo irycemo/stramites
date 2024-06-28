@@ -275,11 +275,13 @@ class InscripcionesPropiedad extends Component
         $this->modelo_editar->nombre_solicitante = null;
         $this->modelo_editar->nombre_notario = null;
         $this->modelo_editar->numero_notaria = null;
+        $this->modelo_editar->tipo_tramite = 'normal';
         $this->notaria = null;
 
         $this->flags['nombre_solicitante'] = false;
         $this->flags['dependencias'] = false;
         $this->flags['notarias'] = false;
+        $this->flags['numero_oficio'] = false;
 
         if($this->modelo_editar->solicitante == 'Usuario'){
 
