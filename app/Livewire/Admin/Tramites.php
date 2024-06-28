@@ -407,7 +407,6 @@ class Tramites extends Component
         $this->modelo_editar->update([
             'estado' => 'pagado',
             'fecha_prelacion' => now()->toDateString(),
-            'fecha_entrega' => now()->toDateString(),
             'fecha_pago'  => now()->toDateString(),
             'orden_de_pago'  => '300082157991',
         ]);

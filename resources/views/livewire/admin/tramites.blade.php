@@ -461,6 +461,10 @@
 
                 @endif
 
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
+
                 @if($modelo_editar->registro)
 
                     <x-input-group for="modelo_editar.registro" label="Registro" :error="$errors->first('modelo_editar.registro')" class="w-full">
@@ -511,6 +515,10 @@
 
                 @endif
 
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
+
                 @if($modelo_editar->registro_gravamen)
 
                     <x-input-group for="modelo_editar.registro_gravamen" label="Registro de gravamen" :error="$errors->first('modelo_editar.registro_gravamen')" class="w-full">
@@ -540,6 +548,10 @@
                     </x-input-group>
 
                 @endif
+
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
 
                 @if($modelo_editar->numero_escritura)
 
