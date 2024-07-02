@@ -567,6 +567,14 @@ class Certificaciones extends Component
 
                     $this->resetearTodo($borrado = true);
 
+                }else{
+
+                    $this->modelo_editar = $tramite->replicate();
+
+                    $this->modelo_editar->observaciones = null;
+
+                    $this->updatedModeloEditarTipoServicio();
+
                 }
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se creó con éxito."]);
