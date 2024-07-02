@@ -68,6 +68,10 @@ class Consultas extends Component
 
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
+        } catch (SistemaRppServiceException $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+
         } catch (\Throwable $th) {
 
             Log::error("Error al validar el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . '-' . $this->modelo_editar->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
