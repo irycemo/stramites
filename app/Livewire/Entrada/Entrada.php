@@ -33,6 +33,7 @@ class Entrada extends Component
         'Certificaciones' => false,
         'InscripcionesPropiedad' => false,
         'Gravamenes' => false,
+        'Cancelaciones' => false,
         'Varios' => false,
         'Sentencias' => false
     ];
@@ -101,7 +102,7 @@ class Entrada extends Component
                             'Certificaciones' => 'Certificaciones',
                             'Inscripciones - Propiedad' => 'InscripcionesPropiedad',
                             'Inscripciones - Gravamenes' => 'Gravamenes',
-                            'Cancelación - Gravamenes' => 'Gravamenes',
+                            'Cancelación - Gravamenes' => 'Cancelaciones',
                             'Varios , Arrendamientos, Avisos Preventivos' => 'Varios',
                             'Sentencias' => 'Gravamenes',
                             default => 'No encontrada',

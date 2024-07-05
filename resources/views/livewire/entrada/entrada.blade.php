@@ -150,6 +150,12 @@
 
         @endif
 
+        @if($flags['Cancelaciones'])
+
+            @livewire('entrada.cancelaciones', ['servicio' => $servicio, 'tramite' => $tramite])
+
+        @endif
+
         @if($flags['Varios'])
 
             @livewire('entrada.varios', ['servicio' => $servicio, 'tramite' => $tramite])

@@ -16,7 +16,7 @@ use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 
-class Gravamenes extends Component
+class Cancelaciones extends Component
 {
 
     public Tramite $modelo_editar;
@@ -54,7 +54,7 @@ class Gravamenes extends Component
         'valor_propiedad' => false,
         'numero_inmuebles' => false,
         'numero_oficio' => false,
-        'antecedente_gravamen' => false
+        'antecedente_gravamen' => true
     ];
 
     protected function rules(){
@@ -88,6 +88,8 @@ class Gravamenes extends Component
             'modelo_editar.numero_inmuebles' => 'nullable',
             'modelo_editar.asiento_registral' => 'nullable',
             'modelo_editar.foraneo' => 'required',
+            'modelo_editar.tomo_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
+            'modelo_editar.registro_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
          ];
     }
 
@@ -111,6 +113,8 @@ class Gravamenes extends Component
         'modelo_editar.autoridad_cargo' => 'cargo de la autoridad',
         'modelo_editar.fecha_emision' => 'fecha de emisión',
         'modelo_editar.valor_propiedad' => 'valor de la propiedad',
+        'modelo_editar.tomo_gravamen' => 'tomo del gravamen',
+        'modelo_editar.registro_gravamen' => 'registro del gravamen',
     ];
 
     protected $listeners = [
@@ -357,6 +361,19 @@ class Gravamenes extends Component
 
     }
 
+    public function updatedModeloEditarAsientoRegistral(){
+
+        if($this->modelo_editar->asiento_registral == ''){
+
+            $this->modelo_editar->asiento_registral = null;
+
+        }
+
+        $this->modelo_editar->tomo_gravamen = null;
+        $this->modelo_editar->registro_gravamen = null;
+
+    }
+
     public function updatedNotaria(){
 
         if($this->notaria == ""){
@@ -386,6 +403,8 @@ class Gravamenes extends Component
         try {
 
             $this->consultarFolioReal();
+
+            $this->consultarGravamen();
 
             DB::transaction(function (){
 
@@ -459,10 +478,6 @@ class Gravamenes extends Component
             $this->resetearTodo($borrado = true);
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite se actualizó con éxito."]);
-
-        } catch (SistemaRppServiceException $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
         } catch (TramiteServiceException $th) {
 
@@ -547,6 +562,42 @@ class Gravamenes extends Component
 
     }
 
+    public function consultarGravamen(){
+
+        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                        ->accept('application/json')
+                        ->asForm()
+                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_GRAVAMEN'),[
+                            'folio_real' => $this->modelo_editar->folio_real,
+                            'folio' => $this->modelo_editar->asiento_registral,
+                            'tomo_gravamen' => $this->modelo_editar->tomo_gravamen,
+                            'registro_gravamen' => $this->modelo_editar->registro_gravamen,
+                            'distrito' => $this->modelo_editar->distrito,
+                            'seccion' => $this->modelo_editar->seccion,
+                        ]);
+
+
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 200){
+
+            $this->modelo_editar->asiento_registral = $data['data']['folio'];
+            $this->modelo_editar->tomo_gravamen = $data['data']['tomo_gravamen'];
+            $this->modelo_editar->registro_gravamen = $data['data']['registro_gravamen'];
+
+        }if($response->status() == 404){
+
+            throw new Exception($data['error'] ?? 'No se encontro el recurso');
+
+        }if($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "No se encontro el recurso.");
+
+        }
+
+    }
+
     public function mount(){
 
         $this->solicitantes = Constantes::SOLICITANTES;
@@ -574,6 +625,6 @@ class Gravamenes extends Component
 
     public function render()
     {
-        return view('livewire.entrada.gravamenes');
+        return view('livewire.entrada.cancelaciones');
     }
 }
