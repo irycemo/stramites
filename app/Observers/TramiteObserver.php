@@ -13,7 +13,7 @@ class TramiteObserver
 
         if(auth()->check()){
 
-            $tramite->observaciones = 'Calificó: ' . auth()->user()->name . ', Área: ' . auth()->user()->area . '. ' . $tramite->observaciones;
+            $tramite->observaciones = 'Calificó: ' . auth()->user()->name . ', Área: ' . auth()->user()->area . $tramite->observaciones;
 
             $tramite->creado_por = auth()->user()->id;
 

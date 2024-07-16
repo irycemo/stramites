@@ -275,7 +275,7 @@ class Gravamenes extends Component
         }
         elseif($this->modelo_editar->tipo_servicio == 'urgente'){
 
-            if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
+            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
 
                 $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
 
@@ -302,9 +302,9 @@ class Gravamenes extends Component
         }
         elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
 
-            if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
+            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
 
-                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 11:00 hrs."]);
+                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 12:00 hrs."]);
 
                 $this->modelo_editar->tipo_servicio = null;
             }
@@ -543,6 +543,10 @@ class Gravamenes extends Component
 
             throw new Exception("El folio real con el antecedente ingresado no esta activo.");
 
+        }elseif($response->status() == 404){
+
+            throw new Exception("El folio real no existe.");
+
         }
 
     }
@@ -565,9 +569,29 @@ class Gravamenes extends Component
 
         }
 
-        $this->dependencias = Dependencia::orderBy('nombre')->get();
+        if(!cache()->get('dependencias')){
 
-        $this->notarias = Notaria::orderBy('numero')->get();
+            $this->dependencias = Dependencia::orderBy('nombre')->get();
+
+            cache()->put('dependencias', $this->dependencias);
+
+        }else{
+
+            $this->dependencias = cache()->get('dependencias');
+
+        }
+
+        if(!cache()->get('notarias')){
+
+            $this->notarias = Notaria::orderBy('numero')->get();
+
+            cache()->put('notarias', $this->notarias);
+
+        }else{
+
+            $this->notarias = cache()->get('notarias');
+
+        }
 
         $this->resetearTodo($borrado = true);
     }

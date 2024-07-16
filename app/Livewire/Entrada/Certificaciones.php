@@ -62,7 +62,7 @@ class Certificaciones extends Component
         'dependencias' => false,
         'notarias' => false,
         'tipo_servicio' => true,
-        'observaciones' => false,
+        'observaciones' => true,
         'tipo_tramite' => false,
     ];
 
@@ -77,8 +77,8 @@ class Certificaciones extends Component
             'modelo_editar.tomo_bis' => 'nullable',
             'modelo_editar.registro' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'),
             'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93'])),
-            'modelo_editar.seccion' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93'])),
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
@@ -86,7 +86,7 @@ class Certificaciones extends Component
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93'])),
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11'])),
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
                                                     $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])
@@ -158,6 +158,13 @@ class Certificaciones extends Component
             $this->flags['seccion'] = false;
             $this->flags['antecedente'] = true;
             $this->flags['observaciones'] = true;
+
+        }elseif($this->servicio['clave_ingreso'] == 'DL10' || $this->servicio['clave_ingreso'] == 'DL11'){
+
+            $this->flags['distrito'] = false;
+            $this->flags['seccion'] = false;
+            $this->flags['antecedente'] = true;
+            $this->flags['cantidad'] = true;
 
         }
 
@@ -383,7 +390,7 @@ class Certificaciones extends Component
         }
         elseif($this->modelo_editar->tipo_servicio == 'urgente'){
 
-            if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
+            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
 
                 $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
 
@@ -410,9 +417,9 @@ class Certificaciones extends Component
         }
         elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
 
-            if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
+            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
 
-                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 11:00 hrs."]);
+                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 12:00 hrs."]);
 
                 $this->modelo_editar->tipo_servicio = null;
             }
@@ -546,13 +553,35 @@ class Certificaciones extends Component
 
                     }
 
-                /* Consultas */
+                /* Certificado de gravamen */
                 }elseif($this->servicio['clave_ingreso'] == 'DL07'){
 
                     $this->consultarFolioReal();
 
                     $tramite = (new TramiteService($this->modelo_editar))->crear();
 
+                /* Certificado de propiedad - Certificado con medidas y linderos */
+                }elseif($this->servicio['clave_ingreso'] == 'DL10' || $this->servicio['clave_ingreso'] == 'DL11'){
+
+                    if($this->modelo_editar->tomo || $this->modelo_editar->registro ||$this->modelo_editar->numero_propiedad){
+
+                        $this->validate([
+                            'modelo_editar.tomo' => 'required',
+                            'modelo_editar.registro' => 'required',
+                            'modelo_editar.numero_propiedad' => 'required'
+                        ]);
+
+                        $this->consultarFolioReal();
+
+                    }elseif($this->modelo_editar->folio_real){
+
+                        $this->consultarFolioReal();
+
+                    }
+
+                    $tramite = (new TramiteService($this->modelo_editar))->crear();
+
+                /* Consultas */
                 }else{
 
                     $tramite = (new TramiteService($this->modelo_editar))->crear();
@@ -711,6 +740,10 @@ class Certificaciones extends Component
         }if($response->status() == 401){
 
             throw new Exception("El folio real con el antecedente ingresado no esta activo.");
+
+        }elseif($response->status() == 404){
+
+            throw new Exception("El folio real no existe.");
 
         }
 

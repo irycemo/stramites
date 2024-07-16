@@ -557,6 +557,10 @@ class Varios extends Component
 
             throw new Exception("El folio real con el antecedente ingresado no esta activo.");
 
+        }elseif($response->status() == 404){
+
+            throw new Exception("El folio real no existe.");
+
         }
 
     }

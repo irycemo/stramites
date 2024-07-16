@@ -734,9 +734,13 @@ class InscripcionesPropiedad extends Component
                 $this->modelo_editar->distrito = $data['data']['distrito'];
                 $this->modelo_editar->seccion = $data['data']['seccion'];
 
-            }if($response->status() == 401){
+            }elseif($response->status() == 401){
 
                 throw new Exception("El folio real con el antecedente ingresado no esta activo.");
+
+            }elseif($response->status() == 404){
+
+                throw new Exception("El folio real no existe.");
 
             }
 
