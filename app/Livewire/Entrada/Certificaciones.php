@@ -612,9 +612,13 @@ class Certificaciones extends Component
 
         } catch (TramiteServiceException $th) {
 
+            Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
         } catch (Exception $th) {
+
+            Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
