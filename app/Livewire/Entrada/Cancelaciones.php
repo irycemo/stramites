@@ -311,7 +311,7 @@ class Cancelaciones extends Component
                 $this->modelo_editar->tipo_servicio = null;
             }
 
-            if(!$this->modelo_editar->folio_real){
+            /* if(!$this->modelo_editar->folio_real){
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente sin folio real."]);
 
@@ -319,7 +319,7 @@ class Cancelaciones extends Component
 
                 return;
 
-            }
+            } */
 
             if($this->servicio['extra_urgente']  == 0){
 
