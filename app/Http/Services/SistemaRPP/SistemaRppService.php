@@ -109,20 +109,13 @@ class SistemaRppService{
         try {
 
             $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
-                'monto' => $tramite->monto,
                 'solicitante' => $tramite->solicitante,
                 'nombre_solicitante' => $tramite->nombre_solicitante,
-                'año' => $tramite->año,
-                'tramite' => $tramite->numero_control,
-                'usuario' => $tramite->usuario,
-                'fecha_prelacion' => now()->toDateString(), //Prelacion
                 'tipo_servicio' => $tramite->tipo_servicio,
                 'tipo_tramite' => $tramite->tipo_tramite,
                 'seccion' => $tramite->seccion,
                 'observaciones' => $tramite->observaciones,
                 'distrito' => $tramite->distrito,
-                'fecha_entrega' => $tramite->fecha_entrega->toDateString(),
-                'fecha_pago' => $tramite->fecha_pago?->toDateString(),
                 'categoria_servicio' => $tramite->servicio->categoria->nombre,
                 'servicio' => $tramite->servicio->clave_ingreso,
                 'numero_oficio' => $tramite->numero_oficio,
@@ -144,6 +137,8 @@ class SistemaRppService{
                 'numero_documento' => $tramite->numero_documento,
                 'fecha_emision' => $tramite->fecha_emision,
                 'procedencia' => $tramite->procedencia,
+                'tomo_gravamen' => $tramite->tomo_gravamen,
+                'registro_gravamen' => $tramite->registro_gravamen,
             ]);
 
         } catch (\Throwable $th) {
