@@ -175,9 +175,7 @@
 
         document.addEventListener('imprimir_recibo', event => {
 
-        console.log(event);
-
-            const tramite = event.detail[0];
+            const tramite = event.detail[0].tramite;
 
             var url_orden = "{{ route('tramites.orden', '')}}" + "/" + tramite;
 
