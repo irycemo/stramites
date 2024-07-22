@@ -408,7 +408,7 @@ class Cancelaciones extends Component
 
                 $tramite = (new TramiteService($this->modelo_editar))->crear();
 
-                $this->dispatch('imprimir_recibo', $tramite->id);
+                $this->dispatch('imprimir_recibo', ['tramite' => $tramite->id]);
 
                 if(!$this->mantener){
 

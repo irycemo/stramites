@@ -588,7 +588,7 @@ class Certificaciones extends Component
 
                 }
 
-                $this->dispatch('imprimir_recibo', $tramite->id);
+                $this->dispatch('imprimir_recibo', ['tramite' => $tramite->id]);
 
                 if(!$this->mantener){
 
