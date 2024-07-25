@@ -126,6 +126,7 @@ class Varios extends Component
             $this->flags['seccion'] = false;
             $this->flags['antecedente'] = true;
             $this->flags['observaciones'] = true;
+            $this->flags['tipo_servicio'] = true;
 
         }
 
@@ -248,7 +249,6 @@ class Varios extends Component
 
         if($this->modelo_editar->tipo_tramite == 'normal'){
 
-            $this->flags['tipo_servicio'] = false;
             $this->flags['cantidad'] = true;
 
         }
