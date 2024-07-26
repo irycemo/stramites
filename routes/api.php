@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('consultar_servicios', [ServiciosApiController::class, 'consultarServicios']);
 
+    Route::get('consultar_servicio', [ServiciosApiController::class, 'consultarServicio']);
+
     Route::post('craer_tramite', [TramitesApiController::class, 'crearTramtie']);
 
     Route::get('consultar_tramites', [TramitesApiController::class, 'consultarTramites']);

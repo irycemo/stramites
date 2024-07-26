@@ -18,4 +18,20 @@ class ServiciosApiController extends Controller
 
     }
 
+    public function consultarServicio(Request $request){
+
+        $validated = $request->validate(['clave_ingreso' => 'required|string']);
+
+        $servicio = Servicio::where('clave_ingreso', $validated['clave_ingreso'])->first();
+
+        if($servicio){
+
+            return response()->json([
+                'nombre' => $servicio->nombre
+            ], 200);
+
+        }
+
+    }
+
 }
