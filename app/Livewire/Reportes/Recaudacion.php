@@ -78,7 +78,7 @@ class Recaudacion extends Component
 
     public function tramites($ubicacion){
 
-        dd(Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio')
+        $tramites = Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio')
                             ->select('id', 'id_servicio', 'adiciona', 'fecha_pago', 'tipo_servicio', 'monto', 'creado_por')
                             ->whereNotNull('fecha_pago')
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
@@ -96,7 +96,7 @@ class Recaudacion extends Component
                                 $q->select('id', 'ubicacion')->where('ubicacion', $ubicacion);
                             })
                             ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
-                            ->toSql());
+                            ->toSql();
 
         $array2 = [];
 
