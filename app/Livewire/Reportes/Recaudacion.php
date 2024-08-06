@@ -96,7 +96,7 @@ class Recaudacion extends Component
                                 $q->select('id', 'ubicacion')->where('ubicacion', $ubicacion);
                             })
                             ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
-                            ->toSql();
+                            ->get();
 
         $array2 = [];
 
