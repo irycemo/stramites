@@ -18,7 +18,8 @@ class Constantes{
         'Dependencias',
         'Reportes',
         'Categorías',
-        'Notarías'
+        'Notarías',
+        'Transición'
     ];
 
     const AREAS_ADSCRIPCION = [

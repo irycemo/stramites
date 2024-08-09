@@ -12,6 +12,7 @@ use App\Livewire\Admin\Servicios;
 use App\Livewire\Entrada\Entrada;
 use App\Livewire\Entrega\Entrega;
 use App\Livewire\Admin\Categorias;
+use App\Livewire\Admin\Transicion;
 use App\Livewire\Reportes\Reportes;
 use App\Livewire\Admin\Dependencias;
 use App\Livewire\Consultas\Consultas;
@@ -51,6 +52,8 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
     Route::get('servicios', Servicios::class)->middleware('permission:Lista de servicios')->name('servicios');
 
     Route::get('categorias_servicios', Categorias::class)->middleware('permission:Lista de servicios')->name('categorias_servicios');
+
+    Route::get('transicion', Transicion::class)->middleware('permission:Lista de transición')->name('transicion');
 
     Route::get('umas', Umas::class)->middleware('permission:Lista de umas')->name('umas');
 
