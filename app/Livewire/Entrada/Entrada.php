@@ -103,7 +103,7 @@ class Entrada extends Component
                             'Inscripciones - Propiedad' => 'InscripcionesPropiedad',
                             'Inscripciones - Gravamenes' => 'Gravamenes',
                             'Cancelación - Gravamenes' => 'Cancelaciones',
-                            'Varios , Arrendamientos, Avisos Preventivos' => 'Varios',
+                            'Varios, Arrendamientos, Avisos Preventivos' => 'Varios',
                             'Sentencias' => 'Gravamenes',
                             default => 'No encontrada',
 
