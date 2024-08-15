@@ -27,42 +27,40 @@ trait ConsultaFolioTrait
                                 'seccion' => $this->modelo_editar->seccion,
                             ]);
 
-            $data = json_decode($response, true);
-
-
-
-            if($response->status() == 200){
-
-                $this->modelo_editar->folio_real = $data['data']['folio'];
-                $this->modelo_editar->tomo = $data['data']['tomo'];
-                $this->modelo_editar->registro = $data['data']['registro'];
-                $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
-                $this->modelo_editar->distrito = $data['data']['distrito'];
-                $this->modelo_editar->seccion = $data['data']['seccion'];
-
-            }elseif($response->status() == 401){
-
-                throw new Exception("El folio real con el antecedente ingresado no esta activo.");
-
-            }elseif($response->status() == 403){
-
-                throw new Exception($data['error'] ?? 'Hubo un error');
-
-            }elseif($response->status() == 404){
-
-                throw new Exception("El folio real no existe.");
-
-            }elseif($response->status() == 500){
-
-                throw new Exception("Hubo un error al consultar el folio real.");
-
-            }
-
         } catch (\Throwable $th) {
 
             Log::error("Error al consultar folio real al crear trámite " . $th);
 
             throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+
+        }
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 200){
+
+            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->tomo = $data['data']['tomo'];
+            $this->modelo_editar->registro = $data['data']['registro'];
+            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+            $this->modelo_editar->distrito = $data['data']['distrito'];
+            $this->modelo_editar->seccion = $data['data']['seccion'];
+
+        }elseif($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "El folio real con el antecedente ingresado no esta activo.");
+
+        }elseif($response->status() == 403){
+
+            throw new Exception($data['error'] ?? 'Hubo un error');
+
+        }elseif($response->status() == 404){
+
+            throw new Exception("El folio real no existe.");
+
+        }elseif($response->status() == 500){
+
+            throw new Exception("Hubo un error al consultar el folio real.");
 
         }
 

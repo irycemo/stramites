@@ -297,7 +297,7 @@
 
             <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
 
-                <x-input-group for="modelo_editar.observaciones" label="Número de propiedad" :error="$errors->first('modelo_editar.observaciones')" class="w-full">
+                <x-input-group for="modelo_editar.observaciones" label="Observaciones" :error="$errors->first('modelo_editar.observaciones')" class="w-full">
 
                     <textarea rows="3" wire:model.lazy="modelo_editar.observaciones" class="bg-white rounded text-sm w-full"></textarea>
 
