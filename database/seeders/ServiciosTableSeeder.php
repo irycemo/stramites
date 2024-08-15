@@ -14,15 +14,15 @@ class ServiciosTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('servicios')->delete();
-
+        
         \DB::table('servicios')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 1,
-                'nombre' => 'Cuando se trate de uno o hasta cinco tomos o libros índice',
+                'nombre' => 'Consulta de antecedentes registrales',
                 'tipo' => 'uma',
                 'estado' => 'activo',
                 'umas' => '1.00',
@@ -37,9 +37,9 @@ class ServiciosTableSeeder extends Seeder
                 'creado_por' => 1,
                 'actualizado_por' => 1,
                 'created_at' => '2023-05-09 17:36:09',
-                'updated_at' => '2023-05-11 13:00:12',
+                'updated_at' => '2024-08-15 09:22:37',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
             'nombre' => 'Copias certificadas (por página)',
@@ -59,12 +59,12 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-09 17:38:33',
                 'updated_at' => '2023-06-07 13:52:56',
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 3,
                 'nombre' => 'Búsqueda de antecedente de 1 a 10',
                 'tipo' => 'uma',
-                'estado' => 'activo',
+                'estado' => 'inactivo',
                 'umas' => '1.00',
                 'ordinario' => '104.00',
                 'urgente' => '0.00',
@@ -77,14 +77,14 @@ class ServiciosTableSeeder extends Seeder
                 'creado_por' => 1,
                 'actualizado_por' => 1,
                 'created_at' => '2023-05-11 12:42:06',
-                'updated_at' => '2023-06-08 11:32:30',
+                'updated_at' => '2024-08-15 09:22:13',
             ),
-            3 =>
+            3 => 
             array (
                 'id' => 4,
                 'nombre' => 'Búsqueda de bienes por índices de 11 a 20.',
                 'tipo' => 'uma',
-                'estado' => 'activo',
+                'estado' => 'inactivo',
                 'umas' => '2.00',
                 'ordinario' => '208.00',
                 'urgente' => '0.00',
@@ -95,16 +95,16 @@ class ServiciosTableSeeder extends Seeder
                 'operacion_parcial' => '5022',
                 'categoria_servicio_id' => 1,
                 'creado_por' => 1,
-                'actualizado_por' => NULL,
+                'actualizado_por' => 1,
                 'created_at' => '2023-05-11 12:42:31',
-                'updated_at' => '2023-05-11 12:42:31',
+                'updated_at' => '2024-08-15 09:22:10',
             ),
-            4 =>
+            4 => 
             array (
                 'id' => 5,
                 'nombre' => 'Búsqueda de bienes por índices de 21 o más.',
                 'tipo' => 'uma',
-                'estado' => 'activo',
+                'estado' => 'inactivo',
                 'umas' => '3.00',
                 'ordinario' => '312.00',
                 'urgente' => '0.00',
@@ -117,9 +117,9 @@ class ServiciosTableSeeder extends Seeder
                 'creado_por' => 1,
                 'actualizado_por' => 1,
                 'created_at' => '2023-05-11 12:42:54',
-                'updated_at' => '2023-06-07 13:52:02',
+                'updated_at' => '2024-08-15 09:22:18',
             ),
-            5 =>
+            5 => 
             array (
                 'id' => 6,
             'nombre' => 'Copias simples (por página)',
@@ -139,7 +139,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-05-11 13:02:12',
                 'updated_at' => '2023-06-07 13:50:40',
             ),
-            6 =>
+            6 => 
             array (
                 'id' => 7,
                 'nombre' => 'No habitacional rustico',
@@ -159,7 +159,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 13:31:09',
                 'updated_at' => '2023-10-11 13:32:22',
             ),
-            7 =>
+            7 => 
             array (
                 'id' => 8,
                 'nombre' => 'No habitacional urbano',
@@ -179,7 +179,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:23:00',
                 'updated_at' => '2023-10-11 15:23:00',
             ),
-            8 =>
+            8 => 
             array (
                 'id' => 9,
                 'nombre' => 'Habitacional cuyo valor no exceda $946,110.00',
@@ -199,7 +199,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:26:24',
                 'updated_at' => '2023-10-11 15:26:24',
             ),
-            9 =>
+            9 => 
             array (
                 'id' => 10,
                 'nombre' => 'Habitacional cuyo valor exceda $946,110.00',
@@ -219,7 +219,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:27:45',
                 'updated_at' => '2023-10-11 15:27:45',
             ),
-            10 =>
+            10 => 
             array (
                 'id' => 11,
                 'nombre' => 'Servidumbre de paso por cada inmueble',
@@ -239,7 +239,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:28:32',
                 'updated_at' => '2023-10-11 15:28:32',
             ),
-            11 =>
+            11 => 
             array (
                 'id' => 12,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales recidencial',
@@ -259,7 +259,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:29:49',
                 'updated_at' => '2023-10-12 12:09:58',
             ),
-            12 =>
+            12 => 
             array (
                 'id' => 13,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales tipo medio',
@@ -279,7 +279,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:30:30',
                 'updated_at' => '2023-10-12 12:09:53',
             ),
-            13 =>
+            13 => 
             array (
                 'id' => 14,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales popular',
@@ -299,7 +299,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:31:05',
                 'updated_at' => '2023-10-12 12:09:48',
             ),
-            14 =>
+            14 => 
             array (
                 'id' => 15,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales campestre',
@@ -319,7 +319,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:32:28',
                 'updated_at' => '2023-10-12 12:09:35',
             ),
-            15 =>
+            15 => 
             array (
                 'id' => 16,
                 'nombre' => 'Lotificación industrial y comercial',
@@ -339,7 +339,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:33:22',
                 'updated_at' => '2023-10-11 15:33:22',
             ),
-            16 =>
+            16 => 
             array (
                 'id' => 17,
                 'nombre' => 'Régimen de propiedad en condominio habitacional por cada vivienda',
@@ -359,7 +359,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:34:39',
                 'updated_at' => '2023-10-11 15:34:39',
             ),
-            17 =>
+            17 => 
             array (
                 'id' => 18,
                 'nombre' => 'Régimen de propiedad en condominio por local comercial',
@@ -379,7 +379,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:35:24',
                 'updated_at' => '2023-10-11 15:35:24',
             ),
-            18 =>
+            18 => 
             array (
                 'id' => 19,
                 'nombre' => 'No habitacional rustico',
@@ -399,7 +399,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-11 15:37:59',
                 'updated_at' => '2023-10-11 17:05:23',
             ),
-            19 =>
+            19 => 
             array (
                 'id' => 20,
                 'nombre' => 'Fraccionamientos, lotificaciones, habitacionales rustico',
@@ -419,7 +419,7 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-10-12 12:11:45',
                 'updated_at' => '2023-10-12 12:11:45',
             ),
-            20 =>
+            20 => 
             array (
                 'id' => 21,
                 'nombre' => 'Tratándose de testimonios notariales que provengan de otras entidades federativas',
@@ -439,8 +439,188 @@ class ServiciosTableSeeder extends Seeder
                 'created_at' => '2023-12-20 13:48:14',
                 'updated_at' => '2023-12-20 13:48:14',
             ),
+            21 => 
+            array (
+                'id' => 22,
+                'nombre' => 'Certificado de propiedad o negativos de propiedad',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '255.00',
+                'urgente' => '510.00',
+                'extra_urgente' => '765.00',
+                'material' => '654564',
+                'clave_ingreso' => 'DL10',
+                'operacion_principal' => '6851',
+                'operacion_parcial' => '6854',
+                'categoria_servicio_id' => 1,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:12:39',
+                'updated_at' => '2024-08-15 09:12:39',
+            ),
+            22 => 
+            array (
+                'id' => 23,
+                'nombre' => 'Cetificado con medidas y colindancias',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '310.00',
+                'urgente' => '620.00',
+                'extra_urgente' => '930.00',
+                'material' => '5684',
+                'clave_ingreso' => 'DL11',
+                'operacion_principal' => '6854',
+                'operacion_parcial' => '684',
+                'categoria_servicio_id' => 1,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:13:13',
+                'updated_at' => '2024-08-15 09:13:13',
+            ),
+            23 => 
+            array (
+                'id' => 24,
+                'nombre' => 'Inscripción de gravamen',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '1791.00',
+                'urgente' => '3582.00',
+                'extra_urgente' => '5373.00',
+                'material' => '68954',
+                'clave_ingreso' => 'DL64',
+                'operacion_principal' => '54',
+                'operacion_parcial' => '684',
+                'categoria_servicio_id' => 5,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:17:25',
+                'updated_at' => '2024-08-15 09:17:25',
+            ),
+            24 => 
+            array (
+                'id' => 25,
+                'nombre' => 'Fusión',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '1000.00',
+                'urgente' => '2000.00',
+                'extra_urgente' => '3000.00',
+                'material' => '87906',
+                'clave_ingreso' => 'D731',
+                'operacion_principal' => '651',
+                'operacion_parcial' => '654',
+                'categoria_servicio_id' => 4,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:18:10',
+                'updated_at' => '2024-08-15 09:18:10',
+            ),
+            25 => 
+            array (
+                'id' => 26,
+                'nombre' => 'Inscripción de demandas, sentencias jurídicas y/o resoluciones, por cada inmueble afectado por la anotación',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '1000.00',
+                'urgente' => '2000.00',
+                'extra_urgente' => '3000.00',
+                'material' => '684',
+                'clave_ingreso' => 'D110',
+                'operacion_principal' => '654',
+                'operacion_parcial' => '564',
+                'categoria_servicio_id' => 8,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:19:43',
+                'updated_at' => '2024-08-15 09:19:43',
+            ),
+            26 => 
+            array (
+                'id' => 27,
+                'nombre' => 'Cancelación de gravamen',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '896.00',
+                'urgente' => '1792.00',
+                'extra_urgente' => '2688.00',
+                'material' => '578',
+                'clave_ingreso' => 'DL66',
+                'operacion_principal' => '652',
+                'operacion_parcial' => '654',
+                'categoria_servicio_id' => 6,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:20:18',
+                'updated_at' => '2024-08-15 09:20:18',
+            ),
+            27 => 
+            array (
+                'id' => 28,
+                'nombre' => 'Aviso preventivo con certificado de existencia o inexistencia de gravamen',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '810.00',
+                'urgente' => '1620.00',
+                'extra_urgente' => '2430.00',
+                'material' => '6584',
+                'clave_ingreso' => 'DL09',
+                'operacion_principal' => '541',
+                'operacion_parcial' => '654',
+                'categoria_servicio_id' => 7,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:20:50',
+                'updated_at' => '2024-08-15 09:20:50',
+            ),
+            28 => 
+            array (
+                'id' => 29,
+                'nombre' => 'Certificado de gravamen o de libertad de gravamen',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '625.00',
+                'urgente' => '1250.00',
+                'extra_urgente' => '1875.00',
+                'material' => '684',
+                'clave_ingreso' => 'DL07',
+                'operacion_principal' => '54',
+                'operacion_parcial' => '46',
+                'categoria_servicio_id' => 1,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:21:24',
+                'updated_at' => '2024-08-15 09:21:24',
+            ),
+            29 => 
+            array (
+                'id' => 30,
+                'nombre' => 'Inscripción de demandas, sentencias jurídicas y/o resoluciones, por cada inmueble afectado por la anotación',
+                'tipo' => 'fija',
+                'estado' => 'activo',
+                'umas' => '0.00',
+                'ordinario' => '1000.00',
+                'urgente' => '2000.00',
+                'extra_urgente' => '3000.00',
+                'material' => '684',
+                'clave_ingreso' => 'D110',
+                'operacion_principal' => '5847',
+                'operacion_parcial' => '6893',
+                'categoria_servicio_id' => 7,
+                'creado_por' => 1,
+                'actualizado_por' => NULL,
+                'created_at' => '2024-08-15 09:21:57',
+                'updated_at' => '2024-08-15 09:21:57',
+            ),
         ));
-
-
+        
+        
     }
 }

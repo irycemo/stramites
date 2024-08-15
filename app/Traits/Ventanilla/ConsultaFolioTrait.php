@@ -27,9 +27,9 @@ trait ConsultaFolioTrait
                                 'seccion' => $this->modelo_editar->seccion,
                             ]);
 
-
-
             $data = json_decode($response, true);
+
+
 
             if($response->status() == 200){
 

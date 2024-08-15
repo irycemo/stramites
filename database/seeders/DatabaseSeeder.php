@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         /* $this->call(TramiteSeeder::class); */
         /* $this->call(NotariaSeeder::class); */
         $this->call(ServiciosTableSeeder::class);
+        $this->call(CategoriaServiciosTableSeeder::class);
+        $this->call(CategoriaServiciosTableSeeder::class);
     }
 }
