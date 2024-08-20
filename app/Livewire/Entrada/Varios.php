@@ -386,6 +386,8 @@ class Varios extends Component
 
         $this->secciones = Constantes::SECCIONES;
 
+        $this->documentos_entrada = Constantes::DOCUMENTO_ENTRADA;
+
         if(auth()->user()->ubicacion == 'Regional 4'){
 
             $this->distritos = [2 => '02 Uruapan',];
