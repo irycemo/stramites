@@ -305,10 +305,11 @@
                                 <x-input-select id="modelo_editar.tipo_documento" wire:model="modelo_editar.tipo_documento" class="w-full">
 
                                     <option value="">Seleccione una opción</option>
-                                    <option value="escritura">Escritura</option>
-                                    <option value="oficio">Oficio</option>
-                                    <option value="oficio_con_resolucion">Oficio con resolución</option>
-                                    <option value="contrato">Contrato</option>
+                                    @foreach ($documentos_entrada as $key => $value)
+
+                                        <option value="{{ $key }}">{{ $value }}</option>
+
+                                    @endforeach
 
                                 </x-input-select>
 

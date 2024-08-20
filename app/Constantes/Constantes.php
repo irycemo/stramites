@@ -111,4 +111,12 @@ class Constantes{
         '2024' => '2024'
     ];
 
+    const DOCUMENTO_ENTRADA = [
+        "escritura" => 'Escritura',
+        "oficio" => 'Oficio',
+        "oficio_con_resolucion" => 'Oficio con resolución',
+        "contrato" => 'Contrato',
+        "titulo_propiedad" => 'Título de propiedad'
+    ];
+
 }

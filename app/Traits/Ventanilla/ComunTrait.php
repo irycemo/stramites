@@ -36,6 +36,7 @@ trait ComunTrait
     public $dependencias;
     public $notarias;
     public $notaria;
+    public $documentos_entrada;
 
     public $mantener = false;
 
@@ -45,6 +46,7 @@ trait ComunTrait
         'modelo_editar.numero_oficio' => 'número de oficio',
         'modelo_editar.nombre_solicitante' => 'nombre del solicitante',
         'modelo_editar.movimiento_registral.required_if' => 'No se ha vinculado el trámite original de copias.',
+        'modelo_editar.fecha_emision.date_format' => 'El formato de fecha es incorrecto.',
     ];
 
     protected $validationAttributes  = [

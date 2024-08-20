@@ -50,9 +50,9 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.id_servicio' => 'required',
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
-            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D731'),
+            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D731', 'D115','D116', 'D113', 'D114'])),
             'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D731'),
+            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D731', 'D115','D116', 'D113', 'D114'])),
             'modelo_editar.registro_bis' => 'nullable',
             'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
@@ -64,9 +64,9 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.movimiento_registral' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
-            'modelo_editar.fecha_emision' => 'required',
+            'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
             'modelo_editar.numero_documento' => 'required',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D731'),
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D731', 'D115','D116', 'D113', 'D114'])),
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
@@ -437,7 +437,7 @@ class InscripcionesPropiedad extends Component
 
         try {
 
-            if($this->servicio['clave_ingreso'] != 'D731') $this->consultarFolioReal();
+            if(!in_array($this->servicio['clave_ingreso'], ['D731', 'D115','D116', 'D113', 'D114'])) $this->consultarFolioReal();
 
             DB::transaction(function (){
 
@@ -510,6 +510,8 @@ class InscripcionesPropiedad extends Component
         $this->solicitantes = Constantes::SOLICITANTES;
 
         $this->secciones = Constantes::SECCIONES;
+
+        $this->documentos_entrada = Constantes::DOCUMENTO_ENTRADA;
 
         if(auth()->user()->ubicacion == 'Regional 4'){
 
