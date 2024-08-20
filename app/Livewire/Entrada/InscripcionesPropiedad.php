@@ -437,7 +437,8 @@ class InscripcionesPropiedad extends Component
 
         try {
 
-            if(!in_array($this->servicio['clave_ingreso'], ['D731', 'D115','D116', 'D113', 'D114'])) $this->consultarFolioReal();
+            /* , 'D115','D116', 'D113', 'D114' */
+            if(!in_array($this->servicio['clave_ingreso'], ['D731'])) $this->consultarFolioReal();
 
             DB::transaction(function (){
 
