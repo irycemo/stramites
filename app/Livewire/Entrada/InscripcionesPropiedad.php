@@ -407,7 +407,9 @@ class InscripcionesPropiedad extends Component
 
     }
 
-    public function updatedModeloEditarCantidad(){
+    public function updatedModeloEditarNumeroInmuebles(){
+
+        $this->modelo_editar->cantidad = $this->modelo_editar->numero_inmuebles;
 
         $this->updatedModeloEditarTipoServicio();
 
