@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Enrique',
-            'calve' => 1,
+            'clave' => 1,
             'ubicacion' => 'Catastro',
             'status' => 'activo',
             'area' => 'Departamento De Operación Y Desarrollo De Sistemas',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Jesus Manriquez Vargas',
-            'calve' => 2,
+            'clave' => 2,
             'ubicacion' => 'Catastro',
             'status' => 'activo',
             'area' => 'Departamento De Operación Y Desarrollo De Sistemas',
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Sistema RPP',
-            'calve' => 3,
+            'clave' => 3,
             'ubicacion' => 'RPP',
             'status' => 'activo',
             'area' => 'Dirección del Registro Público de la Propiedad',
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'id' => 67,
-            'calve' => 4,
+            'clave' => 4,
             'name' => 'Sistema Trámites en Línea',
             'ubicacion' => 'Catastro',
             'status' => 'activo',
