@@ -949,6 +949,16 @@
 
                         @endif
 
+                        @if ($modelo_editar->numero_propiedad)
+
+                            <div class="rounded-lg bg-gray-100 py-1 px-2">
+
+                                <p><strong>Númerpo de propiedad:</strong> {{ $modelo_editar->numero_propiedad }}</p>
+
+                            </div>
+
+                        @endif
+
                         @if ($modelo_editar->distrito)
 
                             <div class="rounded-lg bg-gray-100 py-1 px-2">
