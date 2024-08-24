@@ -51,7 +51,7 @@ class SistemaRppService{
                 'registro_gravamen' => $tramite->registro_gravamen,
                 'observaciones' => $tramite->observaciones,
                 'numero_paginas' => $tramite->cantidad,
-                'numero_inmuebles' => $tramite->numero_inmuebles,
+                'numero_inmuebles' => $tramite->cantidad,
                 'numero_propiedad' => $tramite->numero_propiedad,
                 'numero_escritura' => $tramite->numero_escritura,
                 'numero_notaria' => $tramite->numero_notaria,
