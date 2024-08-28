@@ -50,8 +50,6 @@ class TramiteService{
                     'fecha_prelacion' => now()->toDateString(),
                 ]);
 
-                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
-
             }
 
             return $this->tramite;

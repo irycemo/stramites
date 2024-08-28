@@ -92,6 +92,8 @@ class SistemaRppService{
             if($tramite->adicionaAlTramite && $tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93')
                 $tramite->adicionaAlTramite->update(['movimiento_registral' => $data['data']['id']]);
 
+            return $data['usuario_asignado'];
+
         }else{
 
             Log::error("Error al insertar trámite en Sistema RPP. por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . '. ' . $response);

@@ -29,6 +29,8 @@ class Recepcion extends Component
 
     public Tramite $modelo_editar;
 
+    public $usuario_asignado;
+
     protected function rules(){
         return [
             'documento' => 'required|mimes:pdf',
@@ -186,13 +188,13 @@ class Recepcion extends Component
 
         try {
 
-            DB::transaction(function () {
+            DB::transaction(function (){
 
-                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+                $this->usuario_asignado = (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
             });
 
-            $this->dispatch('mostrarMensaje', ['success', "El trámite se envió correctamente a Sistema RPP."]);
+            $this->dispatch('mostrarMensaje', ['success', "El trámite se envió correctamente a Sistema RPP. Asignado a: " . $this->usuario_asignado]);
 
             $this->resetearTodo();
 
