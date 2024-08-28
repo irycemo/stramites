@@ -1101,7 +1101,7 @@
 
             <div class="flex gap-3">
 
-                @if(env('LOCAL') === "0")
+                @if(env('LOCAL') === "0" || env('LOCAL') === "3")
 
                     <x-button-gray
                         wire:click="simularPago"
