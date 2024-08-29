@@ -77,6 +77,9 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
 
     Route::get('reportes', Reportes::class)->middleware('permission:Reportes')->name('reportes');
 
+    Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
+
 });
 
 Route::get('setpassword/{email}', [SetPasswordController::class, 'create'])->name('setpassword');

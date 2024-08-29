@@ -18,6 +18,7 @@
         "orangehill/iseed": "^3.0",
         "owen-it/laravel-auditing": "^13.5",
         "picqer/php-barcode-generator": "^2.4",
+        "rap2hpoutre/laravel-log-viewer": "^2.4",
         "spatie/laravel-permission": "^5.11"
     },
     "require-dev": {
