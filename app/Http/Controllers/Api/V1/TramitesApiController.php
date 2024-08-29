@@ -188,13 +188,19 @@ class TramitesApiController extends Controller
 
         }
 
+        if(!$tramite->file){
+
+            abort(404, 'Page not found');
+
+        }
+
         if(env('LOCAL') === "0" || env('LOCAL') === "2"){
 
             return response()->json([
                 'url' => Storage::disk('tramites')->url($tramite->file->url)
             ], 200);
 
-        }else{
+        }elseif(env('LOCAL') === "1"){
 
             return response()->json([
                 'url' => Storage::disk('s3')->url('tramites/' . $tramite->file->url)
