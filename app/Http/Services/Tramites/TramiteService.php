@@ -50,7 +50,7 @@ class TramiteService{
                     'fecha_prelacion' => now()->toDateString(),
                 ]);
 
-                if(in_array($this->tramite->servicio->clave_ingreso, ['DL14', 'DL13', 'DC93']))
+                if($this->tramite->servicio->categoria->nombre == 'Certificaciones')
                     (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
             }
