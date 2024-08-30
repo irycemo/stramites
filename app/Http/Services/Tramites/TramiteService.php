@@ -50,7 +50,7 @@ class TramiteService{
                     'fecha_prelacion' => now()->toDateString(),
                 ]);
 
-                if($this->tramite->servicio->categoria->nombre == 'Certificaciones')
+                if($this->tramite->servicio->categoria->nombre === 'Certificaciones')
                     (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
             }
@@ -254,10 +254,9 @@ class TramiteService{
 
                 }
 
-            /* CONSULTAS */
+            /* Certificaciones que no son copias */
             }else{
 
-                /* Consultas */
                 if($this->tramite->servicio->categoria->nombre === 'Certificaciones')
                     (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
