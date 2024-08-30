@@ -74,7 +74,7 @@ class Recepcion extends Component
 
         }
 
-        if($this->tramite->servicio->categoria == 'Certificaciones'){
+        if($this->tramite->servicio->categoria->nombre == 'Certificaciones'){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie no es una inscripción."]);
 
