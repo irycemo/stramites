@@ -321,6 +321,8 @@ class Cancelaciones extends Component
 
                     $this->modelo_editar = $tramite->replicate();
 
+                    $this->dispatch('matenerDatos', $this->modelo_editar);
+
                     $this->modelo_editar->observaciones = null;
 
                     $this->updatedModeloEditarTipoServicio();
@@ -447,6 +449,19 @@ class Cancelaciones extends Component
         }
 
         $this->resetearTodo($borrado = true);
+
+        if($this->tramiteMantener){
+
+            foreach ($this->tramiteMantener as $key => $value) {
+
+                $this->modelo_editar->{$key} = $value;
+
+            }
+
+            $this->mantener = true;
+
+        }
+
     }
 
     public function render()

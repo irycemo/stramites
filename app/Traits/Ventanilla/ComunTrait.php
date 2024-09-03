@@ -39,6 +39,7 @@ trait ComunTrait
     public $documentos_entrada;
 
     public $mantener = false;
+    public $tramiteMantener;
 
     protected $messages = [
         'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
@@ -73,13 +74,26 @@ trait ComunTrait
     {
         return $this->listeners + [
             'cambioServicio' => 'cambiarFlags',
-            'cargarTramite' => 'cargarTramite'
+            'cargarTramite' => 'cargarTramite',
+            'cargarTramiteMantener' => 'cargarTramiteMantener'
         ];
     }
 
     public function cargarTramite(Tramite $tramite){
 
         $this->tramite = $tramite;
+
+    }
+
+    public function cargarTramiteMantener($tramite){
+
+        foreach ($tramite as $key => $value) {
+
+            $this->modelo_editar->{$key} = $value;
+
+        }
+
+        $this->mantener = true;
 
     }
 
@@ -90,6 +104,18 @@ trait ComunTrait
         $this->reset('tramite');
 
         $this->resetearTodo($borrado = true);
+
+    }
+
+    public function updatedMantener(){
+
+        if(!$this->mantener){
+
+            $this->dispatch('resetTramiteMantener');
+
+            $this->resetearTodo($borrado = true);
+
+        }
 
     }
 

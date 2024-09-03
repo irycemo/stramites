@@ -134,31 +134,31 @@
 
         @if($flags['Certificaciones'])
 
-            @livewire('entrada.certificaciones', ['servicio' => $servicio, 'tramite' => $tramite])
+            @livewire('entrada.certificaciones', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
 
         @endif
 
         @if($flags['InscripcionesPropiedad'])
 
-            @livewire('entrada.inscripciones-propiedad', ['servicio' => $servicio, 'tramite' => $tramite])
+            @livewire('entrada.inscripciones-propiedad', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
 
         @endif
 
         @if($flags['Gravamenes'])
 
-            @livewire('entrada.gravamenes', ['servicio' => $servicio, 'tramite' => $tramite])
+            @livewire('entrada.gravamenes', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
 
         @endif
 
         @if($flags['Cancelaciones'])
 
-            @livewire('entrada.cancelaciones', ['servicio' => $servicio, 'tramite' => $tramite])
+            @livewire('entrada.cancelaciones', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
 
         @endif
 
         @if($flags['Varios'])
 
-            @livewire('entrada.varios', ['servicio' => $servicio, 'tramite' => $tramite])
+            @livewire('entrada.varios', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
 
         @endif
 

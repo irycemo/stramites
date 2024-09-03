@@ -764,7 +764,7 @@
 
                         <div class="flex space-x-4 items-center">
 
-                            <x-checkbox wire:model="mantener"></x-checkbox>
+                            <x-checkbox wire:model.live="mantener"></x-checkbox>
 
                             <Label>Mantener información</Label>
 

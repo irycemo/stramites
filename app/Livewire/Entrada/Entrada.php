@@ -4,7 +4,6 @@ namespace App\Livewire\Entrada;
 
 use App\Constantes\Constantes;
 use App\Models\Tramite;
-use App\Models\Configuracion;
 use Livewire\Component;
 use App\Models\Servicio;
 use App\Models\CategoriaServicio;
@@ -22,6 +21,7 @@ class Entrada extends Component
     public $servicio;
     public $servicio_seleccionado;
     public $tramite;
+    public $tramiteMantener;
     public $numero_control;
     public $usuario;
     public $año;
@@ -40,7 +40,9 @@ class Entrada extends Component
 
     protected $listeners = [
         'reset' => 'resetAll',
-        'crearBatch' => 'crearBatch'
+        'crearBatch' => 'crearBatch',
+        'matenerDatos' => 'matenerDatos',
+        'resetTramiteMantener' => 'resetTramiteMantener'
     ];
 
     public function resetAll(){
@@ -83,8 +85,17 @@ class Entrada extends Component
 
         $this->dispatch('cambioServicio', $this->servicio);
 
-        if($this->tramite)
+        if($this->tramite){
+
             $this->dispatch('cargarTramite', $this->tramite);
+
+        }
+
+        if($this->tramiteMantener){
+
+            $this->dispatch('cargarTramiteMantener', $this->tramiteMantener);
+
+        }
 
         if($this->flag){
 
@@ -159,6 +170,41 @@ class Entrada extends Component
         $this->flag = true;
 
         $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria','numero_control']);
+
+    }
+
+    public function matenerDatos($tramite){
+
+        $tramite['observaciones'] = null;
+        $tramite['id_servicio'] = null;
+        $tramite['monto'] = null;
+        $tramite['cantidad'] = null;
+        $tramite['tipo_servicio'] = null;
+        $tramite['tipo_tramite'] = null;
+        $tramite['adiciona'] = null;
+        $tramite['movimiento_registral'] = null;
+        $tramite['valor_propiedad'] = null;
+        $tramite['numero_inmuebles'] = null;
+        $tramite['numero_oficio'] = null;
+        $tramite['folio_real'] = null;
+        $tramite['foraneo'] = null;
+        $tramite['fecha_entrega'] = null;
+        $tramite['año'] = null;
+        $tramite['usuario'] = null;
+        $tramite['numero_control'] = null;
+        $tramite['orden_de_pago'] = null;
+        $tramite['linea_de_captura'] = null;
+        $tramite['limite_de_pago'] = null;
+        $tramite['creado_por'] = null;
+        $tramite['servicio'] = null;
+
+        $this->tramiteMantener = $tramite;
+
+    }
+
+    public function resetTramiteMantener(){
+
+        $this->tramiteMantener = null;
 
     }
 
