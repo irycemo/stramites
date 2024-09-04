@@ -39,7 +39,7 @@ class Varios extends Component
         'tipo_servicio' => true,
         'observaciones' => true,
         'tipo_tramite' => false,
-        'documento' => false
+        'documento' => true
     ];
 
     protected function rules(){
@@ -62,6 +62,12 @@ class Varios extends Component
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.procedencia' => 'nullable',
+            'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
+            'modelo_editar.numero_documento' => 'required',
+            'modelo_editar.nombre_autoridad' => 'required',
+            'modelo_editar.autoridad_cargo' => 'required',
+            'modelo_editar.tipo_documento' => 'required',
          ];
     }
 
