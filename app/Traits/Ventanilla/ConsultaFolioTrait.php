@@ -48,7 +48,7 @@ trait ConsultaFolioTrait
 
         }elseif($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "El folio real con el antecedente ingresado no esta activo.");
+            throw new Exception($data['error'] ?? "Hubo un error.");
 
         }elseif($response->status() == 403){
 
