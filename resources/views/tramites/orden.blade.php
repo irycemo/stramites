@@ -153,7 +153,10 @@
                         @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
                         @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
                         @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
-                        @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}} <br>@endif
+                        @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}}@endif
+                        @if($tramite->tipo_documento), Tipo de documento: {{ $tramite->tipo_documento}}@endif
+                        @if($tramite->numero_documento), Número de documento: {{ $tramite->numero_documento}}@endif
+                        @if($tramite->valor_propiedad), Valor de la propiedad: {{ $tramite->valor_propiedad}} <br>@endif
                         @if($tramite->observaciones)
                             <p>Observaciones:{{ $tramite->observaciones }}</p>
                         @endif
@@ -250,7 +253,10 @@
                         @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
                         @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
                         @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
-                        @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}} <br>@endif
+                        @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}}@endif
+                        @if($tramite->tipo_documento), Tipo de documento: {{ $tramite->tipo_documento}}@endif
+                        @if($tramite->numero_documento), Número de documento: {{ $tramite->numero_documento}}@endif
+                        @if($tramite->valor_propiedad), Valor de la propiedad: {{ $tramite->valor_propiedad}} <br>@endif
                         @if($tramite->observaciones)
                             <p>Observaciones:{{ $tramite->observaciones }}</p>
                         @endif

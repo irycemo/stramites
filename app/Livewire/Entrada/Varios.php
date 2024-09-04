@@ -23,7 +23,7 @@ class Varios extends Component
     use ConsultaFolioTrait;
 
     public $flags = [
-        'antecedente' => false,
+        'antecedente' => true,
         'adiciona' => false,
         'solicitante' => true,
         'nombre_solicitante' => false,
@@ -36,8 +36,8 @@ class Varios extends Component
         'numero_inmuebles' => false,
         'dependencias' => false,
         'notarias' => false,
-        'tipo_servicio' => false,
-        'observaciones' => false,
+        'tipo_servicio' => true,
+        'observaciones' => true,
         'tipo_tramite' => false,
         'documento' => false
     ];
@@ -87,16 +87,6 @@ class Varios extends Component
         ]);
 
         if($borrado) $this->crearModeloVacio();
-
-        if($this->servicio['clave_ingreso'] == 'DL09'){
-
-            $this->flags['distrito'] = false;
-            $this->flags['seccion'] = false;
-            $this->flags['antecedente'] = true;
-            $this->flags['observaciones'] = true;
-            $this->flags['tipo_servicio'] = true;
-
-        }
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
 

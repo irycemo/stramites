@@ -10,7 +10,7 @@
 <style>
 
     @page{
-        size:58mm 165mm;
+        size:58mm 200mm;
         margin: 5;
     }
 
@@ -79,6 +79,9 @@
             @if($tramite->seccion)<p><strong>Sección:</strong> {{ $tramite->seccion }}</p>@endif
             @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
             @if($tramite->cantidad) <p><strong>Cantidad:</strong> {{ $tramite->cantidad}} </p>@endif
+            @if($tramite->tipo_documento) <p><strong>Tipo de documento:</strong> {{ $tramite->tipo_documento}}</p>@endif
+            @if($tramite->numero_documento)  <p><strong>Número de documento:</strong> {{ $tramite->numero_documento}}</p>@endif
+            @if($tramite->valor_propiedad) <p><strong> Valor de la propiedad:</strong> {{ $tramite->valor_propiedad}} </p>@endif
             <p><strong>Orden de pago:</strong> {{ $tramite->orden_de_pago }}</p>
             <p><strong>Linea de captura:</strong> {{ $tramite->linea_de_captura }}</p>
             <p><strong>Precalificó:</strong> {{ $tramite->creadoPor->name }}</p>

@@ -20,9 +20,16 @@ class ServiciosApiController extends Controller
 
     public function consultarServicio(Request $request){
 
-        $validated = $request->validate(['clave_ingreso' => 'required|string']);
+        $validated = $request->validate([
+            'clave_ingreso' => 'required|string',
+            'nombre' => 'nullable|string'
+        ]);
 
-        $servicio = Servicio::where('clave_ingreso', $validated['clave_ingreso'])->first();
+        $servicio = Servicio::where('clave_ingreso', $validated['clave_ingreso'])
+                                ->when(isset($validated['nombre']), function($q) use ($validated){
+                                    $q->where('nombre', $validated['nombre']);
+                                })
+                                ->first();
 
         if($servicio){
 
