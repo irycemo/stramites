@@ -280,7 +280,17 @@ class Tramites extends Component
 
         try{
 
-            if($this->modelo_editar->movimiento_registral){
+            $tramite = Tramite::find($this->selected_id);
+
+            if($tramite->estado != 'nuevo'){
+
+                $this->dispatch('mostrarMensaje', ['error', "El trámite no se puede eliminar."]);
+
+                return;
+
+            }
+
+            if($tramite->movimiento_registral){
 
                 $this->dispatch('mostrarMensaje', ['error', "El trámite esta registrado en el Sistema RPP no puede ser eliminado."]);
 
@@ -288,7 +298,15 @@ class Tramites extends Component
 
             }
 
-            if($this->modelo_editar->fecha_pago){
+            if($tramite->movimiento_registral){
+
+                $this->dispatch('mostrarMensaje', ['error', "El trámite esta registrado en el Sistema RPP no puede ser eliminado."]);
+
+                return;
+
+            }
+
+            if($tramite->fecha_pago){
 
                 $this->dispatch('mostrarMensaje', ['error', "El trámite tiene un pago registrado no puede ser borrado."]);
 
@@ -296,7 +314,7 @@ class Tramites extends Component
 
             }
 
-            $this->modelo_editar->delete();
+           $tramite->delete();
 
             $this->resetearTodo($borrado = true);
 

@@ -175,28 +175,27 @@ class Entrada extends Component
 
     public function matenerDatos($tramite){
 
-        $tramite['observaciones'] = null;
-        $tramite['id_servicio'] = null;
-        $tramite['monto'] = null;
-        $tramite['cantidad'] = null;
-        $tramite['tipo_servicio'] = null;
-        $tramite['tipo_tramite'] = null;
-        $tramite['adiciona'] = null;
-        $tramite['movimiento_registral'] = null;
-        $tramite['valor_propiedad'] = null;
-        $tramite['numero_inmuebles'] = null;
-        $tramite['numero_oficio'] = null;
-        $tramite['folio_real'] = null;
-        $tramite['foraneo'] = null;
-        $tramite['fecha_entrega'] = null;
-        $tramite['año'] = null;
-        $tramite['usuario'] = null;
-        $tramite['numero_control'] = null;
-        $tramite['orden_de_pago'] = null;
-        $tramite['linea_de_captura'] = null;
-        $tramite['limite_de_pago'] = null;
-        $tramite['creado_por'] = null;
-        $tramite['servicio'] = null;
+        unset($tramite['observaciones']);
+        unset($tramite['id_servicio']);
+        unset($tramite['monto']);
+        unset($tramite['cantidad']);
+        unset($tramite['tipo_servicio']);
+        unset($tramite['tipo_tramite']);
+        unset($tramite['adiciona']);
+        unset($tramite['movimiento_registral']);
+        unset($tramite['valor_propiedad']);
+        unset($tramite['numero_inmuebles']);
+        unset($tramite['numero_oficio']);
+        unset($tramite['folio_real']);
+        unset($tramite['foraneo']);
+        unset($tramite['fecha_entrega']);
+        unset($tramite['año']);
+        unset($tramite['numero_control']);
+        unset($tramite['orden_de_pago']);
+        unset($tramite['linea_de_captura']);
+        unset($tramite['limite_de_pago']);
+        unset($tramite['creado_por']);
+        unset($tramite['servicio']);
 
         $this->tramiteMantener = $tramite;
 
