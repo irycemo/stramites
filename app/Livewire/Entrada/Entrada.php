@@ -153,7 +153,7 @@ class Entrada extends Component
 
             $this->dispatch('mostrarMensaje', ['error', "No se encontro el trámite."]);
 
-            $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria','numero_control', 'tramite', 'flag']);
+            $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria', 'tramite', 'flag']);
 
             return;
 
@@ -169,7 +169,7 @@ class Entrada extends Component
 
         $this->flag = true;
 
-        $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria','numero_control']);
+        $this->reset(['categoria_seleccionada', 'servicio_seleccionado', 'servicios', 'categoria','numero_control', 'usuario']);
 
     }
 

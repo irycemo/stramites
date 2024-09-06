@@ -363,6 +363,7 @@ class Cancelaciones extends Component
 
         $this->flags['solicitante'] = false;
         $this->flags['observaciones'] = true;
+        $this->flags['tipo_servicio'] = false;
 
         $this->editar = true;
 
