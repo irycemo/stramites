@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Servicio;
@@ -59,6 +60,10 @@ class Tramite extends Model implements Auditable
 
     public function recibidoPor(){
         return $this->belongsTo(User::class, 'recibido_por');
+    }
+
+    public function getFechaEmisionAttribute(){
+        return Carbon::createFromFormat('Y-m-d H:i:s', $this->attributes['fecha_emision'])->format('Y-m-d');
     }
 
 }

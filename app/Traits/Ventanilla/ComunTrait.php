@@ -2,6 +2,7 @@
 
 namespace App\Traits\Ventanilla;
 
+use Exception;
 use App\Models\Tramite;
 use App\Models\Servicio;
 use Illuminate\Support\Facades\DB;
@@ -194,11 +195,21 @@ trait ComunTrait
 
         try{
 
+            if($this->modelo_editar->folio_real || ($this->modelo_editar->tomo && $this->modelo_editar->registro && $this->modelo_editar->numero_propiedad)){
+
+                $this->consultarFolioReal();
+
+            }
+
             (new TramiteService($this->modelo_editar))->actualizar();
 
             $this->resetearTodo($borrado = true);
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite se actualizó con éxito."]);
+
+        } catch (Exception $ex) {
+
+            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
 
         } catch (SistemaRppServiceException $th) {
 
@@ -213,7 +224,7 @@ trait ComunTrait
             Log::error("Error al actualizar el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-            $this->resetearTodo($borrado = true);
+
         }
 
     }
