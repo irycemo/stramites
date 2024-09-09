@@ -143,7 +143,7 @@ class TramiteExport implements FromCollection, WithProperties, WithDrawings, Sho
             $tramite->numero_inmuebles ? $tramite->numero_inmuebles : 'N/A',
             $tramite->numero_escritura ? $tramite->numero_escritura : 'N/A',
             $tramite->numero_notaria ? $tramite->numero_notaria .  ' - ' . $tramite->nombre_notario : 'N/A',
-            $tramite->valor_propiedad ? $tramite->valor_propieda : 'N/A',
+            $tramite->valor_propiedad ? $tramite->valor_propiedad : 'N/A',
             $tramite->fecha_entrega ?? 'N/A',
             $tramite->fecha_pago ?? 'N/A',
             $tramite->documento_de_pago ? $tramite->documento_de_pago : 'N/A',
