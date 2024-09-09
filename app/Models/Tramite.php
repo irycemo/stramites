@@ -63,7 +63,13 @@ class Tramite extends Model implements Auditable
     }
 
     public function getFechaEmisionAttribute(){
-        return Carbon::parse($this->attributes['fecha_emision'])->format('Y-m-d');
+
+        if(isset($this->attributes['fecha_emision'])){
+
+            return Carbon::parse($this->attributes['fecha_emision'])->format('Y-m-d');
+
+        }
+
     }
 
 }
