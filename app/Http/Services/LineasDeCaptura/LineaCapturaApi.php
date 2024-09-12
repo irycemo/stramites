@@ -45,6 +45,14 @@ class LineaCapturaApi
         if($this->tramite->seccion)
             $observaciones = $observaciones . " Sección: " . $this->tramite->seccion;
 
+        if($this->tramite->tipo_documento)
+            $observaciones = $observaciones . " Tipo de documento: " . $this->tramite->tipo_documento;
+
+        if($this->tramite->numero_documento)
+            $observaciones = $observaciones . " Número de documento: " . $this->tramite->numero_documento;
+
+        $observaciones = $observaciones . " Calificó: " . auth()->user()->name;
+
         try {
 
             $response = Http::withBasicAuth($this->soapUserApi, $this->soapPasswordApi)->post($url, [
