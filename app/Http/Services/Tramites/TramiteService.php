@@ -11,6 +11,7 @@ use App\Exceptions\ErrorAlGenerarLineaDeCaptura;
 use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
+use App\Models\AlertaInmobiliaria;
 
 class TramiteService{
 
@@ -259,6 +260,21 @@ class TramiteService{
 
                 if($this->tramite->servicio->categoria->nombre === 'Certificaciones')
                     (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+
+            }
+
+            if($this->tramite->servicio->clave_ingreso == 'DL19' && $this->tramite->folio_real){
+
+                AlertaInmobiliaria::craete([
+                    'estado' => 'activo',
+                    'folio_real' => $this->tramite->folio_real,
+                    'fecha_vencimiento' => now()->addYear()->toDateString(),
+                    'email' => $this->tramite->email
+                ]);
+
+                $this->tramite->update([
+                    'estado' => 'finalizado'
+                ]);
 
             }
 

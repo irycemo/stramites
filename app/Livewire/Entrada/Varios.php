@@ -39,7 +39,8 @@ class Varios extends Component
         'tipo_servicio' => true,
         'observaciones' => true,
         'tipo_tramite' => false,
-        'documento' => true
+        'documento' => true,
+        'email' => false,
     ];
 
     protected function rules(){
@@ -63,11 +64,20 @@ class Varios extends Component
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.procedencia' => 'nullable',
-            'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
-            'modelo_editar.numero_documento' => 'required',
-            'modelo_editar.nombre_autoridad' => 'required',
-            'modelo_editar.autoridad_cargo' => 'required',
-            'modelo_editar.tipo_documento' => 'required',
+            'modelo_editar.fecha_emision' => [
+                                                Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+                                                'nullable',
+                                                'date_format:Y-m-d'
+                                            ],
+            'modelo_editar.numero_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+            'modelo_editar.nombre_autoridad' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+            'modelo_editar.autoridad_cargo' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+            'modelo_editar.tipo_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+            'modelo_editar.email' => [
+                                        'nullable',
+                                        'email',
+                                        Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL19')
+                                    ],
          ];
     }
 
@@ -91,6 +101,19 @@ class Varios extends Component
             'flags',
             'editar',
         ]);
+
+        if($this->servicio['clave_ingreso'] == 'DL19'){
+
+            $this->flags['email'] = true;
+            $this->flags['documento'] = false;
+
+        }
+
+        if($this->servicio['clave_ingreso'] == 'D112'){
+
+            $this->flags['documento'] = false;
+
+        }
 
         if($borrado) $this->crearModeloVacio();
 
@@ -373,6 +396,19 @@ class Varios extends Component
         $this->flags['tomo'] = false;
         $this->flags['registro'] = false;
         $this->flags['observaciones'] = true;
+
+        if($this->servicio['clave_ingreso'] == 'DL19'){
+
+            $this->flags['email'] = true;
+            $this->flags['documento'] = false;
+
+        }
+
+        if($this->servicio['clave_ingreso'] == 'D112'){
+
+            $this->flags['documento'] = false;
+
+        }
 
         $this->editar = true;
 
