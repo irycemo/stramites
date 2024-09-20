@@ -150,8 +150,12 @@
                         <p>Tipo de servicio: {{ $tramite->tipo_servicio }}</p>
                         <p>Orden de pago: {{ $tramite->orden_de_pago }}</p>
                         <p>Total a pagar: ${{ number_format($tramite->monto, 2) }}</p>
-                        @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
-                        @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
+                        @if($tramite->folio_real)
+                            Folio real: {{ $tramite->folio_real }},
+                        @else
+                            @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
+                            @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
+                        @endif
                         @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
                         @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}}@endif
                         @if($tramite->tipo_documento), Tipo de documento: {{ $tramite->tipo_documento}}@endif
@@ -250,8 +254,12 @@
                         <p>Tipo de servicio: {{ $tramite->tipo_servicio }}</p>
                         <p>Orden de pago: {{ $tramite->orden_de_pago }}</p>
                         <p>Total a pagar: ${{ number_format($tramite->monto, 2) }}</p>
-                        @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
-                        @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
+                        @if($tramite->folio_real)
+                            Folio real: {{ $tramite->folio_real }},
+                        @else
+                            @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
+                            @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
+                        @endif
                         @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
                         @if($tramite->cantidad) Cantidad: {{ $tramite->cantidad}}@endif
                         @if($tramite->tipo_documento), Tipo de documento: {{ $tramite->tipo_documento}}@endif
