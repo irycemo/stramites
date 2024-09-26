@@ -337,9 +337,17 @@ class Tramites extends Component
 
     public function enviarTramiteRpp(){
 
+        if($this->modelo_editar->movimiento_registral){
+
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite ya se encuentra en Sistema RPP."]);
+
+            return;
+
+        }
+
         if($this->modelo_editar->adicionaAlTramite && $this->modelo_editar->adicionaAlTramite->servicio->clave_ingreso != 'DC93'){
 
-            $this->dispatch('mostrarMensaje', ['error', "El trámite adiciona al trámite: " . $this->modelo_editar->adicionaAlTramite->numero_control . '-' . $this->modelo_editar->adicionaAlTramite->numero_control . ' no es posible enviarlo al Sistema RPP.']);
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite adiciona al trámite: " . $this->modelo_editar->adicionaAlTramite->numero_control . '-' . $this->modelo_editar->adicionaAlTramite->numero_control . ' no es posible enviarlo al Sistema RPP.']);
 
             return;
 

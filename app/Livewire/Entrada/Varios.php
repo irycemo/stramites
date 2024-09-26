@@ -65,14 +65,14 @@ class Varios extends Component
             'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => [
-                                                Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+                                                Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'D110'])),
                                                 'nullable',
                                                 'date_format:Y-m-d'
                                             ],
-            'modelo_editar.numero_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
-            'modelo_editar.nombre_autoridad' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
-            'modelo_editar.autoridad_cargo' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
-            'modelo_editar.tipo_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+            'modelo_editar.numero_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'D110'])),
+            'modelo_editar.nombre_autoridad' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'D110'])),
+            'modelo_editar.autoridad_cargo' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'D110'])),
+            'modelo_editar.tipo_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'D110'])),
             'modelo_editar.email' => [
                                         'nullable',
                                         'email',
