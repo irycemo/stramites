@@ -331,7 +331,21 @@ class Varios extends Component
 
         try {
 
-            $this->consultarFolioReal();
+            if(
+                !in_array($this->servicio['clave_ingreso'], ['D110']) &&
+                (
+                    $this->modelo_editar->tomo &&
+                    $this->modelo_editar->registro &&
+                    $this->modelo_editar->numero_propiedad &&
+                    $this->modelo_editar->distrito &&
+                    $this->modelo_editar->seccion
+                )
+
+            ){
+
+                $this->consultarFolioReal();
+
+            }
 
             DB::transaction(function (){
 
