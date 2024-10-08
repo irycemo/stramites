@@ -33,7 +33,7 @@ class Recepcion extends Component
 
     protected function rules(){
         return [
-            'documento' => 'required|mimes:pdf',
+            'documento' => 'required',
         ];
     }
 
