@@ -251,18 +251,6 @@
 
                                     @endcan
 
-                                    @can('Borrar variación')
-
-                                        <button
-                                            wire:click="abrirModalBorrar({{ $tramite->id }})"
-                                            wire:loading.attr="disabled"
-                                            class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                                            role="menuitem">
-                                            Eliminar variación
-                                        </button>
-
-                                    @endcan
-
                                     @if($tramite->estado == 'nuevo')
 
                                         @can('Borrar trámite')

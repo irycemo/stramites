@@ -142,15 +142,7 @@ class Recepcion extends Component
 
                 if($this->documento){
 
-                    if(env('LOCAL') === "0" || env('LOCAL') === "2"){
-
-                        $pdf = $this->documento->store('/', 'tramites');
-
-                    }else{
-
-                        $pdf = $this->documento->store('tramties/', 's3');
-
-                    }
+                    $pdf = $this->documento->store('/', 'tramites');
 
                     File::create([
                         'fileable_id' => $this->selected_id,
@@ -158,13 +150,13 @@ class Recepcion extends Component
                         'url' => $pdf
                     ]);
 
-                    (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+                    $this->usuario_asignado = (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
                 }
 
             });
 
-            $this->dispatch('mostrarMensaje', ['success', "El trámite se envió correctamente a Sistema RPP."]);
+            $this->dispatch('mostrarMensaje', ['success', "El trámite se envió correctamente a Sistema RPP. Asignado a: " . $this->usuario_asignado]);
 
             $this->resetearTodo();
 
