@@ -42,6 +42,8 @@ trait ComunTrait
     public $mantener = false;
     public $tramiteMantener;
 
+    public $labelNumeroDocumento = 'Número de documento';
+
     protected $messages = [
         'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
         'modelo_editar.nombre_solicitante' => 'nombre del solicitante',
@@ -105,6 +107,20 @@ trait ComunTrait
         $this->reset('tramite');
 
         $this->resetearTodo($borrado = true);
+
+    }
+
+    public function updatedModeloEditarTipoDocumento(){
+
+        if($this->modelo_editar->tipo_documento == ''){
+
+            $this->reset('labelNumeroDocumento');
+
+        }else{
+
+            $this->labelNumeroDocumento = 'Número de ' . str_replace('_', ' ', $this->modelo_editar->tipo_documento);
+
+        }
 
     }
 

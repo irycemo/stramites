@@ -65,12 +65,12 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.movimiento_registral' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
-            'modelo_editar.numero_documento' => 'required',
+            'modelo_editar.numero_documento' => 'nullable',
             'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D731', 'D115','D116', 'D113', 'D114'])),
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
-            'modelo_editar.valor_propiedad' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], $this->valor_propiedad)),
+            'modelo_editar.valor_propiedad' => [Rule::requiredIf(in_array($this->servicio['clave_ingreso'], $this->valor_propiedad)), 'min:0'],
             'modelo_editar.numero_inmuebles' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], $this->numero_inmuebles)),
             'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
             'modelo_editar.folio_real' => 'nullable',
@@ -447,7 +447,8 @@ class InscripcionesPropiedad extends Component
                     $this->modelo_editar->registro &&
                     $this->modelo_editar->numero_propiedad &&
                     $this->modelo_editar->distrito &&
-                    $this->modelo_editar->seccion
+                    $this->modelo_editar->seccion ||
+                    $this->modelo_editar->folio_real
                 )
 
             ){

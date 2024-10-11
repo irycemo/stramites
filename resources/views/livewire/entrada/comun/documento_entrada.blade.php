@@ -6,7 +6,7 @@
 
         <x-input-group for="modelo_editar.tipo_documento" label="Tipo de documento" :error="$errors->first('modelo_editar.tipo_documento')" class="w-full">
 
-            <x-input-select id="modelo_editar.tipo_documento" wire:model="modelo_editar.tipo_documento" class="w-full">
+            <x-input-select id="modelo_editar.tipo_documento" wire:model.live="modelo_editar.tipo_documento" class="w-full">
 
                 <option value="">Seleccione una opción</option>
                 @foreach ($documentos_entrada as $key => $value)
@@ -28,6 +28,7 @@
                 <option value="foraneo">Notario(a) foraneo</option>
                 <option value="juez">Juez(a)</option>
                 <option value="funcionario">Funcionario</option>
+                <option value="servidor_público">Servidor Público</option>
 
             </x-input-select>
 
@@ -52,7 +53,7 @@
 
         @else
 
-            <x-input-group for="modelo_editar.nombre_autoridad" label="Número y nombre de la autoridad" :error="$errors->first('modelo_editar.nombre_autoridad')" class="w-full">
+            <x-input-group for="modelo_editar.nombre_autoridad" label="Nombre de la autoridad" :error="$errors->first('modelo_editar.nombre_autoridad')" class="w-full">
 
                 <x-input-text id="modelo_editar.nombre_autoridad" wire:model="modelo_editar.nombre_autoridad" />
 
@@ -60,7 +61,7 @@
 
         @endif
 
-        <x-input-group for="modelo_editar.numero_documento" label="Número de documento" :error="$errors->first('modelo_editar.numero_documento')" class="w-full">
+        <x-input-group for="modelo_editar.numero_documento" label="{{ $labelNumeroDocumento }}" :error="$errors->first('modelo_editar.numero_documento')" class="w-full">
 
             <x-input-text id="modelo_editar.numero_documento" wire:model="modelo_editar.numero_documento" />
 
@@ -72,7 +73,7 @@
 
         </x-input-group>
 
-        <x-input-group for="modelo_editar.procedencia" label="Procedencia" :error="$errors->first('modelo_editar.procedencia')" class="w-full">
+        <x-input-group for="modelo_editar.procedencia" label="Dependencia" :error="$errors->first('modelo_editar.procedencia')" class="w-full">
 
             <x-input-text id="modelo_editar.procedencia" wire:model="modelo_editar.procedencia" />
 

@@ -10,7 +10,9 @@ use App\Constantes\Constantes;
 use App\Traits\ComponentesTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
+use App\Http\Services\Tramites\TramiteService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 
 class Recepcion extends Component
@@ -33,7 +35,7 @@ class Recepcion extends Component
 
     protected function rules(){
         return [
-            'documento' => 'required',
+            'documento' => 'required|mimes:pdf',
         ];
     }
 
@@ -49,12 +51,12 @@ class Recepcion extends Component
             'usuario' => 'required'
         ]);
 
-        $this->tramite = Tramite::where('numero_control', $this->numero_control)
+        $this->modelo_editar = Tramite::where('numero_control', $this->numero_control)
                                     ->where('año', $this->año)
                                     ->where('usuario', $this->usuario)
                                     ->first();
 
-        if(!$this->tramite){
+        if(!$this->modelo_editar){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie no existe."]);
 
@@ -64,17 +66,13 @@ class Recepcion extends Component
 
         }
 
-        if($this->tramite->estado != 'pagado'){
+        if($this->modelo_editar->estado != 'pagado'){
 
-            $this->dispatch('mostrarMensaje', ['error', "El trámtie no esta pagado."]);
-
-            $this->reset('tramite');
-
-            return;
+            $this->validarPago();
 
         }
 
-        if($this->tramite->servicio->categoria->nombre == 'Certificaciones'){
+        if($this->modelo_editar->servicio->categoria->nombre == 'Certificaciones'){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie no es una inscripción."]);
 
@@ -84,7 +82,7 @@ class Recepcion extends Component
 
         }
 
-        if($this->tramite->movimiento_registral){
+        if($this->modelo_editar->movimiento_registral){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie ya se encuentra en Sistema RPP."]);
 
@@ -199,6 +197,36 @@ class Recepcion extends Component
             Log::error("Error al guardar documento del trámite id: " . $this->selected_id . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
+
+        }
+
+    }
+
+    public function validarPago(){
+
+        try {
+
+            DB::transaction(function () {
+
+                (new TramiteService($this->modelo_editar))->procesarPago();
+
+                $this->dispatch('mostrarMensaje', ['success', "El trámite se validó con éxito."]);
+
+            });
+
+        } catch (TramiteServiceException $th) {
+
+            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+
+            $this->reset('tramite');
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al validar el trámite en recepción: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . '-' . $this->modelo_editar->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
+
+            $this->reset('tramite');
 
         }
 

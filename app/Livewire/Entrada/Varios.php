@@ -69,7 +69,7 @@ class Varios extends Component
                                                 'nullable',
                                                 'date_format:Y-m-d'
                                             ],
-            'modelo_editar.numero_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+            'modelo_editar.numero_documento' => 'nullable',
             'modelo_editar.nombre_autoridad' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
             'modelo_editar.autoridad_cargo' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
             'modelo_editar.tipo_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),

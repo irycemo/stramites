@@ -60,7 +60,7 @@ class Gravamenes extends Component
             'modelo_editar.movimiento_registral' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
-            'modelo_editar.numero_documento' => 'required',
+            'modelo_editar.numero_documento' => 'nullable',
             'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',

@@ -24,7 +24,7 @@
             <button wire:click="abrirModalCrear" class="bg-gray-500 hover:shadow-lg hover:bg-gray-700 text-sm py-2 px-4 text-white rounded-full hidden md:block items-center justify-center focus:outline-gray-400 focus:outline-offset-2">
 
                 <img wire:loading wire:target="abrirModalCrear" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
-                Agregar nueva permiso
+                Agregar nueva transición
 
             </button>
 
@@ -266,7 +266,7 @@
 
                 </x-input-group>
 
-                <x-input-group for="modelo_editar.seccion" label="Número de propiedad" :error="$errors->first('modelo_editar.seccion')" class="w-full">
+                <x-input-group for="modelo_editar.seccion" label="Sección" :error="$errors->first('modelo_editar.seccion')" class="w-full">
 
                     <x-input-select id="modelo_editar.seccion" wire:model="modelo_editar.seccion">
 
