@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('consultar_servicio', [ServiciosApiController::class, 'consultarServicio']);
 
-    Route::post('craer_tramite', [TramitesApiController::class, 'crearTramtie']);
+    Route::post('crear_tramite', [TramitesApiController::class, 'crearTramtie']);
 
     Route::get('consultar_tramites', [TramitesApiController::class, 'consultarTramites']);
 
@@ -46,3 +46,4 @@ Route::fallback(function(){
             'data' => 'Página no encontrada.']
         , 404);
 });
+

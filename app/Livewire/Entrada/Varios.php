@@ -338,7 +338,8 @@ class Varios extends Component
                     $this->modelo_editar->registro &&
                     $this->modelo_editar->numero_propiedad &&
                     $this->modelo_editar->distrito &&
-                    $this->modelo_editar->seccion
+                    $this->modelo_editar->seccion||
+                    $this->modelo_editar->folio_real
                 )
 
             ){
