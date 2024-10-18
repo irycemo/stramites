@@ -51,12 +51,12 @@ class Recepcion extends Component
             'usuario' => 'required'
         ]);
 
-        $this->modelo_editar = Tramite::where('numero_control', $this->numero_control)
+        $this->tramite = Tramite::where('numero_control', $this->numero_control)
                                     ->where('año', $this->año)
                                     ->where('usuario', $this->usuario)
                                     ->first();
 
-        if(!$this->modelo_editar){
+        if(!$this->tramite){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie no existe."]);
 
@@ -66,13 +66,13 @@ class Recepcion extends Component
 
         }
 
-        if($this->modelo_editar->estado != 'pagado'){
+        if($this->tramite->estado != 'pagado'){
 
             $this->validarPago();
 
         }
 
-        if($this->modelo_editar->servicio->categoria->nombre == 'Certificaciones'){
+        if($this->tramite->servicio->categoria->nombre == 'Certificaciones'){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie no es una inscripción."]);
 
@@ -82,7 +82,7 @@ class Recepcion extends Component
 
         }
 
-        if($this->modelo_editar->movimiento_registral){
+        if($this->tramite->movimiento_registral){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie ya se encuentra en Sistema RPP."]);
 
@@ -92,7 +92,7 @@ class Recepcion extends Component
 
         }
 
-        $this->tramite = $this->modelo_editar;
+        $this->modelo_editar = $this->tramtie;
 
     }
 
