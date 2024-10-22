@@ -92,7 +92,7 @@ class Recepcion extends Component
 
         }
 
-        $this->modelo_editar = $this->tramtie;
+        $this->modelo_editar = $this->tramite;
 
     }
 
