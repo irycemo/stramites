@@ -78,6 +78,7 @@
                 <p><strong>Folio real:</strong> {{ $tramite->folio_real }},</p>
             @else
                 @if($tramite->tomo) <p><strong>Tomo:</strong> {{ $tramite->tomo }}, <strong>Registro:</strong> {{ $tramite->registro}}</p>@endif
+                @if($tramite->numero_propiedad) <p><strong>Número propiedad:</strong> {{ $tramite->numero_propiedad }}</p>@endif
                 @if($tramite->distrito)<p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}</p>@endif
                 @if($tramite->seccion)<p><strong>Sección:</strong> {{ $tramite->seccion }}</p>@endif
             @endif

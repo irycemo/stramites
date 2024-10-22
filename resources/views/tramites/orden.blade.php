@@ -154,6 +154,7 @@
                             Folio real: {{ $tramite->folio_real }},
                         @else
                             @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
+                            @if($tramite->numero_propiedad) <p><strong>Número propiedad:</strong> {{ $tramite->numero_propiedad }}</p>@endif
                             @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
                         @endif
                         @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
@@ -258,6 +259,7 @@
                             Folio real: {{ $tramite->folio_real }},
                         @else
                             @if($tramite->tomo) Tomo: {{ $tramite->tomo }}, @endif @if($tramite->registro) Registro: {{ $tramite->registro}} <br>@endif
+                            @if($tramite->numero_propiedad) <p><strong>Número propiedad:</strong> {{ $tramite->numero_propiedad }}</p>@endif
                             @if($tramite->distrito)<p>Distrito: {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}@endif @if($tramite->seccion), Sección: {{ $tramite->seccion}}</p>@endif
                         @endif
                         @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
