@@ -141,6 +141,7 @@ class SistemaRppService{
                 'procedencia' => $tramite->procedencia,
                 'tomo_gravamen' => $tramite->tomo_gravamen,
                 'registro_gravamen' => $tramite->registro_gravamen,
+                'asiento_registral' => $tramite->asiento_registral
             ]);
 
         } catch (\Throwable $th) {

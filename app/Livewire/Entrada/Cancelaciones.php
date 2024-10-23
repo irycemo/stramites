@@ -369,42 +369,6 @@ class Cancelaciones extends Component
 
     }
 
-    public function consultarGravamen(){
-
-        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                        ->accept('application/json')
-                        ->asForm()
-                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_GRAVAMEN'),[
-                            'folio_real' => $this->modelo_editar->folio_real,
-                            'folio' => $this->modelo_editar->asiento_registral,
-                            'tomo_gravamen' => $this->modelo_editar->tomo_gravamen,
-                            'registro_gravamen' => $this->modelo_editar->registro_gravamen,
-                            'distrito' => $this->modelo_editar->distrito,
-                            'seccion' => $this->modelo_editar->seccion,
-                        ]);
-
-
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
-
-            $this->modelo_editar->asiento_registral = $data['data']['folio'];
-            $this->modelo_editar->tomo_gravamen = $data['data']['tomo_gravamen'];
-            $this->modelo_editar->registro_gravamen = $data['data']['registro_gravamen'];
-
-        }if($response->status() == 404){
-
-            throw new Exception($data['error'] ?? 'No se encontro el recurso');
-
-        }if($response->status() == 401){
-
-            throw new Exception($data['error'] ?? "No se encontro el recurso.");
-
-        }
-
-    }
-
     public function mount(){
 
         $this->solicitantes = Constantes::SOLICITANTES;
