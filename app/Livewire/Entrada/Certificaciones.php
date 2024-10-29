@@ -15,14 +15,12 @@ use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Traits\Ventanilla\ComunTrait;
-use App\Traits\Ventanilla\ConsultaFolioTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Certificaciones extends Component
 {
 
     use ComunTrait;
-    use ConsultaFolioTrait;
 
     public $flags = [
         'antecedente' => false,

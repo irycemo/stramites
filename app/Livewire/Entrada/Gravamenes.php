@@ -20,7 +20,6 @@ class Gravamenes extends Component
 {
 
     use ComunTrait;
-    use ConsultaFolioTrait;
 
     public $flags = [
         'adiciona' => true,

@@ -20,7 +20,6 @@ class Varios extends Component
 {
 
     use ComunTrait;
-    use ConsultaFolioTrait;
 
     public $flags = [
         'antecedente' => true,
@@ -331,22 +330,7 @@ class Varios extends Component
 
         try {
 
-            if(
-                !in_array($this->servicio['clave_ingreso'], ['D110']) &&
-                (
-                    $this->modelo_editar->tomo &&
-                    $this->modelo_editar->registro &&
-                    $this->modelo_editar->numero_propiedad &&
-                    $this->modelo_editar->distrito &&
-                    $this->modelo_editar->seccion||
-                    $this->modelo_editar->folio_real
-                )
-
-            ){
-
-                $this->consultarFolioReal();
-
-            }
+            $this->consultarFolioReal();
 
             DB::transaction(function (){
 

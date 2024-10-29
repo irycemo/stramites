@@ -11,7 +11,6 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Traits\Ventanilla\ComunTrait;
@@ -21,7 +20,6 @@ class Cancelaciones extends Component
 {
 
     use ComunTrait;
-    use ConsultaFolioTrait;
 
     public $flags = [
         'adiciona' => true,

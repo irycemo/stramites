@@ -13,14 +13,12 @@ use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Traits\Ventanilla\ComunTrait;
-use App\Traits\Ventanilla\ConsultaFolioTrait;
 use Exception;
 
 class InscripcionesPropiedad extends Component
 {
 
     use ComunTrait;
-    use ConsultaFolioTrait;
 
     public $valor_propiedad = ['D115','D116', 'D113', 'D114'];
 
