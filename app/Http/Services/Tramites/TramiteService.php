@@ -236,7 +236,7 @@ class TramiteService{
                 /* COPIAS */
                 if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93'){
 
-                    if($this->tramite->adicionaAlTramite->servicio->estado != 'pagado'){
+                    if($this->tramite->adicionaAlTramite->estado != 'pagado'){
 
                         $this->tramite->adicionaAlTramite->update([
                             'estado' => 'pagado',

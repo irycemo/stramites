@@ -41,6 +41,7 @@ class SistemaRppService{
                 'fecha_pago' => $tramite->fecha_pago?->toDateString(),
                 'categoria_servicio' => $tramite->servicio->categoria->nombre,
                 'servicio' => $tramite->servicio->clave_ingreso,
+                'servicio_nombre' => $tramite->servicio->nombre,
                 'numero_oficio' => $tramite->numero_oficio,
                 'folio_real' => $tramite->folio_real,
                 'tomo' => $tramite->tomo,
