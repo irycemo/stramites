@@ -9,7 +9,7 @@
 
         <div>
 
-            <input type="text" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.numero_inmuebles">
+            <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.numero_inmuebles">
 
         </div>
 

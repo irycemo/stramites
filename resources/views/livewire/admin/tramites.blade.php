@@ -1057,7 +1057,7 @@
 
                                 @foreach ($modelo_editar->adicionadoPor as $item)
 
-                                    <p><strong>NC:</strong>{{ $item->año }}-{{ $item->numero_control }}</p>
+                                    <p><strong>NC:</strong>{{ $item->año }}-{{ $item->numero_control }}-{{ $item->usuario }}</p>
 
                                 @endforeach
 

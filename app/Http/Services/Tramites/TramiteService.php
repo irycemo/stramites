@@ -92,7 +92,7 @@ class TramiteService{
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al actualizar trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '. ' . $th);
+            Log::error("Error al actualizar trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '. '  . $this->tramite->usuario . $th);
 
             throw new TramiteServiceException("Error al actualizar trámite");
 
@@ -230,6 +230,7 @@ class TramiteService{
 
             }
 
+            /* Certificaciones */
             if($this->tramite->adiciona){
 
                 /* COPIAS */
@@ -255,7 +256,6 @@ class TramiteService{
 
                 }
 
-            /* Certificaciones que no son copias */
             }else{
 
                 if($this->tramite->servicio->categoria->nombre === 'Certificaciones')
@@ -263,6 +263,7 @@ class TramiteService{
 
             }
 
+            /* Alerta inmobiliaria */
             if($this->tramite->servicio->clave_ingreso == 'DL19' && $this->tramite->folio_real){
 
                 AlertaInmobiliaria::craete([
@@ -317,7 +318,7 @@ class TramiteService{
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al cambiar estado de trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '. ' . $th);
+            Log::error("Error al cambiar estado de trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '. ' . $this->tramite->usuario .$th);
 
             throw new TramiteServiceException("Error al cambiar estado del trámite.");
 

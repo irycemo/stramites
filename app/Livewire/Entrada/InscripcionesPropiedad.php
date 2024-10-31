@@ -124,7 +124,8 @@ class InscripcionesPropiedad extends Component
             $this->flags['antecedente'] = false;
             $this->flags['distrito'] = true;
             $this->flags['seccion'] = true;
-            $this->flags['cantidad'] = true;
+            $this->flags['cantidad'] = false;
+            $this->flags['numero_inmuebles'] = true;
 
         }
 
@@ -407,9 +408,13 @@ class InscripcionesPropiedad extends Component
 
     public function updatedModeloEditarNumeroInmuebles(){
 
-        $this->modelo_editar->cantidad = $this->modelo_editar->numero_inmuebles;
+        if($this->servicio['clave_ingreso'] != 'D731'){
 
-        $this->updatedModeloEditarTipoServicio();
+            $this->modelo_editar->cantidad = $this->modelo_editar->numero_inmuebles;
+
+            $this->updatedModeloEditarTipoServicio();
+
+        }
 
     }
 
