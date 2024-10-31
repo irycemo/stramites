@@ -566,7 +566,7 @@
 
                                 @foreach ($modelo_editar->adicionadoPor as $item)
 
-                                    <p><strong>NC:</strong>{{ $item->año }}-{{ $item->numero_control }}</p>
+                                    <p><strong>NC:</strong><span class="whitespace-nowrap">{{ $item->año }}-{{ $item->numero_control }}-{{ $item->usuario }}</span></p>
 
                                 @endforeach
 
@@ -584,7 +584,7 @@
 
                             <div class="flex space-x-2 flex-row">
 
-                                <p><strong>NC:</strong>{{ $modelo_editar->adicionaAlTramite->año }}-{{ $modelo_editar->adicionaAlTramite->numero_control }}</p>
+                                <p><strong>NC:</strong><span class="whitespace-nowrap">{{ $modelo_editar->adicionaAlTramite->año }}-{{ $modelo_editar->adicionaAlTramite->numero_control }}-{{ $modelo_editar->adicionaAlTramite->usuario }}</span></p>
 
                             </div>
 
