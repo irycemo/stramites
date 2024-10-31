@@ -8,7 +8,7 @@
 
             <div class="flex gap-3">
 
-                <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="año">
+                <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="filters.año">
 
                     <option value="" selected>Año</option>
                     @foreach ($años as $año)
@@ -17,9 +17,9 @@
 
                 </x-input-select>
 
-                <input type="text" wire:model.live.debounce.500ms="folio" placeholder="folio" class="bg-white rounded-full text-sm w-20">
+                <input type="text" wire:model.live.debounce.500ms="filters.folio" placeholder="folio" class="bg-white rounded-full text-sm w-20">
 
-                <input type="text" wire:model.live.debounce.500ms="usuario" placeholder="Usuario" class="bg-white rounded-full text-sm w-20">
+                <input type="text" wire:model.live.debounce.500ms="filters.usuario" placeholder="Usuario" class="bg-white rounded-full text-sm w-20">
 
                 <input type="text" wire:model.live.debounce.500ms="search" placeholder="Buscar" class="bg-white rounded-full text-sm">
 

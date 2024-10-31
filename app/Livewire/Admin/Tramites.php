@@ -41,10 +41,12 @@ class Tramites extends Component
     public $numero_de_control;
     public $tramite;
     public $modalVer = false;
-    public $año;
-    public $folio;
-    public $usuario;
     public $años;
+    public $filters = [
+        'año' => '',
+        'folio' => '',
+        'usuario' => ''
+    ];
 
     public Tramite $modelo_editar;
 
@@ -129,6 +131,8 @@ class Tramites extends Component
         'modelo_editar.tomo_gravamen' => 'tomo gravamen',
         'modelo_editar.numero_oficio' => 'número de oficio'
     ];
+
+    public function updatedFilters() { $this->resetPage(); }
 
     public function updatedModeloEditarSolicitante(){
 
@@ -465,16 +469,16 @@ class Tramites extends Component
     {
 
         $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio.categoria')
-                                ->when(isset($this->año) && $this->año != "", function($q){
-                                    return $q->where('año', $this->año);
+                                ->when($this->filters['año'] != '', function($q){
+                                    return $q->where('año', $this->filters['año']);
 
                                 })
-                                ->when(isset($this->folio) && $this->folio != "", function($q){
-                                    return $q->where('numero_control', $this->folio);
+                                ->when($this->filters['folio'] != '', function($q){
+                                    return $q->where('numero_control', $this->filters['folio']);
 
                                 })
-                                ->when(isset($this->usuario) && $this->usuario != "", function($q){
-                                    return $q->where('usuario', $this->usuario);
+                                ->when($this->filters['usuario'] != '', function($q){
+                                    return $q->where('usuario', $this->filters['usuario']);
 
                                 })
                                 ->where(function($q){
