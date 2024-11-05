@@ -90,8 +90,6 @@
 
         </div>
 
-        {{ $errors }}
-
     </div>
 
 @endif

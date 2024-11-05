@@ -114,6 +114,24 @@ trait ComunTrait
 
     }
 
+    public function updatedModeloEditarTomo(){
+
+        $this->reset('antecedentes');
+
+    }
+
+    public function updatedModeloEditarDistrito(){
+
+        $this->reset('antecedentes');
+
+    }
+
+    public function updatedModeloEditarRegistro(){
+
+        $this->reset('antecedentes');
+
+    }
+
     public function updatedModeloEditarTipoDocumento(){
 
         if($this->modelo_editar->tipo_documento == ''){
@@ -398,6 +416,8 @@ trait ComunTrait
     }
 
     public function consultarAntecedentes(){
+
+        $this->reset('antecedentes');
 
         try {
 
