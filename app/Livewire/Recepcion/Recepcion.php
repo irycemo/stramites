@@ -60,15 +60,9 @@ class Recepcion extends Component
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie no existe."]);
 
-            $this->reset('tramite');
+            $this->crearModeloVacio();
 
             return;
-
-        }
-
-        if($this->tramite->estado != 'pagado'){
-
-            $this->validarPago();
 
         }
 
@@ -76,7 +70,7 @@ class Recepcion extends Component
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie no es una inscripción."]);
 
-            $this->reset('tramite');
+            $this->crearModeloVacio();
 
             return;
 
@@ -86,9 +80,15 @@ class Recepcion extends Component
 
             $this->dispatch('mostrarMensaje', ['error', "El trámtie ya se encuentra en Sistema RPP."]);
 
-            $this->reset('tramite');
+            $this->crearModeloVacio();
 
             return;
+
+        }
+
+        if($this->tramite->estado != 'pagado'){
+
+            $this->validarPago();
 
         }
 
@@ -104,30 +104,6 @@ class Recepcion extends Component
 
         $this->modal = true;
         $this->editar = true;
-
-    }
-
-    public function enviarTramiteRpp(){
-
-        try{
-
-            (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
-
-            $this->resetearTodo($borrado = true);
-
-            $this->dispatch('mostrarMensaje', ['success', "El trámite se envió al Sistema RPP con éxito."]);
-
-        } catch (SistemaRppServiceException $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al enviar trámite al sistema rpp por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
-            $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
-            $this->resetearTodo();
-
-        }
 
     }
 
@@ -195,7 +171,7 @@ class Recepcion extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al guardar documento del trámite id: " . $this->selected_id . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            Log::error("Error al enviar tramitea rpp en recepción del trámite id: " . $this->selected_id . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
             $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
             $this->resetearTodo();
 
