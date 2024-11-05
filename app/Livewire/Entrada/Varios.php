@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Traits\Ventanilla\ComunTrait;
-use App\Traits\Ventanilla\ConsultaFolioTrait;
 
 class Varios extends Component
 {
@@ -49,19 +48,19 @@ class Varios extends Component
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
-            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D110'),
+            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
             'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D110'),
+            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
             'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D110'),
-            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D110'),
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
+            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D110'),
+            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => [
                                                 Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
@@ -85,7 +84,8 @@ class Varios extends Component
         $this->modelo_editar = Tramite::make([
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
-            'tipo_servicio' => 'ordinario'
+            'tipo_servicio' => 'ordinario',
+            'seccion' => 'Propiedad'
         ]);
 
     }

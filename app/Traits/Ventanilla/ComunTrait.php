@@ -46,6 +46,8 @@ trait ComunTrait
 
     public $labelNumeroDocumento = 'Número de documento';
 
+    public $antecedentes = [];
+
     protected $messages = [
         'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
         'modelo_editar.nombre_solicitante' => 'nombre del solicitante',
@@ -390,6 +392,53 @@ trait ComunTrait
                 throw new Exception("La propiedad de encuentra en transición.");
 
             }
+
+        }
+
+    }
+
+    public function consultarAntecedentes(){
+
+        try {
+
+            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_ANTECEDENTES'),[
+                                'tomo' => $this->modelo_editar->tomo,
+                                'registro' => $this->modelo_editar->registro,
+                                'distrito' => $this->modelo_editar->distrito,
+                            ]);
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al consultar antecedentes en entrada " . $th);
+
+            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+
+        }
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 200){
+
+            $this->antecedentes = $data['antecedentes'];
+
+        }elseif($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "Hubo un error.");
+
+        }elseif($response->status() == 403){
+
+            throw new Exception($data['error'] ?? 'Hubo un error');
+
+        }elseif($response->status() == 404){
+
+            throw new Exception("El folio real no existe.");
+
+        }elseif($response->status() == 500){
+
+            throw new Exception("Hubo un error al consultar antecedentes.");
 
         }
 

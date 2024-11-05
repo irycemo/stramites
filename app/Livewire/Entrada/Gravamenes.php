@@ -78,7 +78,8 @@ class Gravamenes extends Component
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
             'tipo_servicio' => 'ordinario',
-            'foraneo' => false
+            'foraneo' => false,
+            'seccion' => 'Propiedad'
         ]);
 
     }

@@ -166,11 +166,21 @@ class TramiteService{
     public function calcularFechaEntrega():string
     {
 
+        if($this->tramite->tipo_servicio->categoria->nombre == 'Certificaciones'){
+
+            $dias = 5;
+
+        }else{
+
+            $dias = 10;
+
+        }
+
         if($this->tramite->tipo_servicio == 'ordinario'){
 
             $actual = now();
 
-            for ($i=0; $i < 5; $i++) {
+            for ($i=0; $i < $dias; $i++) {
 
                 $actual->addDays(1);
 

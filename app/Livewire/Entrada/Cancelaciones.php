@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Traits\Ventanilla\ComunTrait;
-use App\Traits\Ventanilla\ConsultaFolioTrait;
 
 class Cancelaciones extends Component
 {
@@ -80,7 +79,8 @@ class Cancelaciones extends Component
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
             'tipo_servicio' => 'ordinario',
-            'foraneo' => false
+            'foraneo' => false,
+            'seccion' => 'Propiedad'
         ]);
 
     }
