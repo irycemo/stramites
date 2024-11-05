@@ -414,7 +414,7 @@ trait ComunTrait
 
             Log::error("Error al consultar antecedentes en entrada " . $th);
 
-            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+            $this->dispatch('mostrarMensaje', ['error', 'Error al comunicar con Sistema RPP.']);
 
         }
 
@@ -426,19 +426,19 @@ trait ComunTrait
 
         }elseif($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "Hubo un error.");
+            $this->dispatch('mostrarMensaje', ['error', $data['error'] ?? "Hubo un error."]);
 
         }elseif($response->status() == 403){
 
-            throw new Exception($data['error'] ?? 'Hubo un error');
+            $this->dispatch('mostrarMensaje', ['error', $data['error'] ?? "Hubo un error."]);
 
         }elseif($response->status() == 404){
 
-            throw new Exception("El folio real no existe.");
+            $this->dispatch('mostrarMensaje', ['error', "No hay resultados con la información ingresada."]);
 
         }elseif($response->status() == 500){
 
-            throw new Exception("Hubo un error al consultar antecedentes.");
+            $this->dispatch('mostrarMensaje', ['error', "Hubo un error al consultar antecedentes."]);
 
         }
 
