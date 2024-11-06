@@ -74,7 +74,8 @@ class Certificaciones extends Component
         $this->modelo_editar = Tramite::make([
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
-            'tipo_servicio' => 'ordinario'
+            'tipo_servicio' => 'ordinario',
+            'seccion' => 'Propiedad'
         ]);
 
     }
