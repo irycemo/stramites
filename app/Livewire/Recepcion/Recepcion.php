@@ -115,6 +115,8 @@ class Recepcion extends Component
 
             DB::transaction(function () {
 
+                $this->tramite->update(['fecha_prelacion' => now()->toDateString()]);
+
                 if($this->documento){
 
                     $pdf = $this->documento->store('/', 'tramites');
@@ -156,6 +158,8 @@ class Recepcion extends Component
         try {
 
             DB::transaction(function (){
+
+                $this->tramite->update(['fecha_prelacion' => now()->toDateString()]);
 
                 $this->usuario_asignado = (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 

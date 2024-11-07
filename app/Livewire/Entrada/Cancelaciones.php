@@ -33,6 +33,7 @@ class Cancelaciones extends Component
         'tipo_tramite' => false,
         'valor_propiedad' => false,
         'numero_inmuebles' => false,
+        'numero_propiedad' => false,
         'numero_oficio' => false,
         'antecedente_gravamen' => true
     ];

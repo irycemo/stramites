@@ -37,6 +37,7 @@ class InscripcionesPropiedad extends Component
         'tipo_tramite' => false,
         'valor_propiedad' => false,
         'numero_inmuebles' => false,
+        'numero_propiedad' => false,
         'numero_oficio' => false,
         'distrito' => false,
         'cantidad' => false,
@@ -593,3 +594,4 @@ class InscripcionesPropiedad extends Component
         return view('livewire.entrada.inscripciones-propiedad');
     }
 }
+

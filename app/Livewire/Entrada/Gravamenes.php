@@ -33,6 +33,7 @@ class Gravamenes extends Component
         'observaciones' => true,
         'tipo_tramite' => false,
         'valor_propiedad' => false,
+        'numero_propiedad' => false,
         'numero_inmuebles' => false,
         'numero_oficio' => false,
         'antecedente_gravamen' => false

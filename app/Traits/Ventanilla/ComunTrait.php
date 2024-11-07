@@ -417,7 +417,15 @@ trait ComunTrait
 
     public function consultarAntecedentes(){
 
+        $this->validate([
+            'modelo_editar.distrito' => 'required',
+            'modelo_editar.tomo' => 'required',
+            'modelo_editar.registro' => 'required',
+        ]);
+
         $this->reset('antecedentes');
+
+        $this->flags['numero_propiedad'] = false;
 
         try {
 
@@ -454,7 +462,9 @@ trait ComunTrait
 
         }elseif($response->status() == 404){
 
-            $this->dispatch('mostrarMensaje', ['error', "No hay resultados con la información ingresada."]);
+            $this->dispatch('mostrarMensaje', ['warning', "No hay resultados con la información ingresada, ingresa manualmente el número de propiedad."]);
+
+            $this->flags['numero_propiedad'] = true;
 
         }elseif($response->status() == 500){
 

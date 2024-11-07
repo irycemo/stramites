@@ -29,6 +29,7 @@ class Varios extends Component
         'numero_oficio' => false,
         'tomo' => false,
         'registro' => false,
+        'numero_propiedad' => false,
         'distrito' => true,
         'cantidad' => false,
         'numero_inmuebles' => false,

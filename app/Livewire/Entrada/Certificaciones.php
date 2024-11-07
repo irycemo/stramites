@@ -34,6 +34,7 @@ class Certificaciones extends Component
         'distrito' => true,
         'cantidad' => false,
         'numero_inmuebles' => false,
+        'numero_propiedad' => false,
         'dependencias' => false,
         'notarias' => false,
         'tipo_servicio' => true,
