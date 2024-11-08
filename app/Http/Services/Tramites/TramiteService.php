@@ -240,6 +240,8 @@ class TramiteService{
 
             }
 
+            if($this->tramite->seccion == 'Comercio') return;
+
             /* Certificaciones */
             if($this->tramite->adiciona){
 

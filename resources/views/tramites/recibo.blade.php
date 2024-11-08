@@ -10,7 +10,7 @@
 <style>
 
     @page{
-        size:58mm 200mm;
+        size:58mm 250mm;
         margin: 5;
     }
 
@@ -98,6 +98,8 @@
             <p>
                 Total a pagar: ${{ number_format($tramite->monto, 2) }}
             </p>
+
+            <p><strong>Observaciones:</strong> {{ $tramite->observaciones }}</p>
 
         </div>
 

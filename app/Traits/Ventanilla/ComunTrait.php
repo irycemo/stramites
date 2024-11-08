@@ -474,4 +474,10 @@ trait ComunTrait
 
     }
 
+    public function cambiarFlagNumeroPropiedad(){
+
+        $this->flags['numero_propiedad'] = true;
+
+    }
+
 }

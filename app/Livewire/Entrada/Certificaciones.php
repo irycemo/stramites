@@ -124,6 +124,8 @@ class Certificaciones extends Component
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
 
+        if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
+
     }
 
     public function updatedAdicionaTramite(){
@@ -552,6 +554,8 @@ class Certificaciones extends Component
         $this->flags['registro'] = true;
         $this->flags['observaciones'] = true;
 
+        if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
+
         $this->editar = true;
 
     }
@@ -630,12 +634,15 @@ class Certificaciones extends Component
             $this->modelo_editar->distrito = $this->tramiteAdicionado->distrito;
             $this->modelo_editar->seccion = $this->tramiteAdicionado->seccion;
             $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
+            $this->modelo_editar->numero_oficio = $this->tramiteAdicionado->numero_oficio;
 
             if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
 
                 $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
 
             }
+
+            if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
 
         }
 
