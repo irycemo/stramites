@@ -186,7 +186,6 @@ trait ComunTrait
         $this->modelo_editar->registro = null;
         $this->modelo_editar->numero_propiedad = null;
         $this->modelo_editar->distrito = null;
-        $this->modelo_editar->seccion = null;
 
     }
 
