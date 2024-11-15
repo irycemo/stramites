@@ -64,35 +64,39 @@ class Recepcion extends Component
 
             return;
 
+        }else{
+
+            if($this->tramite->servicio->categoria->nombre == 'Certificaciones'){
+
+                $this->dispatch('mostrarMensaje', ['error', "El trámtie no es una inscripción."]);
+
+                $this->crearModeloVacio();
+
+                return;
+
+            }
+
+            if($this->tramite->movimiento_registral){
+
+                $this->dispatch('mostrarMensaje', ['error', "El trámtie ya se encuentra en Sistema RPP."]);
+
+                $this->crearModeloVacio();
+
+                return;
+
+            }
+
+            if($this->tramite->estado != 'pagado'){
+
+                $this->validarPago();
+
+            }else{
+
+                $this->modelo_editar = $this->tramite;
+
+            }
+
         }
-
-        if($this->tramite->servicio->categoria->nombre == 'Certificaciones'){
-
-            $this->dispatch('mostrarMensaje', ['error', "El trámtie no es una inscripción."]);
-
-            $this->crearModeloVacio();
-
-            return;
-
-        }
-
-        if($this->tramite->movimiento_registral){
-
-            $this->dispatch('mostrarMensaje', ['error', "El trámtie ya se encuentra en Sistema RPP."]);
-
-            $this->crearModeloVacio();
-
-            return;
-
-        }
-
-        if($this->tramite->estado != 'pagado'){
-
-            $this->validarPago();
-
-        }
-
-        $this->modelo_editar = $this->tramite;
 
     }
 
@@ -192,6 +196,8 @@ class Recepcion extends Component
                 (new TramiteService($this->modelo_editar))->procesarPago();
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se validó con éxito."]);
+
+                $this->modelo_editar = $this->tramite;
 
             });
 
