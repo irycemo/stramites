@@ -205,7 +205,7 @@ class Recepcion extends Component
 
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
-            $this->reset('tramite');
+            $this->crearModeloVacio();
 
         } catch (\Throwable $th) {
 
@@ -213,7 +213,7 @@ class Recepcion extends Component
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
-            $this->reset('tramite');
+            $this->crearModeloVacio();
 
         }
 
