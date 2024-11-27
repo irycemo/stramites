@@ -62,8 +62,6 @@ class Recepcion extends Component
 
             $this->crearModeloVacio();
 
-            return;
-
         }else{
 
             if($this->tramite->servicio->categoria->nombre == 'Certificaciones'){

@@ -3,6 +3,7 @@
     'for',
     'error' => false,
     'helpText' => false,
+    'errorText' => true,
 ])
 
 <div {{ $attributes->merge(['class']) }}>
@@ -15,7 +16,7 @@
 
         {{ $slot }}
 
-        @if($error)
+        @if($error && $errorText)
 
             <div class="text-red-500 text-sm mt-1"> {{ $error }} </div>
 

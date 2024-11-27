@@ -23,7 +23,7 @@ class TramitesApiController extends Controller
         $validated = $request->validated();
 
         $tramites = Tramite::with('servicio')
-                                ->where('usuario', 67)
+                                ->where('usuario', 4)
                                 ->where('usuario_tramites_linea_id', $validated['entidad'])
                                 ->when(isset($validated['año']), fn($q) => $q->where('año', $validated['año']))
                                 ->when(isset($validated['folio']), fn($q) => $q->where('folio', $validated['folio']))

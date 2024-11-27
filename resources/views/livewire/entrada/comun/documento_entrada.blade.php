@@ -29,6 +29,7 @@
                 <option value="juez">Juez(a)</option>
                 <option value="funcionario">Funcionario</option>
                 <option value="servidor_público">Servidor Público</option>
+                <option value="particular">Particular</option>
 
             </x-input-select>
 
@@ -82,3 +83,4 @@
     </div>
 
 @endif
+
