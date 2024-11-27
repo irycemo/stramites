@@ -168,7 +168,7 @@ class Cancelaciones extends Component
 
     public function updatedModeloEditarAutoridadCargo(){
 
-        if($this->modelo_editar->autoridad_cargo == 'foraneo'){
+        if($this->modelo_editar->autoridad_cargo == 'FORANEO'){
 
             $this->modelo_editar->foraneo = true;
 
@@ -374,7 +374,9 @@ class Cancelaciones extends Component
 
         $this->secciones = Constantes::SECCIONES;
 
-        $this->documentos_entrada = Constantes::DOCUMENTO_ENTRADA;
+        $this->documentos_entrada = Constantes::DOCUMENTOS_DE_ENTRADA;
+
+        $this->cargos_autoridad = Constantes::CARGO_AUTORIDAD;
 
         if(auth()->user()->ubicacion == 'Regional 4'){
 

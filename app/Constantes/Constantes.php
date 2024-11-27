@@ -22,6 +22,16 @@ class Constantes{
         'Transición'
     ];
 
+    const DOCUMENTOS_DE_ENTRADA = [
+        'ESCRITURA PÚBLICA',
+        'ESCRITURA PRIVADA',
+        'ESCRITURA INSTITUCIONAL',
+        'OFICIO',
+        'TÍTULO DE PROPIEDAD',
+        'RESOLUCIÓN JUDICIAL',
+        'CONTRATO'
+    ];
+
     const AREAS_ADSCRIPCION = [
         'Dirección de Catastro',
         'Dirección General del Instituto Registral y Catastral',
@@ -111,12 +121,13 @@ class Constantes{
         '2024' => '2024'
     ];
 
-    const DOCUMENTO_ENTRADA = [
-        "escritura" => 'Escritura',
-        "oficio" => 'Oficio',
-        "oficio_con_resolucion" => 'Oficio con resolución',
-        "contrato" => 'Contrato',
-        "titulo_propiedad" => 'Título de propiedad'
+    const CARGO_AUTORIDAD = [
+        'NOTARIO',
+        'FORANEO',
+        'JUEZ',
+        'FUNCIONARIO',
+        'SERVIDOR PÚBLICO',
+        'PARTICULAR'
     ];
 
 }

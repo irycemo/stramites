@@ -81,6 +81,16 @@ class Entrada extends Component
 
         $this->servicio = json_decode($this->servicio_seleccionado, true);
 
+        if($this->servicio['nombre'] == 'Captura especial de folio real' && !auth()->user()->hasRole(['Administrador', 'Oficialia de partes'])){
+
+            $this->dispatch('mostrarMensaje', ['error', 'No tienes permiso para seleccionar el servicio.']);
+
+            $this->reset(['servicio', 'flags']);
+
+            return;
+
+        }
+
         $this->mostrarComponente($this->categoria['nombre']);
 
         $this->dispatch('cambioServicio', $this->servicio);

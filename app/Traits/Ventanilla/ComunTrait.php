@@ -40,6 +40,7 @@ trait ComunTrait
     public $notarias;
     public $notaria;
     public $documentos_entrada;
+    public $cargos_autoridad;
 
     public $mantener = false;
     public $tramiteMantener;
@@ -140,7 +141,7 @@ trait ComunTrait
 
         }else{
 
-            $this->labelNumeroDocumento = 'Número de ' . str_replace('_', ' ', $this->modelo_editar->tipo_documento);
+            $this->labelNumeroDocumento = 'Número de ' . strtolower($this->modelo_editar->tipo_documento);
 
         }
 
@@ -160,7 +161,7 @@ trait ComunTrait
 
     public function updatedModeloEditarAutoridadCargo(){
 
-        if($this->modelo_editar->autoridad_cargo == 'foraneo'){
+        if($this->modelo_editar->autoridad_cargo == 'FORANEO'){
 
             $this->modelo_editar->foraneo = true;
 

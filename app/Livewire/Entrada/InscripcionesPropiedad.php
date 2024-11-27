@@ -535,7 +535,9 @@ class InscripcionesPropiedad extends Component
 
         $this->secciones = Constantes::SECCIONES;
 
-        $this->documentos_entrada = Constantes::DOCUMENTO_ENTRADA;
+        $this->documentos_entrada = Constantes::DOCUMENTOS_DE_ENTRADA;
+
+        $this->cargos_autoridad = Constantes::CARGO_AUTORIDAD;
 
         if(auth()->user()->ubicacion == 'Regional 4'){
 

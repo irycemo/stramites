@@ -11,7 +11,7 @@
                 <option value="">Seleccione una opción</option>
                 @foreach ($documentos_entrada as $key => $value)
 
-                    <option value="{{ $key }}">{{ $value }}</option>
+                    <option value="{{ $value }}">{{ $value }}</option>
 
                 @endforeach
 
@@ -24,12 +24,11 @@
             <x-input-select id="modelo_editar.autoridad_cargo" wire:model.live="modelo_editar.autoridad_cargo" class="w-full">
 
                 <option value="">Seleccione una opción</option>
-                <option value="notario">Notario(a)</option>
-                <option value="foraneo">Notario(a) foraneo</option>
-                <option value="juez">Juez(a)</option>
-                <option value="funcionario">Funcionario</option>
-                <option value="servidor_público">Servidor Público</option>
-                <option value="particular">Particular</option>
+                @foreach ($cargos_autoridad as $key => $value)
+
+                    <option value="{{ $value }}">{{ $value }}</option>
+
+                @endforeach
 
             </x-input-select>
 
