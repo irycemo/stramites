@@ -331,7 +331,19 @@ class Varios extends Component
 
         try {
 
-            $this->consultarFolioReal();
+            if(
+                $this->modelo_editar->tomo &&
+                $this->modelo_editar->registro &&
+                $this->modelo_editar->numero_propiedad &&
+                $this->modelo_editar->distrito &&
+                $this->modelo_editar->seccion ||
+                $this->modelo_editar->folio_real
+
+            ){
+
+                $this->consultarFolioReal();
+
+            }
 
             DB::transaction(function (){
 

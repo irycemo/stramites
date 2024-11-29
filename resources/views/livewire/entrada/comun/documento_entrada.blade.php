@@ -34,7 +34,7 @@
 
         </x-input-group>
 
-        @if($modelo_editar->autoridad_cargo == 'notario')
+        @if($modelo_editar->autoridad_cargo == 'NOTARIO')
 
             <x-input-group for="modelo_editar.nombre_autoridad" label="Nombre de la autoridad" :error="$errors->first('modelo_editar.nombre_autoridad')" class="w-full">
 

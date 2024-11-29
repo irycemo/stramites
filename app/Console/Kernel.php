@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('expirar:copias')->daily();
         $schedule->command('caducar:tramites')->daily();
         $schedule->command('cache:recaudacion')->daily();
+        $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('01:30');
 
     }
