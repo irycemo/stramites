@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Tramite;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,20 +22,20 @@ class ServiciosApiController extends Controller
     public function consultarServicio(Request $request){
 
         $validated = $request->validate([
-            'clave_ingreso' => 'required|string',
-            'nombre' => 'nullable|string'
+            'ano' => 'required',
+            'numero_control' => 'required',
+            'usuario' => 'required',
         ]);
 
-        $servicio = Servicio::where('clave_ingreso', $validated['clave_ingreso'])
-                                ->when(isset($validated['nombre']), function($q) use ($validated){
-                                    $q->where('nombre', $validated['nombre']);
-                                })
+        $tramite = Tramite::where('año', $validated['ano'])
+                                ->where('numero_control', $validated['numero_control'])
+                                ->where('usuario', $validated['usuario'])
                                 ->first();
 
-        if($servicio){
+        if($tramite){
 
             return response()->json([
-                'nombre' => $servicio->nombre
+                'nombre' => $tramite->servicio->nombre
             ], 200);
 
         }

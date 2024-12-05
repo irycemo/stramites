@@ -141,7 +141,7 @@ trait ComunTrait
 
         }else{
 
-            $this->labelNumeroDocumento = 'Número de ' . strtolower($this->modelo_editar->tipo_documento);
+            $this->labelNumeroDocumento = 'Número de ' . mb_strtolower($this->modelo_editar->tipo_documento);
 
         }
 
