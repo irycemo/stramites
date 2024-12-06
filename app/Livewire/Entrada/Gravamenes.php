@@ -65,7 +65,7 @@ class Gravamenes extends Component
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
-            'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
+            'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.numero_inmuebles' => 'nullable',
             'modelo_editar.asiento_registral' => 'nullable',

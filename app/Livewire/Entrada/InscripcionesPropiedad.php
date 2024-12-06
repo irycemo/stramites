@@ -71,7 +71,7 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.tipo_documento' => 'required',
             'modelo_editar.valor_propiedad' => [Rule::requiredIf(in_array($this->servicio['clave_ingreso'], $this->valor_propiedad)), 'min:0'],
             'modelo_editar.numero_inmuebles' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], $this->numero_inmuebles)),
-            'modelo_editar.numero_oficio' => Rule::requiredIf($this->modelo_editar->solicitante == 'Oficialia de partes'),
+            'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.numero_inmuebles' => 'nullable',
             'modelo_editar.foraneo' => 'required'
