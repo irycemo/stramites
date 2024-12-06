@@ -157,6 +157,22 @@ class Cancelaciones extends Component
             $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
             $this->modelo_editar->tipo_servicio = "extra_urgente";
 
+        }elseif($this->modelo_editar->solicitante == 'SAT'){
+
+            if(!auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No tienes permisos para esta opción."]);
+
+                $this->modelo_editar->solicitante = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
+
+            $this->flags['numero_oficio'] = true;
+
         }else{
 
             $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;

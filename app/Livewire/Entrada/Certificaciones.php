@@ -213,7 +213,8 @@ class Certificaciones extends Component
 
             }
 
-            $this->flags['dependencias'] = true;
+            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
+
             $this->flags['numero_oficio'] = true;
 
         }elseif($this->modelo_editar->solicitante == "S.T.A.S.P.E."){
