@@ -203,6 +203,8 @@ class Recepcion extends Component
 
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
+            $this->tramite = null;
+
             $this->crearModeloVacio();
 
         } catch (\Throwable $th) {
@@ -210,6 +212,8 @@ class Recepcion extends Component
             Log::error("Error al validar el trámite en recepción: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . '-' . $this->modelo_editar->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
+
+            $this->tramite = null;
 
             $this->crearModeloVacio();
 
