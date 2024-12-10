@@ -104,7 +104,7 @@ class TramiteService{
     public function procesarLineaCaptura():void
     {
 
-        if($this->tramite->solicitante == 'Oficialia de partes' || $this->tramite->solicitante == 'SAT'){
+        if($this->tramite->solicitante == 'Oficialia de partes'){
 
             $this->tramite->orden_de_pago = 0;
 

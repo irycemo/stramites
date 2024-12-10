@@ -49,6 +49,8 @@ trait ComunTrait
 
     public $antecedentes = [];
 
+    public $matriz;
+
     protected $messages = [
         'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
         'modelo_editar.nombre_solicitante' => 'El nombre del solicitante es obligatorio',
@@ -377,6 +379,7 @@ trait ComunTrait
             $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
             $this->modelo_editar->distrito = $data['data']['distrito'];
             $this->modelo_editar->seccion = $data['data']['seccion'];
+            $this->matriz = $data['data']['matriz'];
 
         }elseif($response->status() == 401){
 

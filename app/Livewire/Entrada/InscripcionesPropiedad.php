@@ -24,6 +24,8 @@ class InscripcionesPropiedad extends Component
 
     public $numero_inmuebles = ['D123', 'D120', 'D121', 'D122','D119', 'D124', 'D125', 'D126'];
 
+    public $subdivisiones = ['D121', 'D120', 'D123', 'D122', 'D119'];
+
     public $flags = [
         'adiciona' => false,
         'solicitante' => true,
@@ -416,7 +418,7 @@ class InscripcionesPropiedad extends Component
 
         }
 
-        $this->updatedModeloEditarTipoTramite();
+        /* $this->updatedModeloEditarTipoTramite(); */
 
         if($this->modelo_editar->foraneo)
             $this->foraneo();
@@ -475,6 +477,13 @@ class InscripcionesPropiedad extends Component
 
                 $this->consultarFolioReal();
 
+                /* Subdivisiones */
+                if(in_array($this->servicio['clave_ingreso'], $this->subdivisiones) && !$this->matriz){
+
+                    throw new Exception("El folio real no es matriz.");
+
+                }
+
             }
 
             DB::transaction(function (){
@@ -506,7 +515,7 @@ class InscripcionesPropiedad extends Component
         });
 
         }catch (Exception $th) {
-
+            Log::error($th);
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
         }catch (TramiteServiceException $th) {
