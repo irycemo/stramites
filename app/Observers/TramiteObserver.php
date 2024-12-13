@@ -11,6 +11,10 @@ class TramiteObserver
 
         $tramite->año = now()->format('Y');
 
+        $tramite->tomo = (int)$tramite->tomo;
+        $tramite->registro = (int)$tramite->registro;
+        $tramite->numero_propiedad = (int)$tramite->numero_propiedad;
+
         if(auth()->check()){
 
             $tramite->observaciones = 'Calificó: ' . auth()->user()->name . ', Área: ' . auth()->user()->area . '. ' . $tramite->observaciones;

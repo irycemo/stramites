@@ -49,9 +49,9 @@ class Certificaciones extends Component
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
-            'modelo_editar.tomo' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'),
+            'modelo_editar.tomo' => [Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'), 'numeric'],
             'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'),
+            'modelo_editar.registro' => [Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'), 'numeric'],
             'modelo_editar.registro_bis' => 'nullable',
             'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
@@ -62,7 +62,7 @@ class Certificaciones extends Component
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11'])),
+            'modelo_editar.numero_propiedad' => ['nullable', 'numeric', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11'])), 'min:1'],
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
                                                     $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])

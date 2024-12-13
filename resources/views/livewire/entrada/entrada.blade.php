@@ -162,6 +162,12 @@
 
         @endif
 
+        @if($flags['PersonaMoral'])
+
+            @livewire('entrada.persona-moral', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
+
+        @endif
+
     </div>
 
 </div>

@@ -67,7 +67,7 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
             'modelo_editar.numero_documento' => 'nullable',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'D115','D116', 'D113', 'D114'])),
+            'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'D115','D116', 'D113', 'D114'])), 'min:1'],
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',

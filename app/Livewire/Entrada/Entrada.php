@@ -35,7 +35,8 @@ class Entrada extends Component
         'Gravamenes' => false,
         'Cancelaciones' => false,
         'Varios' => false,
-        'Sentencias' => false
+        'Sentencias' => false,
+        'PersonaMoral' => false
     ];
 
     protected $listeners = [
@@ -126,6 +127,7 @@ class Entrada extends Component
                             'Cancelación - Gravamenes' => 'Cancelaciones',
                             'Varios, Arrendamientos, Avisos Preventivos' => 'Varios',
                             'Sentencias' => 'Gravamenes',
+                            'Folio real de persona moral' => 'PersonaMoral',
                             default => 'No encontrada',
 
                         };

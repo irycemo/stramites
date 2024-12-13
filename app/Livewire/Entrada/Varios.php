@@ -61,7 +61,7 @@ class Varios extends Component
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_propiedad' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
+            'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'), 'min:1'],
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => [
                                                 Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),

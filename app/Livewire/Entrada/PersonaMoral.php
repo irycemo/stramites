@@ -11,31 +11,25 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Traits\Ventanilla\ComunTrait;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
-use App\Traits\Ventanilla\ComunTrait;
 
-class Cancelaciones extends Component
+class PersonaMoral extends Component
 {
 
     use ComunTrait;
 
     public $flags = [
-        'adiciona' => true,
         'solicitante' => true,
         'nombre_solicitante' => false,
-        'antecedente' => true,
         'documento' => true,
         'dependencias' => false,
         'notarias' => false,
-        'tipo_servicio' => true,
+        'tipo_servicio' => false,
         'observaciones' => true,
         'tipo_tramite' => false,
-        'valor_propiedad' => false,
-        'numero_inmuebles' => false,
-        'numero_propiedad' => false,
         'numero_oficio' => false,
-        'antecedente_gravamen' => true
     ];
 
     protected function rules(){
@@ -44,33 +38,23 @@ class Cancelaciones extends Component
             'modelo_editar.id_servicio' => 'required',
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
-            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.monto' => 'nullable',
-            'modelo_editar.cantidad' => 'required|numeric|min:1',
+            'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.tipo_servicio' => 'required',
+            'modelo_editar.distrito' => Rule::requiredIf($this->servicio['nombre'] == 'Registro de personas morales'),
             'modelo_editar.tipo_tramite' => 'required',
-            'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
+            'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
-            'modelo_editar.movimiento_registral' => 'nullable',
+            'modelo_editar.folio_real_persona_moral' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
-            'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
+            'modelo_editar.fecha_emision' => [
+                                                'nullable',
+                                                'date_format:Y-m-d'
+                                            ],
             'modelo_editar.numero_documento' => 'nullable',
-            'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null), 'min:1'],
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
-            'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
-            'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_inmuebles' => 'nullable',
-            'modelo_editar.asiento_registral' => 'nullable',
-            'modelo_editar.foraneo' => 'required',
-            'modelo_editar.tomo_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
-            'modelo_editar.registro_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
+            'modelo_editar.seccion' => 'required',
          ];
     }
 
@@ -80,32 +64,8 @@ class Cancelaciones extends Component
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
             'tipo_servicio' => 'ordinario',
-            'foraneo' => false,
-            'seccion' => 'Propiedad'
+            'seccion' => 'Folio real de persona moral'
         ]);
-
-    }
-
-    public function resetearTodo($borrado = false){
-
-        $this->resetErrorBag();
-
-        $this->resetValidation();
-
-        $this->reset([
-            'adicionaTramite',
-            'tramitesAdicionados',
-            'tramiteAdicionadoSeleccionado',
-            'tramiteAdicionado',
-            'flags',
-            'editar',
-        ]);
-
-        if($borrado) $this->crearModeloVacio();
-
-        $this->modelo_editar->id_servicio = $this->servicio['id'];
-
-        $this->modelo_editar->monto = $this->servicio['ordinario'];
 
     }
 
@@ -117,14 +77,12 @@ class Cancelaciones extends Component
         $this->modelo_editar->tipo_tramite = 'normal';
         $this->notaria = null;
 
-        $this->modelo_editar->tipo_tramite = 'normal';
-
-        $this->updatedModeloEditarTipoServicio();
-
         $this->flags['nombre_solicitante'] = false;
         $this->flags['dependencias'] = false;
         $this->flags['notarias'] = false;
         $this->flags['numero_oficio'] = false;
+
+        $this->modelo_editar->tipo_tramite = 'normal';
 
         if($this->modelo_editar->solicitante == 'Usuario'){
 
@@ -151,6 +109,21 @@ class Cancelaciones extends Component
 
             $this->modelo_editar->monto = 0;
             $this->modelo_editar->tipo_tramite = 'exento';
+
+        }elseif($this->modelo_editar->solicitante == 'SAT'){
+
+            if(!auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['error', "No tienes permisos para esta opción."]);
+
+                $this->modelo_editar->solicitante = null;
+
+                return;
+
+            }
+
+            $this->flags['dependencias'] = true;
+            $this->flags['numero_oficio'] = true;
 
         }elseif($this->modelo_editar->solicitante == "S.T.A.S.P.E."){
 
@@ -179,18 +152,39 @@ class Cancelaciones extends Component
 
         }
 
+        $this->updatedModeloEditarTipoServicio();
 
     }
 
-    public function updatedModeloEditarAutoridadCargo(){
+    public function updatedModeloEditarTipoTramite(){
 
-        if($this->modelo_editar->autoridad_cargo == 'FORANEO'){
+        if(!$this->modelo_editar->tipo_servicio){
 
-            $this->modelo_editar->foraneo = true;
+            $this->dispatch('mostrarMensaje', ['error', "Es necesario indique el tipo de servicio."]);
 
-        }else{
+            return;
 
-            $this->modelo_editar->foraneo = false;
+        }
+
+        if($this->modelo_editar->tipo_tramite == 'exento'){
+
+            $this->modelo_editar->monto = 0;
+
+        }elseif($this->modelo_editar->tipo_tramite == 'complemento'){
+
+            $this->modelo_editar->tipo_tramite = 'normal';
+
+            $this->updatedModeloEditarTipoTramite();
+
+        }elseif($this->modelo_editar->tipo_tramite == 'normal'){
+
+            $this->modelo_editar->monto = $this->servicio[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
+
+        }
+
+        if($this->modelo_editar->tipo_tramite == 'normal'){
+
+            $this->flags['cantidad'] = true;
 
         }
 
@@ -202,7 +196,7 @@ class Cancelaciones extends Component
 
             $this->dispatch('mostrarMensaje', ['error', "Debe seleccionar un servicio."]);
 
-            $this->modelo_editar->tipo_servicio = null;
+            $this->modelo_editar->tipo_servicio = 'ordinario';
 
             $this->modelo_editar->solicitante = null;
 
@@ -215,7 +209,7 @@ class Cancelaciones extends Component
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio ordinario para el servicio seleccionado."]);
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
 
                 return;
 
@@ -225,24 +219,24 @@ class Cancelaciones extends Component
 
             if($this->modelo_editar->tipo_tramite == 'complemento'){
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
             }
 
         }
         elseif($this->modelo_editar->tipo_servicio == 'urgente'){
 
-            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
+            if(now() > now()->startOfDay()->addHour(14) && !auth()->user()->hasRole('Administrador')){
 
                 $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
             }
 
             if($this->servicio['urgente'] == 0){
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio urgente para el servicio seleccionado."]);
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
 
                 return;
 
@@ -250,36 +244,26 @@ class Cancelaciones extends Component
 
             $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
 
-            if($this->modelo_editar->tipo_tramite == 'complemento' && $this->tramiteAdicionado->tipo_servicio == 'urgente'){
+            if($this->modelo_editar->tipo_tramite == 'complemento'){
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
             }
 
         }
         elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
 
-            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
+            if(now() > now()->startOfDay()->addHour(12) && !auth()->user()->hasRole('Administrador')){
 
-                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 12:00 hrs."]);
+                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 11:00 hrs."]);
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
             }
-
-            /* if(!$this->modelo_editar->folio_real){
-
-                $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente sin folio real."]);
-
-                $this->modelo_editar->tipo_servicio = null;
-
-                return;
-
-            } */
 
             if($this->servicio['extra_urgente']  == 0){
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente para el servicio seleccionado."]);
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
 
                 return;
 
@@ -295,18 +279,30 @@ class Cancelaciones extends Component
 
         }
 
+        $this->updatedModeloEditarTipoTramite();
+
     }
 
-    public function updatedModeloEditarAsientoRegistral(){
+    public function resetearTodo($borrado = false){
 
-        if($this->modelo_editar->asiento_registral == ''){
+        $this->resetErrorBag();
 
-            $this->modelo_editar->asiento_registral = null;
+        $this->resetValidation();
+
+        $this->reset([
+            'flags',
+            'editar',
+        ]);
+
+        if($this->servicio['nombre'] == 'Registro de personas morales'){
+
+            $this->flags['distrito'] = true;
 
         }
 
-        $this->modelo_editar->tomo_gravamen = null;
-        $this->modelo_editar->registro_gravamen = null;
+        if($borrado) $this->crearModeloVacio();
+
+        $this->modelo_editar->id_servicio = $this->servicio['id'];
 
     }
 
@@ -315,10 +311,6 @@ class Cancelaciones extends Component
         $this->validate();
 
         try {
-
-            $this->consultarFolioReal();
-
-            $this->consultarGravamen();
 
             DB::transaction(function (){
 
@@ -378,17 +370,16 @@ class Cancelaciones extends Component
 
         $this->flags['solicitante'] = false;
         $this->flags['observaciones'] = true;
-        $this->flags['tipo_servicio'] = false;
 
         $this->editar = true;
+
+
 
     }
 
     public function mount(){
 
         $this->solicitantes = Constantes::SOLICITANTES;
-
-        $this->secciones = Constantes::SECCIONES;
 
         $this->documentos_entrada = Constantes::DOCUMENTOS_DE_ENTRADA;
 
@@ -405,6 +396,8 @@ class Cancelaciones extends Component
             unset($this->distritos[2]);
 
         }
+
+        $this->resetearTodo($borrado = true);
 
         if(!cache()->get('dependencias')){
 
@@ -430,8 +423,6 @@ class Cancelaciones extends Component
 
         }
 
-        $this->resetearTodo($borrado = true);
-
         if($this->tramiteMantener){
 
             foreach ($this->tramiteMantener as $key => $value) {
@@ -448,6 +439,6 @@ class Cancelaciones extends Component
 
     public function render()
     {
-        return view('livewire.entrada.cancelaciones');
+        return view('livewire.entrada.persona-moral');
     }
 }
