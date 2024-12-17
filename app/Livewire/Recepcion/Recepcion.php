@@ -86,6 +86,8 @@ class Recepcion extends Component
 
             if($this->tramite->estado != 'pagado'){
 
+                $this->modelo_editar = $this->tramite;
+
                 $this->validarPago();
 
             }else{
