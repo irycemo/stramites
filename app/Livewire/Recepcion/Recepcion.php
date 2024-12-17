@@ -197,8 +197,6 @@ class Recepcion extends Component
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se validó con éxito."]);
 
-                $this->modelo_editar = $this->tramite;
-
             });
 
         } catch (TramiteServiceException $th) {
