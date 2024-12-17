@@ -201,6 +201,8 @@ class Recepcion extends Component
 
         } catch (TramiteServiceException $th) {
 
+            Log::error("Error al validar el trámite en recepción: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . '-' . $this->modelo_editar->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+
             $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
 
             $this->tramite = null;
