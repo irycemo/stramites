@@ -45,6 +45,7 @@ class Subdivisiones extends Component
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'required',
             'modelo_editar.procedencia' => 'nullable',
+            'modelo_editar.monto' => 'nullable',
             'modelo_editar.fecha_emision' => [
                                                 'nullable',
                                                 'date_format:Y-m-d'
@@ -63,7 +64,8 @@ class Subdivisiones extends Component
             'cantidad' => 1,
             'tipo_tramite' => 'normal',
             'tipo_servicio' => 'ordinario',
-            'seccion' => 'Subdivisiones'
+            'seccion' => 'Subdivisiones',
+            'numero_inmuebles' => 1
         ]);
 
     }
@@ -282,6 +284,14 @@ class Subdivisiones extends Component
 
     }
 
+    public function updatedModeloEditarNumeroInmuebles(){
+
+        $this->modelo_editar->cantidad = $this->modelo_editar->numero_inmuebles;
+
+        $this->updatedModeloEditarTipoServicio();
+
+    }
+
     public function resetearTodo($borrado = false){
 
         $this->resetErrorBag();
@@ -371,6 +381,7 @@ class Subdivisiones extends Component
 
         $this->flags['solicitante'] = false;
         $this->flags['observaciones'] = true;
+        $this->flags['numero_inmuebles'] = true;
 
         $this->editar = true;
 
