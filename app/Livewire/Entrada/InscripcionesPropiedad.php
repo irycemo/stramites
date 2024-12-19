@@ -477,13 +477,6 @@ class InscripcionesPropiedad extends Component
 
                 $this->consultarFolioReal();
 
-                /* Subdivisiones */
-                if(in_array($this->servicio['clave_ingreso'], $this->subdivisiones) && !$this->matriz){
-
-                    throw new Exception("El folio real no es matriz.");
-
-                }
-
             }
 
             DB::transaction(function (){

@@ -168,6 +168,12 @@
 
         @endif
 
+        @if($flags['Subdivisiones'])
+
+            @livewire('entrada.subdivisiones', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
+
+        @endif
+
     </div>
 
 </div>

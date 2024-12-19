@@ -36,7 +36,8 @@ class Entrada extends Component
         'Cancelaciones' => false,
         'Varios' => false,
         'Sentencias' => false,
-        'PersonaMoral' => false
+        'PersonaMoral' => false,
+        'Subdivisiones' => false
     ];
 
     protected $listeners = [
@@ -128,6 +129,7 @@ class Entrada extends Component
                             'Varios, Arrendamientos, Avisos Preventivos' => 'Varios',
                             'Sentencias' => 'Gravamenes',
                             'Folio real de persona moral' => 'PersonaMoral',
+                            'Subdivisiones' => 'Subdivisiones',
                             default => 'No encontrada',
 
                         };
