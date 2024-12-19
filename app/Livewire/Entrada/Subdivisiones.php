@@ -28,7 +28,8 @@ class Subdivisiones extends Component
         'notarias' => false,
         'observaciones' => true,
         'numero_oficio' => false,
-        'folio_real' => true
+        'folio_real' => true,
+        'numero_inmuebles' => true,
     ];
 
     protected function rules(){
@@ -39,11 +40,9 @@ class Subdivisiones extends Component
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.tipo_servicio' => 'required',
-            'modelo_editar.distrito' => Rule::requiredIf($this->servicio['nombre'] == 'Registro de personas morales'),
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
-            'modelo_editar.folio_real_persona_moral' => 'nullable',
             'modelo_editar.folio_real' => 'required',
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => [
@@ -54,7 +53,7 @@ class Subdivisiones extends Component
             'modelo_editar.nombre_autoridad' => 'required',
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
-            'modelo_editar.seccion' => 'required',
+            'modelo_editar.numero_inmuebles' => 'required|numeric|min:1',
          ];
     }
 

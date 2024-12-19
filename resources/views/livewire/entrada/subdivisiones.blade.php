@@ -15,6 +15,8 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
+                        @include('livewire.entrada.comun.numero_inmuebles')
+
                         @include('livewire.entrada.comun.folio_real')
 
                         @include('livewire.entrada.comun.numero_oficio')
