@@ -118,7 +118,8 @@ class Constantes{
 
     const AÑOS = [
         '2023' => '2023',
-        '2024' => '2024'
+        '2024' => '2024',
+        '2025' => '2025'
     ];
 
     const CARGO_AUTORIDAD = [
