@@ -88,7 +88,6 @@
             @if($tramite->numero_documento)  <p><strong>Número de documento:</strong> {{ $tramite->numero_documento}}</p>@endif
             @if($tramite->valor_propiedad) <p><strong> Valor de la propiedad:</strong> {{ $tramite->valor_propiedad}} </p>@endif
             <p><strong>Orden de pago:</strong> {{ $tramite->orden_de_pago }}</p>
-            <p><strong>Linea de captura:</strong> {{ $tramite->linea_de_captura }}</p>
             <p><strong>Precalificó:</strong> {{ $tramite->creadoPor->name }}</p>
 
         </div>
@@ -100,6 +99,14 @@
             </p>
 
             <p><strong>Observaciones:</strong> {{ $tramite->observaciones }}</p>
+
+        </div>
+
+        <div class="content" style="text-align: center;">
+
+            <p><strong>Linea de captura:</strong></p>
+            <img style="width: 100%;" src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
+            <p> {{ $tramite->linea_de_captura }}</p>
 
         </div>
 

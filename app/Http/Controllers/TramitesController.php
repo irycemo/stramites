@@ -16,7 +16,9 @@ class TramitesController extends Controller
 
         $tramite->load('servicio');
 
-        $pdf = Pdf::loadView('tramites.recibo', compact('tramite'));
+        $generatorPNG = new BarcodeGeneratorPNG();
+
+        $pdf = Pdf::loadView('tramites.recibo', compact('tramite', 'generatorPNG'));
 
         return $pdf->stream('recibo.pdf');
     }
