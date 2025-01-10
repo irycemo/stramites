@@ -53,6 +53,16 @@ class LineaCapturaApi
 
         $observaciones = $observaciones . " Calificó: " . auth()->user()->name;
 
+        if($this->tramite->tipo_servicio == 'urgente'){
+
+            $this->tramite->cantidad = $this->tramite->cantidad * 2;
+
+        }elseif($this->tramite->tipo_servicio == 'urgente'){
+
+            $this->tramite->cantidad = $this->tramite->cantidad * 3;
+
+        }
+
         try {
 
             $response = Http::withBasicAuth($this->soapUserApi, $this->soapPasswordApi)->post($url, [

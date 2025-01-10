@@ -101,10 +101,14 @@ class Certificaciones extends Component
         if($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'){
 
             $this->flags['cantidad'] = true;
-            $this->flags['tomo'] = true;
-            $this->flags['registro'] = true;
+            $this->flags['solicitante'] = false;
+            $this->flags['tomo'] = false;
+            $this->flags['registro'] = false;
+            $this->flags['seccion'] = false;
+            $this->flags['distrito'] = false;
             $this->flags['adiciona'] = true;
             $this->flags['observaciones'] = true;
+            $this->adicionaTramite = true;
 
         }elseif($this->servicio['clave_ingreso'] == 'DL07'){
 
@@ -129,6 +133,8 @@ class Certificaciones extends Component
     }
 
     public function updatedAdicionaTramite(){
+
+        return;
 
         $this->modelo_editar->adiciona = null;
 
