@@ -15,8 +15,6 @@ class TramiteObserver
         $tramite->registro = $tramite->registro ? (int)$tramite->registro : null;
         $tramite->numero_propiedad = $tramite->numero_propiedad ? (int)$tramite->numero_propiedad : null;
 
-        dd($tramite);
-
         if(auth()->check()){
 
             $tramite->observaciones = 'Calificó: ' . auth()->user()->name . ', Área: ' . auth()->user()->area . '. ' . $tramite->observaciones;
