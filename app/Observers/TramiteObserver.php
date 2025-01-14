@@ -11,9 +11,11 @@ class TramiteObserver
 
         $tramite->año = now()->format('Y');
 
-        $tramite->tomo = (int)$tramite->tomo;
-        $tramite->registro = (int)$tramite->registro;
-        $tramite->numero_propiedad = (int)$tramite->numero_propiedad;
+        $tramite->tomo = $tramite->tomo ? (int)$tramite->tomo : null;
+        $tramite->registro = $tramite->registro ? (int)$tramite->registro : null;
+        $tramite->numero_propiedad = $tramite->numero_propiedad ? (int)$tramite->numero_propiedad : null;
+
+        dd($tramite);
 
         if(auth()->check()){
 
