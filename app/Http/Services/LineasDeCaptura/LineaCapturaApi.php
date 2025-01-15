@@ -57,11 +57,13 @@ class LineaCapturaApi
 
             $this->tramite->cantidad = $this->tramite->cantidad * 2;
 
-        }elseif($this->tramite->tipo_servicio == 'urgente'){
+        }elseif($this->tramite->tipo_servicio == 'extra_urgente'){
 
             $this->tramite->cantidad = $this->tramite->cantidad * 3;
 
         }
+
+        dd($this->tramite->cantidad);
 
         try {
 
