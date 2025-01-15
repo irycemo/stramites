@@ -15,7 +15,11 @@
 
                     @include('livewire.entrada.comun.antecedente')
 
-                    @include('livewire.entrada.comun.documento_entrada')
+                    @if($this->servicio['clave_ingreso'] != 'D118')
+
+                        @include('livewire.entrada.comun.documento_entrada')
+
+                    @endif
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
