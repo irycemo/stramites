@@ -63,8 +63,6 @@ class LineaCapturaApi
 
         }
 
-        dd($this->tramite->cantidad);
-
         try {
 
             $response = Http::withBasicAuth($this->soapUserApi, $this->soapPasswordApi)->post($url, [
