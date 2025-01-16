@@ -80,6 +80,8 @@ class Recepcion extends Component
 
                 $this->crearModeloVacio();
 
+                $this->tramite = null;
+
                 return;
 
             }

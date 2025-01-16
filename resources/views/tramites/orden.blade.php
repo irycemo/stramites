@@ -95,6 +95,15 @@
         font-size: 9px;
     }
 
+    .punteada{
+        border: none;
+        border-top: 1px dotted black;
+        color: #fff;
+        background-color: #fff;
+        height: 1px;
+        width: 100%;
+    }
+
 </style>
 
 <body>
@@ -128,7 +137,7 @@
 
         </table>
 
-        <h1 class="titulo">Orden de pago</h1>
+        <h1 class="titulo">Orden de pago <strong>(COPIA CAJERO)</strong></h1>
 
         <table class="table">
 
@@ -176,9 +185,10 @@
                                 <p>La vigencia para el pago de este trámite es:</p>
                                 <p>{{ $tramite->limite_de_pago->format('d-m-Y') }}.</p>
 
-                                <p >Linea de captura:</p>
+                                <p >Referencia de pago:</p>
                                 <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
                                 <p>{{ $tramite->linea_de_captura }}</p>
+                                <img src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
 
                             </div>
 
@@ -203,6 +213,8 @@
     </div>
 
     <br>
+
+    <hr class="punteada">
 
     <div>
 
@@ -233,7 +245,7 @@
 
         </table>
 
-        <h1 class="titulo">Orden de pago</h1>
+        <h1 class="titulo">Orden de pago <strong>(COPIA USUARIO)</strong></h1>
 
         <table class="table">
 
@@ -281,10 +293,10 @@
                                 <p>La vigencia para el pago de este trámite es:</p>
                                 <p>{{ $tramite->limite_de_pago->format('d-m-Y') }}.</p>
 
-                                <p >Linea de captura:</p>
+                                <p >Referencia de pago:</p>
                                 <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
                                 <p>{{ $tramite->linea_de_captura }}</p>
-
+                                <img src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
                             </div>
 
                         @endif

@@ -104,14 +104,15 @@
 
         <div class="content" style="text-align: center;">
 
-            <p><strong>Linea de captura:</strong></p>
+            <p><strong>Referencia de pago:</strong></p>
             <img style="width: 100%;" src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
             <p> {{ $tramite->linea_de_captura }}</p>
+            <img style="width: 100%;" src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
 
         </div>
 
         <div class="footer">
-            <p style="margin-bottom: 5px">LA VIGENCIA PARA EL PAGO DE ESTE TRÁMITE ES: {{ $tramite->limite_de_pago->format('d-m-Y') }}.</p>
+            <p style="margin: 10px 0 0 0 ">LA VIGENCIA PARA EL PAGO DE ESTE TRÁMITE ES: {{ $tramite->limite_de_pago->format('d-m-Y') }}.</p>
             {{-- <p>Pago en OXXO. Cod. Banco: 012. Cod. Convenio: 50001</p> --}}
             <hr>
             <p>VERIFICAR LOS DATOS ANTES DE PAGAR</p>
