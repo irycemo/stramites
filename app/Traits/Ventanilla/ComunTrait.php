@@ -78,6 +78,8 @@ trait ComunTrait
         'modelo_editar.valor_propiedad' => 'valor de la propiedad',
         'modelo_editar.tomo_gravamen' => 'tomo del gravamen',
         'modelo_editar.registro_gravamen' => 'registro del gravamen',
+        'modelo_editar.asiento_registral' => 'movimiento registral',
+        'modelo_editar.folio_real' => 'folio real',
     ];
 
     public function getListeners()
@@ -413,6 +415,53 @@ trait ComunTrait
                 throw new Exception("La propiedad de encuentra en transición.");
 
             }
+
+        }
+
+    }
+
+    public function consultarFolioMovimiento(){
+
+        try {
+
+            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_MOVIMIENTO'),[
+                                'folio_real' => $this->modelo_editar->folio_real,
+                                'asiento_registral' => $this->modelo_editar->asiento_registral,
+                            ]);
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al consultar folio real al crear trámite " . $th);
+
+            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+
+        }
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 200){
+
+            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->tomo = $data['data']['tomo'];
+            $this->modelo_editar->registro = $data['data']['registro'];
+            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+            $this->modelo_editar->distrito = $data['data']['distrito'];
+            $this->modelo_editar->seccion = $data['data']['seccion'];
+
+        }elseif($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "Hubo un error.");
+
+        }elseif($response->status() == 404){
+
+            throw new Exception($data['error'] ?? 'Hubo un error');
+
+        }elseif($response->status() == 500){
+
+            throw new Exception("Hubo un error al consultar el folio real.");
 
         }
 

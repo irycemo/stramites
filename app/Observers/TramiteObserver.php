@@ -14,6 +14,9 @@ class TramiteObserver
         $tramite->tomo = $tramite->tomo ? (int)$tramite->tomo : null;
         $tramite->registro = $tramite->registro ? (int)$tramite->registro : null;
         $tramite->numero_propiedad = $tramite->numero_propiedad ? (int)$tramite->numero_propiedad : null;
+        $tramite->numero_propiedad = $tramite->numero_propiedad ? (int)$tramite->numero_propiedad : null;
+        $tramite->tomo_gravamen = $tramite->tomo_gravamen ? (int)$tramite->tomo_gravamen : null;
+        $tramite->registro_gravamen = $tramite->registro_gravamen ? (int)$tramite->registro_gravamen : null;
 
         if(auth()->check()){
 

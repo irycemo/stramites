@@ -17,6 +17,10 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative" wire:loading.class.delay.longest="opacity-50">
 
+                        @include('livewire.entrada.comun.folio_real')
+
+                        @include('livewire.entrada.comun.movimiento_registral')
+
                         @include('livewire.entrada.comun.tomo')
 
                         @include('livewire.entrada.comun.registro')

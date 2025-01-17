@@ -10,7 +10,7 @@
 
         <div>
 
-            <select class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.seccion">
+            <select class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.seccion" @if($modelo_editar->folio_real != null) disabled @endif>
 
                 <option value="" selected>Seleccione una opción</option>
 

@@ -40,6 +40,8 @@ class Certificaciones extends Component
         'tipo_servicio' => true,
         'observaciones' => true,
         'tipo_tramite' => false,
+        'folio_real' => false,
+        'movimiento_registral' => false
     ];
 
     protected function rules(){
@@ -49,9 +51,9 @@ class Certificaciones extends Component
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
-            'modelo_editar.tomo' => [Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'), 'nullable', 'numeric'],
+            'modelo_editar.tomo' => [Rule::requiredIf(($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13') && !$this->modelo_editar->folio_real), 'nullable', 'numeric'],
             'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => [Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'), 'nullable', 'numeric'],
+            'modelo_editar.registro' => [Rule::requiredIf(($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13') && !$this->modelo_editar->folio_real), 'nullable', 'numeric'],
             'modelo_editar.registro_bis' => 'nullable',
             'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
@@ -61,7 +63,8 @@ class Certificaciones extends Component
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
-            'modelo_editar.folio_real' => 'nullable',
+            'modelo_editar.folio_real' => [Rule::requiredIf($this->modelo_editar->asiento_registral != null), 'nullable'],
+            'modelo_editar.asiento_registral' => 'nullable',
             'modelo_editar.numero_propiedad' => ['nullable', 'numeric', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11'])), 'min:1'],
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
@@ -106,6 +109,8 @@ class Certificaciones extends Component
             $this->flags['registro'] = false;
             $this->flags['seccion'] = false;
             $this->flags['distrito'] = false;
+            $this->flags['movimiento_registral'] = false;
+            $this->flags['folio_real'] = false;
             $this->flags['adiciona'] = true;
             $this->flags['observaciones'] = true;
             $this->adicionaTramite = true;
@@ -130,6 +135,22 @@ class Certificaciones extends Component
 
         if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
 
+        if(auth()->user()->hasRole('Oficialia de partes')){
+
+            $this->flags['cantidad'] = true;
+            $this->flags['solicitante'] = true;
+            $this->flags['tomo'] = true;
+            $this->flags['registro'] = true;
+            $this->flags['seccion'] = true;
+            $this->flags['folio_real'] = true;
+            $this->flags['movimiento_registral'] = true;
+            $this->flags['distrito'] = true;
+            $this->flags['adiciona'] = false;
+            $this->flags['observaciones'] = true;
+            $this->adicionaTramite = false;
+
+        }
+
     }
 
     public function updatedAdicionaTramite(){
@@ -150,6 +171,8 @@ class Certificaciones extends Component
             $this->flags['registro'] = true;
             $this->flags['adiciona'] = true;
             $this->flags['observaciones'] = true;
+            $this->flags['movimiento_registral'] = true;
+            $this->flags['folio_real'] = true;
 
         }else{
 
@@ -287,7 +310,7 @@ class Certificaciones extends Component
 
         }elseif($this->modelo_editar->tipo_tramite == 'normal'){
 
-            $this->modelo_editar->monto = $this->servicio[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
+            $this->modelo_editar->monto = (int)$this->servicio[$this->modelo_editar->tipo_servicio] * (int)$this->modelo_editar->cantidad;
 
             /* $this->flags['cantidad'] = true; */
 
@@ -327,7 +350,7 @@ class Certificaciones extends Component
 
             }
 
-            $this->modelo_editar->monto = $this->servicio['ordinario'] * $this->modelo_editar->cantidad;
+            $this->modelo_editar->monto = (int)$this->servicio['ordinario'] * (int)$this->modelo_editar->cantidad;
 
             if($this->modelo_editar->tipo_tramite == 'complemento'){
 
@@ -354,7 +377,7 @@ class Certificaciones extends Component
 
             }
 
-            $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
+            $this->modelo_editar->monto = (int)$this->servicio['urgente'] * (int)$this->modelo_editar->cantidad;
 
             if($this->modelo_editar->tipo_tramite == 'complemento' && $this->tramiteAdicionado->tipo_servicio == 'urgente'){
 
@@ -381,7 +404,7 @@ class Certificaciones extends Component
 
             }
 
-            $this->modelo_editar->monto = $this->servicio['extra_urgente'] * $this->modelo_editar->cantidad;
+            $this->modelo_editar->monto = (int)$this->servicio['extra_urgente'] * (int)$this->modelo_editar->cantidad;
 
         }
 
@@ -441,29 +464,8 @@ class Certificaciones extends Component
 
             DB::transaction(function (){
 
-                /* Copias */
-                if($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'){
-
-                    /* Copias nuevas */
-                    if($this->modelo_editar->adiciona == null){
-
-                        $consulta = $this->crearTramiteConsulta();
-
-                        $this->modelo_editar->adiciona = $consulta->id;
-
-                        $this->modelo_editar->monto = $this->modelo_editar->monto + $consulta->monto;
-
-                        $tramite = (new TramiteService($this->modelo_editar))->crear();
-
-                    /* Copias que adicionan a otras copias */
-                    }else{
-
-                        $tramite = (new TramiteService($this->modelo_editar))->crear();
-
-                    }
-
                 /* Certificado de gravamen */
-                }elseif($this->servicio['clave_ingreso'] == 'DL07'){
+                if($this->servicio['clave_ingreso'] == 'DL07'){
 
                     $this->consultarFolioReal();
 
@@ -490,8 +492,14 @@ class Certificaciones extends Component
 
                     $tramite = (new TramiteService($this->modelo_editar))->crear();
 
-                /* Consultas */
+                /* Consultas - Copias */
                 }else{
+
+                    if($this->modelo_editar->folio_real){
+
+                        $this->consultarFolioMovimiento();
+
+                    }
 
                     $tramite = (new TramiteService($this->modelo_editar))->crear();
 
@@ -557,6 +565,8 @@ class Certificaciones extends Component
         $this->flags['tipo_servicio'] = false;
         $this->flags['cantidad'] = false;
         $this->flags['adiciona'] = false;
+        $this->flags['movimiento_registral'] = false;
+        $this->flags['folio_real'] = false;
         $this->flags['tomo'] = true;
         $this->flags['registro'] = true;
         $this->flags['observaciones'] = true;
@@ -621,6 +631,8 @@ class Certificaciones extends Component
             $this->flags['seccion'] = true;
             $this->flags['solicitante'] = true;
             $this->flags['nombre_solicitante'] = true;
+            $this->flags['movimiento_registral'] = true;
+            $this->flags['folio_real'] = true;
 
         }else{
 

@@ -12,7 +12,7 @@
 
             <div>
 
-                <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.tomo">
+                <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.tomo" @if($modelo_editar->folio_real != null) readonly @endif>
 
             </div>
 
@@ -24,7 +24,7 @@
 
         </div>
 
-        <div class="flex-auto">
+        {{-- <div class="flex-auto">
 
             <div class="mb-2">
 
@@ -44,7 +44,7 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
     </div>
 
