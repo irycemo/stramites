@@ -174,6 +174,12 @@
 
         @endif
 
+        @if($flags['Comercio'])
+
+            @livewire('entrada.comercio', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
+
+        @endif
+
     </div>
 
 </div>

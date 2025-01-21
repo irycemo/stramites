@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Tramite;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Http\Requests\TramiteRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class TramitesController extends Controller

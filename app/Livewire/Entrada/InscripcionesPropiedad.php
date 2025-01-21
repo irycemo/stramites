@@ -43,6 +43,7 @@ class InscripcionesPropiedad extends Component
         'numero_oficio' => false,
         'distrito' => false,
         'cantidad' => false,
+        'tramite_foraneo' => false
     ];
 
     protected function rules(){
@@ -76,7 +77,10 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.numero_inmuebles' => 'nullable',
-            'modelo_editar.foraneo' => 'required'
+            'modelo_editar.foraneo' => 'required',
+            'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
          ];
     }
 
@@ -461,6 +465,8 @@ class InscripcionesPropiedad extends Component
 
         try {
 
+            if($this->flags['tramite_foraneo']) $this->buscarforaneo();
+
             /* , 'D115','D116', 'D113', 'D114' */
             if(
                 !in_array($this->servicio['clave_ingreso'], ['D157']) &&
@@ -606,6 +612,10 @@ class InscripcionesPropiedad extends Component
             $this->mantener = true;
 
         }
+
+        $this->años = Constantes::AÑOS;
+
+        $this->año_foraneo = now()->format('Y');
 
     }
 

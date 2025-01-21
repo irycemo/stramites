@@ -189,6 +189,8 @@
                                 <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
                                 <p>{{ $tramite->linea_de_captura }}</p>
                                 <img src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
+                                <p>Convenio OXXO: 50001.</p>
+                                <p>Convenio Bancomer: 664685</p>
 
                             </div>
 
@@ -297,6 +299,8 @@
                                 <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
                                 <p>{{ $tramite->linea_de_captura }}</p>
                                 <img src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
+                                <p>Convenio OXXO: 50001.</p>
+                                <p>Convenio Bancomer: 664685</p>
                             </div>
 
                         @endif
@@ -312,8 +316,6 @@
         <div class="footer">
 
             <p class="leyenda">EL USUARIO ACEPTA LOS DATOS QUE SE PLASMAN EN ESTA ORDEN DE PAGO, AL MOMENTO DE REALIZAR EL PAGO, SI DESPUES DE REALIZAR DICHO PAGO SE DETECTA ALGÚN ERROR EL SOLICITANTE DEBERÁ ACLARARLO Y TENDRÁ NUEVAMENTE QUE CUBRIR EL COSTO, ESTO DE CONFORMIDAD CON LO ESTABLECIDO EN EL ARTÍCULO 15, PÁRRAFO II DE LA LEY DE FUNCIÓN REGISTRAL Y CATASTRAL DEL ESTADO DE MICHOACÁN DE OCAMPO.</p>
-
-            {{-- <p>Pago en OXXO. Cod. Banco: 012. Cod. Convenio: 50001</p> --}}
 
         </div>
 

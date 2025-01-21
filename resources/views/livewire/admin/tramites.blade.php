@@ -251,6 +251,22 @@
 
                                     @endcan
 
+                                    @if(!$tramite->fecha_pago)
+
+                                        @can('Acreditar trámite')
+
+                                            <button
+                                                wire:click="abrirModalAcreditar({{ $tramite->id }})"
+                                                wire:loading.attr="disabled"
+                                                class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                                                role="menuitem">
+                                                Acreditar pago
+                                            </button>
+
+                                        @endcan
+
+                                    @endif
+
                                     @if($tramite->estado == 'nuevo')
 
                                         @can('Borrar trámite')
@@ -1066,6 +1082,58 @@
         </x-slot>
 
     </x-confirmation-modal>
+
+    <x-dialog-modal wire:model="modalAcreditar" maxWidth="sm">
+
+        <x-slot name="title">
+
+            <h1 class="text-lg tracking-widest rounded-xl border-gray-500 text-center mb-5">Acreditar pago</h1>
+
+        </x-slot>
+
+        <x-slot name="content">
+
+            <x-input-group for="referencia_pago" label="Número de referencia de pago" :error="$errors->first('referencia_pago')" class="w-full mb-3">
+
+                <x-input-text type="number" id="referencia_pago" wire:model="referencia_pago" />
+
+            </x-input-group>
+
+            <x-input-group for="fecha_pago" label="Fecha de pago" :error="$errors->first('fecha_pago')" class="w-full">
+
+                <x-input-text type="date" id="fecha_pago" wire:model="fecha_pago" />
+
+            </x-input-group>
+
+        </x-slot>
+
+        <x-slot name="footer">
+
+            <div class="flex gap-3">
+
+                <x-button-blue
+                    wire:click="acreditarPago"
+                    wire:loading.attr="disabled"
+                    wire:target="acreditarPago">
+
+                    <img wire:loading wire:target="acreditarPago" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
+
+                    <span>Actualizar</span>
+                </x-button-blue>
+
+                <x-button-red
+                    wire:click="resetearTodo"
+                    wire:loading.attr="disabled"
+                    wire:target="resetearTodo"
+                    type="button">
+                    Cerrar
+                </x-button-red>
+
+            </div>
+
+        </x-slot>
+
+    </x-dialog-modal>
 
     <script>
 

@@ -30,6 +30,9 @@ class Subdivisiones extends Component
         'numero_oficio' => false,
         'folio_real' => true,
         'numero_inmuebles' => true,
+        'tramite_foraneo' => false,
+        'antecedente' => false,
+        'numero_propiedad' => false
     ];
 
     protected function rules(){
@@ -43,7 +46,7 @@ class Subdivisiones extends Component
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
-            'modelo_editar.folio_real' => 'required',
+            'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.fecha_emision' => [
@@ -55,6 +58,16 @@ class Subdivisiones extends Component
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
             'modelo_editar.numero_inmuebles' => 'required|numeric|min:1',
+            'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D128'])),
+            'modelo_editar.tomo_bis' => 'nullable',
+            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D128'])),
+            'modelo_editar.registro_bis' => 'nullable',
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D128'])), 'min:1'],
          ];
     }
 
@@ -307,6 +320,13 @@ class Subdivisiones extends Component
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
 
+        if($this->servicio['clave_ingreso'] == 'D127'){
+
+            $this->flags['antecedente'] = true;
+            $this->flags['numero_propiedad'] = true;
+
+        }
+
     }
 
     public function crear(){
@@ -315,9 +335,11 @@ class Subdivisiones extends Component
 
         try {
 
+            if($this->flags['tramite_foraneo']) $this->buscarforaneo();
+
             $this->consultarFolioReal();
 
-            if(!$this->matriz){
+            if(!$this->matriz && $this->modelo_editar->folio_real){
 
                 throw new Exception("El folio real no es matriz.");
 
@@ -446,6 +468,10 @@ class Subdivisiones extends Component
             $this->mantener = true;
 
         }
+
+        $this->años = Constantes::AÑOS;
+
+        $this->año_foraneo = now()->format('Y');
 
     }
 

@@ -4,7 +4,6 @@ namespace App\Traits\Ventanilla;
 
 use Exception;
 use App\Models\Tramite;
-use App\Models\Servicio;
 use App\Models\Transicion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +26,10 @@ trait ComunTrait
     public $año;
     public $folio;
     public $usuario;
+    public $año_foraneo;
+    public $folio_foraneo;
+    public $usuario_foraneo;
+    public $tramite_foraneo;
 
     public $adicionaTramite;
     public $tramitesAdicionados;
@@ -167,11 +170,11 @@ trait ComunTrait
 
         if($this->modelo_editar->autoridad_cargo == 'FORANEO'){
 
-            $this->modelo_editar->foraneo = true;
+            $this->flags['tramite_foraneo'] = true;
 
         }else{
 
-            $this->modelo_editar->foraneo = false;
+            $this->flags['tramite_foraneo'] = false;
 
         }
 
@@ -194,18 +197,26 @@ trait ComunTrait
 
     }
 
-    public function foraneo(){
+    public function buscarforaneo(){
 
-        $foraneo = Servicio::where('clave_ingreso', 'D158')->first()[$this->modelo_editar->tipo_servicio] * $this->modelo_editar->cantidad;
+        $this->tramite_foraneo = Tramite::where('año',$this->año_foraneo)
+                                    ->where('numero_control' ,$this->folio_foraneo)
+                                    ->where('usuario', $this->usuario_foraneo)
+                                    ->first();
 
-        if($this->modelo_editar->foraneo){
+        if(!$this->tramite_foraneo)
+            throw new Exception('El trámite foraneo no existe.');
 
-            $this->modelo_editar->monto = $this->modelo_editar->monto + $foraneo;
+        if($this->tramite_foraneo->estado != 'pagado')
+            throw new Exception('El trámite foraneo no esta pagado.');
 
-        }else{
+        if($this->tramite_foraneo->servicio->clave_ingreso != 'DL28')
+            throw new Exception('El trámite foraneo no valido.');
 
-            $this->modelo_editar->monto = $this->modelo_editar->monto - $foraneo;
-        }
+        if($this->tramite_foraneo->adicionadoPor->count())
+            throw new Exception('El trámite foraneo ya esta asociado a otro trámite.');
+
+        $this->modelo_editar->adiciona = $this->tramite_foraneo->id;
 
     }
 
@@ -250,6 +261,8 @@ trait ComunTrait
             }
 
             (new TramiteService($this->modelo_editar))->actualizar();
+
+            $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Actualizó trámite']);
 
             $this->resetearTodo($borrado = true);
 

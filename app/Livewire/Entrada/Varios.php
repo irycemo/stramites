@@ -40,6 +40,7 @@ class Varios extends Component
         'tipo_tramite' => false,
         'documento' => true,
         'email' => false,
+        'tramite_foraneo' => false
     ];
 
     protected function rules(){
@@ -49,34 +50,37 @@ class Varios extends Component
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
-            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
+            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'DL28'])),
             'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
+            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'DL28'])),
             'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
-            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'),
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'DL28'])),
+            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'DL28'])),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null && $this->servicio['clave_ingreso'] != 'D157'), 'min:1'],
+            'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'DL28'])), 'min:1'],
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => [
-                                                Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+                                                Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'DL28'])),
                                                 'nullable',
                                                 'date_format:Y-m-d'
                                             ],
             'modelo_editar.numero_documento' => 'nullable',
-            'modelo_editar.nombre_autoridad' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
-            'modelo_editar.autoridad_cargo' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
-            'modelo_editar.tipo_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112'])),
+            'modelo_editar.nombre_autoridad' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'DL28'])),
+            'modelo_editar.autoridad_cargo' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'DL28'])),
+            'modelo_editar.tipo_documento' => Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'DL28'])),
             'modelo_editar.email' => [
                                         'nullable',
                                         'email',
                                         Rule::requiredIf($this->servicio['clave_ingreso'] == 'DL19')
                                     ],
+            'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
          ];
     }
 
@@ -112,6 +116,14 @@ class Varios extends Component
         if($this->servicio['clave_ingreso'] == 'D112'){
 
             $this->flags['documento'] = false;
+
+        }
+
+        if($this->servicio['clave_ingreso'] == 'DL28'){
+
+            $this->flags['antecedente'] = false;
+            $this->flags['documento'] = false;
+            $this->flags['tipo_servicio'] = false;
 
         }
 
@@ -347,6 +359,8 @@ class Varios extends Component
 
         try {
 
+            if($this->flags['tramite_foraneo']) $this->buscarforaneo();
+
             if(
                 $this->modelo_editar->tomo &&
                 $this->modelo_editar->registro &&
@@ -501,6 +515,10 @@ class Varios extends Component
             $this->mantener = true;
 
         }
+
+        $this->años = Constantes::AÑOS;
+
+        $this->año_foraneo = now()->format('Y');
 
     }
 

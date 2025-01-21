@@ -11,18 +11,6 @@
 
                     @include('livewire.entrada.comun.solicitante')
 
-                    @include('livewire.entrada.comun.documento_entrada_moral')
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-
-                        @include('livewire.entrada.comun.distrito')
-
-                        @include('livewire.entrada.comun.numero_oficio')
-
-                        @include('livewire.entrada.comun.tramite_foraneo')
-
-                    </div>
-
                     @include('livewire.entrada.comun.observaciones')
 
                 </div>

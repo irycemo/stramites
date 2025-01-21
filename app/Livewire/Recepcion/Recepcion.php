@@ -70,6 +70,20 @@ class Recepcion extends Component
 
                 $this->crearModeloVacio();
 
+                $this->tramite = null;
+
+                return;
+
+            }
+
+            if(in_array($this->tramite->servicio->clave_ingreso, ['DL28', 'DL19'])){
+
+                $this->dispatch('mostrarMensaje', ['error', "El trámtie no se recepciona."]);
+
+                $this->crearModeloVacio();
+
+                $this->tramite = null;
+
                 return;
 
             }
@@ -166,6 +180,8 @@ class Recepcion extends Component
             DB::transaction(function (){
 
                 $this->tramite->update(['fecha_prelacion' => now()->toDateString()]);
+
+                $this->tramite->audits()->latest()->first()->update(['tags' => 'Recibió documentación']);
 
                 $this->usuario_asignado = (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 

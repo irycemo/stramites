@@ -8,35 +8,23 @@ use App\Models\Tramite;
 use Livewire\Component;
 use App\Models\Dependencia;
 use App\Constantes\Constantes;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Traits\Ventanilla\ComunTrait;
 use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
-use App\Traits\Ventanilla\ComunTrait;
 
-class Gravamenes extends Component
+class Comercio extends Component
 {
 
     use ComunTrait;
 
     public $flags = [
-        'adiciona' => true,
         'solicitante' => true,
         'nombre_solicitante' => false,
-        'antecedente' => true,
-        'documento' => true,
         'dependencias' => false,
         'notarias' => false,
-        'tipo_servicio' => true,
         'observaciones' => true,
-        'tipo_tramite' => false,
-        'valor_propiedad' => false,
-        'numero_propiedad' => false,
-        'numero_inmuebles' => false,
-        'numero_oficio' => false,
-        'antecedente_gravamen' => false,
-        'tramite_foraneo' => false
     ];
 
     protected function rules(){
@@ -45,34 +33,12 @@ class Gravamenes extends Component
             'modelo_editar.id_servicio' => 'required',
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
-            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
-            'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',
             'modelo_editar.observaciones' => 'nullable',
-            'modelo_editar.movimiento_registral' => 'nullable',
-            'modelo_editar.procedencia' => 'nullable',
-            'modelo_editar.fecha_emision' => 'required|date_format:Y-m-d',
-            'modelo_editar.numero_documento' => 'nullable',
-            'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null), 'min:1'],
-            'modelo_editar.nombre_autoridad' => 'required',
-            'modelo_editar.autoridad_cargo' => 'required',
-            'modelo_editar.tipo_documento' => 'required',
-            'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
-            'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_inmuebles' => 'nullable',
-            'modelo_editar.asiento_registral' => 'nullable',
-            'modelo_editar.foraneo' => 'required',
-            'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
-            'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
-            'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'modelo_editar.observaciones' => 'nullable',
          ];
     }
 
@@ -83,7 +49,7 @@ class Gravamenes extends Component
             'tipo_tramite' => 'normal',
             'tipo_servicio' => 'ordinario',
             'foraneo' => false,
-            'seccion' => 'Propiedad'
+            'seccion' => 'Comercio Inscripciones'
         ]);
 
     }
@@ -103,8 +69,7 @@ class Gravamenes extends Component
             'editar',
         ]);
 
-        if($borrado)
-            $this->crearModeloVacio();
+        if($borrado) $this->crearModeloVacio();
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
 
@@ -160,6 +125,8 @@ class Gravamenes extends Component
             $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
             $this->modelo_editar->tipo_servicio = "extra_urgente";
 
+            $this->updatedModeloEditarTipoServicio();
+
         }elseif($this->modelo_editar->solicitante == 'SAT'){
 
             if(!auth()->user()->hasRole('Administrador')){
@@ -184,6 +151,7 @@ class Gravamenes extends Component
 
 
     }
+
     public function updatedModeloEditarTipoServicio(){
 
         if($this->modelo_editar->id_servicio == ""){
@@ -230,7 +198,9 @@ class Gravamenes extends Component
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio urgente para el servicio seleccionado."]);
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+
+                $this->modelo_editar->monto = $this->servicio['ordinario'];
 
                 return;
 
@@ -267,7 +237,9 @@ class Gravamenes extends Component
 
                 $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente para el servicio seleccionado."]);
 
-                $this->modelo_editar->tipo_servicio = null;
+                $this->modelo_editar->tipo_servicio = 'ordinario';
+
+                $this->modelo_editar->monto = $this->servicio['ordinario'];
 
                 return;
 
@@ -290,10 +262,6 @@ class Gravamenes extends Component
         $this->validate();
 
         try {
-
-            if($this->flags['tramite_foraneo']) $this->buscarforaneo();
-
-            $this->consultarFolioReal();
 
             DB::transaction(function (){
 
@@ -356,8 +324,6 @@ class Gravamenes extends Component
         $this->flags['tipo_servicio'] = false;
 
         $this->editar = true;
-
-
 
     }
 
@@ -429,6 +395,6 @@ class Gravamenes extends Component
 
     public function render()
     {
-        return view('livewire.entrada.gravamenes');
+        return view('livewire.entrada.comercio');
     }
 }

@@ -23,6 +23,8 @@
 
                         @include('livewire.entrada.comun.tipo_servicio')
 
+                        @include('livewire.entrada.comun.tramite_foraneo')
+
                     </div>
 
                     @include('livewire.entrada.comun.observaciones')

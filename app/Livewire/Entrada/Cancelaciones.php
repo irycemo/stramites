@@ -35,7 +35,8 @@ class Cancelaciones extends Component
         'numero_inmuebles' => false,
         'numero_propiedad' => false,
         'numero_oficio' => false,
-        'antecedente_gravamen' => true
+        'antecedente_gravamen' => true,
+        'tramite_foraneo' => false
     ];
 
     protected function rules(){
@@ -71,6 +72,9 @@ class Cancelaciones extends Component
             'modelo_editar.foraneo' => 'required',
             'modelo_editar.tomo_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
             'modelo_editar.registro_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
+            'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
          ];
     }
 
@@ -179,20 +183,6 @@ class Cancelaciones extends Component
 
         }
 
-
-    }
-
-    public function updatedModeloEditarAutoridadCargo(){
-
-        if($this->modelo_editar->autoridad_cargo == 'FORANEO'){
-
-            $this->modelo_editar->foraneo = true;
-
-        }else{
-
-            $this->modelo_editar->foraneo = false;
-
-        }
 
     }
 
@@ -315,6 +305,8 @@ class Cancelaciones extends Component
         $this->validate();
 
         try {
+
+            if($this->flags['tramite_foraneo']) $this->buscarforaneo();
 
             $this->consultarFolioReal();
 
@@ -443,6 +435,10 @@ class Cancelaciones extends Component
             $this->mantener = true;
 
         }
+
+        $this->años = Constantes::AÑOS;
+
+        $this->año_foraneo = now()->format('Y');
 
     }
 

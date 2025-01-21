@@ -11,15 +11,27 @@
 
                     @include('livewire.entrada.comun.solicitante')
 
+                    @if ($servicio['clave_ingreso'] == 'D127')
+
+                        @include('livewire.entrada.comun.antecedente')
+
+                    @endif
+
                     @include('livewire.entrada.comun.documento_entrada_moral')
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
                         @include('livewire.entrada.comun.numero_inmuebles')
 
-                        @include('livewire.entrada.comun.folio_real')
+                        @if ($servicio['clave_ingreso'] != 'D127')
+
+                            @include('livewire.entrada.comun.folio_real')
+
+                        @endif
 
                         @include('livewire.entrada.comun.numero_oficio')
+
+                        @include('livewire.entrada.comun.tramite_foraneo')
 
                     </div>
 

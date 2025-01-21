@@ -12,6 +12,7 @@ use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 use App\Models\AlertaInmobiliaria;
+use Exception;
 
 class TramiteService{
 
@@ -145,11 +146,7 @@ class TramiteService{
 
         $monto = 0;
 
-        if($this->tramite->foraneo){
-
-            $monto = 1865 + (float)$this->tramite->monto;
-
-        }elseif($this->tramite->solicitante == 'Oficialia de partes'){
+        if($this->tramite->solicitante == 'Oficialia de partes'){
 
             $monto = 0;
 
@@ -250,12 +247,7 @@ class TramiteService{
 
                     if($this->tramite->adicionaAlTramite->estado != 'pagado'){
 
-                        $this->tramite->adicionaAlTramite->update([
-                            'estado' => 'pagado',
-                            'fecha_pago' => $this->convertirFecha($fecha),
-                            'fecha_prelacion' => $this->convertirFecha($fecha),
-                            'documento_de_pago' => $documento
-                        ]);
+                        throw new ErrorAlValidarLineaDeCaptura('El trámite de consulta no esta pagado');
                     }
 
                     /* Caso de agregar copias a la consulta */

@@ -582,7 +582,6 @@ class Certificaciones extends Component
         $this->tramiteAdicionado = Tramite::where('año', $this->año)
                                         ->where('numero_control', $this->folio)
                                         ->where('usuario', $this->usuario)
-                                        ->whereIn('estado', ['pagado', 'rechazado'])
                                         ->whereHas('servicio', function($q){
                                             $q->whereIn('clave_ingreso', ['DC93','DL13', 'DL14']);
                                         })
@@ -600,7 +599,13 @@ class Certificaciones extends Component
 
         }
 
-        if(!$this->tramiteAdicionado->movimiento_registral){
+        if(!$this->tramiteAdicionado->fecha_pago){
+
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite de consulta no esta pagado."]);
+
+        }
+
+        /* if(!$this->tramiteAdicionado->movimiento_registral){
 
             $this->dispatch('mostrarMensaje', ['error', "El trámite " . $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . '-' . $this->tramiteAdicionado->usuario . " no esta dado de alta en Sistema RPP"]);
 
@@ -608,7 +613,7 @@ class Certificaciones extends Component
 
             return;
 
-        }
+        } */
 
         if($this->tramiteAdicionado->servicio->clave_ingreso == 'DC93'){
 
@@ -733,6 +738,10 @@ class Certificaciones extends Component
             $this->mantener = true;
 
         }
+
+        $this->años = Constantes::AÑOS;
+
+        $this->año_foraneo = now()->format('Y');
 
     }
 

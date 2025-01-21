@@ -37,7 +37,8 @@ class Entrada extends Component
         'Varios' => false,
         'Sentencias' => false,
         'PersonaMoral' => false,
-        'Subdivisiones' => false
+        'Subdivisiones' => false,
+        'Comercio' => false
     ];
 
     protected $listeners = [
@@ -130,6 +131,7 @@ class Entrada extends Component
                             'Sentencias' => 'Gravamenes',
                             'Folio real de persona moral' => 'PersonaMoral',
                             'Subdivisiones' => 'Subdivisiones',
+                            'Comercio Inscripciones' => 'Comercio',
                             default => 'No encontrada',
 
                         };

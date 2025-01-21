@@ -30,6 +30,7 @@ class PersonaMoral extends Component
         'observaciones' => true,
         'tipo_tramite' => false,
         'numero_oficio' => false,
+        'tramite_foraneo' => false
     ];
 
     protected function rules(){
@@ -46,6 +47,7 @@ class PersonaMoral extends Component
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real_persona_moral' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
+            'modelo_editar.monto' => 'nullable',
             'modelo_editar.fecha_emision' => [
                                                 'nullable',
                                                 'date_format:Y-m-d'
@@ -55,6 +57,9 @@ class PersonaMoral extends Component
             'modelo_editar.autoridad_cargo' => 'required',
             'modelo_editar.tipo_documento' => 'required',
             'modelo_editar.seccion' => 'required',
+            'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
          ];
     }
 
@@ -312,6 +317,8 @@ class PersonaMoral extends Component
 
         try {
 
+            if($this->flags['tramite_foraneo']) $this->buscarforaneo();
+
             DB::transaction(function (){
 
                 $tramite = (new TramiteService($this->modelo_editar))->crear();
@@ -434,6 +441,10 @@ class PersonaMoral extends Component
             $this->mantener = true;
 
         }
+
+        $this->años = Constantes::AÑOS;
+
+        $this->año_foraneo = now()->format('Y');
 
     }
 

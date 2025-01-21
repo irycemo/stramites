@@ -10,7 +10,6 @@ use Livewire\WithPagination;
 use App\Models\Configuracion;
 use App\Constantes\Constantes;
 use App\Traits\ComponentesTrait;
-use App\Jobs\GenerarFolioTramite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
@@ -41,7 +40,10 @@ class Tramites extends Component
     public $numero_de_control;
     public $tramite;
     public $modalVer = false;
+    public $modalAcreditar = false;
     public $años;
+    public $referencia_pago;
+    public $fecha_pago;
     public $filters = [
         'año' => '',
         'folio' => '',
@@ -222,6 +224,19 @@ class Tramites extends Component
 
     }
 
+    public function abrirModalAcreditar(Tramite $modelo){
+
+        $this->resetearTodo();
+
+        $this->selected_id = $modelo->id;
+
+        if($this->modelo_editar->isNot($modelo))
+            $this->modelo_editar = $modelo;
+
+        $this->modalAcreditar = true;
+
+    }
+
     public function validarPago(){
 
         try {
@@ -229,6 +244,8 @@ class Tramites extends Component
             DB::transaction(function () {
 
                 (new TramiteService($this->modelo_editar))->procesarPago();
+
+                $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Validó pago']);
 
                 $this->dispatch('mostrarMensaje', ['success', "El trámite se validó con éxito."]);
 
@@ -257,6 +274,8 @@ class Tramites extends Component
         try{
 
             (new TramiteService($this->modelo_editar))->actualizar();
+
+            $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Actualizó trámite']);
 
             $this->resetearTodo($borrado = true);
 
@@ -349,9 +368,9 @@ class Tramites extends Component
 
         }
 
-        if($this->modelo_editar->adicionaAlTramite && $this->modelo_editar->adicionaAlTramite->servicio->clave_ingreso != 'DC93'){
+        if($this->modelo_editar->adicionaAlTramite && !in_array($this->modelo_editar->adicionaAlTramite->servicio->clave_ingreso, ['DC93', 'DL28'])){
 
-            $this->dispatch('mostrarMensaje', ['warning', "El trámite adiciona al trámite: " . $this->modelo_editar->adicionaAlTramite->numero_control . '-' . $this->modelo_editar->adicionaAlTramite->numero_control . ' no es posible enviarlo al Sistema RPP.']);
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite adiciona al trámite: " . $this->modelo_editar->adicionaAlTramite->año . '-' . $this->modelo_editar->adicionaAlTramite->numero_control . '-' . $this->modelo_editar->adicionaAlTramite->usuario . ' no es posible enviarlo al Sistema RPP.']);
 
             return;
 
@@ -360,6 +379,8 @@ class Tramites extends Component
         try{
 
             (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
+
+            $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Envió trámite a Sistema RPP']);
 
             $this->resetearTodo($borrado = true);
 
@@ -379,14 +400,14 @@ class Tramites extends Component
 
     }
 
-    public function generarNumeroControl(){
+    /* public function generarNumeroControl(){
 
         if($this->modelo_editar->id && !$this->modelo_editar->numero_control)
             dispatch(new GenerarFolioTramite($this->modelo_editar->id));
 
         $this->resetearTodo();
 
-    }
+    } */
 
     public function reactivarTramtie(Tramite $modelo){
 
@@ -401,6 +422,8 @@ class Tramites extends Component
                 $modelo->update(['estado' => 'pagado']);
 
             }
+
+            $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Reactivó trámite']);
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite se reactivó con éxito."]);
 
@@ -443,9 +466,44 @@ class Tramites extends Component
 
     }
 
+    public function acreditarPago(){
+
+        $this->validate(
+        [
+            'referencia_pago' => 'required|numeric',
+            'fecha_pago' => 'required|date|before:tomorrow'
+        ],
+        [],
+        [
+            'referencia_pago' => 'referencia de pago',
+            'fecha_pago' => 'fecha de pago',
+        ]);
+
+        try {
+
+            $this->modelo_editar->update([
+                'estado' => 'pagado',
+                'documento_de_pago' => $this->referencia_pago,
+                'fecha_pago' => $this->fecha_pago,
+                'actualizado_por' => auth()->id()
+            ]);
+
+            $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Acreditó pago manualmente']);
+
+            $this->dispatch('mostrarMensaje', ['success', "El trámite acreditó con éxito. Guardar la documentación que acredita el pago."]);
+
+            $this->resetearTodo();
+
+        } catch (\Throwable $th) {
+            Log::error("Error al acreditar trámite  por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+        }
+
+    }
+
     public function mount(){
 
-        array_push($this->fields, 'adicionaTramite', 'flags', 'modalVer');
+        array_push($this->fields, 'adicionaTramite', 'flags', 'modalVer', 'modalAcreditar', 'referencia_pago', 'fecha_pago');
 
         $this->crearModeloVacio();
 

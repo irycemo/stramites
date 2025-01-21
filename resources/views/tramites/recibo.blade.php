@@ -108,12 +108,13 @@
             <img style="width: 100%;" src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
             <p> {{ $tramite->linea_de_captura }}</p>
             <img style="width: 100%;" src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
+            <p>Convenio OXXO: 50001.</p>
+            <p>Convenio Bancomer: 664685</p>
 
         </div>
 
         <div class="footer">
             <p style="margin: 10px 0 0 0 ">LA VIGENCIA PARA EL PAGO DE ESTE TRÁMITE ES: {{ $tramite->limite_de_pago->format('d-m-Y') }}.</p>
-            {{-- <p>Pago en OXXO. Cod. Banco: 012. Cod. Convenio: 50001</p> --}}
             <hr>
             <p>VERIFICAR LOS DATOS ANTES DE PAGAR</p>
         </div>
