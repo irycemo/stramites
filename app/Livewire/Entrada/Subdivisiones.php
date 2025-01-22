@@ -326,6 +326,12 @@ class Subdivisiones extends Component
             $this->flags['antecedente'] = true;
             $this->flags['numero_propiedad'] = true;
 
+            $this->documentos_entrada = Constantes::DOCUMENTOS_DE_ENTRADA;
+
+        }else{
+
+            $this->documentos_entrada = ['ESCRITURA PÚBLICA'];
+
         }
 
     }
@@ -416,7 +422,15 @@ class Subdivisiones extends Component
 
         $this->solicitantes = Constantes::SOLICITANTES;
 
-        $this->documentos_entrada = Constantes::DOCUMENTOS_DE_ENTRADA;
+        if($this->servicio['clave_ingreso'] == 'D127'){
+
+            $this->documentos_entrada = Constantes::DOCUMENTOS_DE_ENTRADA;
+
+        }else{
+
+            $this->documentos_entrada = ['ESCRITURA PÚBLICA'];
+
+        }
 
         $this->cargos_autoridad = Constantes::CARGO_AUTORIDAD;
 

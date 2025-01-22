@@ -388,7 +388,7 @@ class PersonaMoral extends Component
 
         $this->solicitantes = Constantes::SOLICITANTES;
 
-        $this->documentos_entrada = Constantes::DOCUMENTOS_DE_ENTRADA;
+        $this->documentos_entrada = ['ESCRITURA PÚBLICA'];
 
         $this->cargos_autoridad = Constantes::CARGO_AUTORIDAD;
 

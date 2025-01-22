@@ -17,7 +17,7 @@
 
                     @endif
 
-                    @include('livewire.entrada.comun.documento_entrada_moral')
+                    @include('livewire.entrada.comun.documento_entrada')
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
