@@ -207,14 +207,11 @@ trait ComunTrait
         if(!$this->tramite_foraneo)
             throw new Exception('El trámite foraneo no existe.');
 
-        if($this->tramite_foraneo->estado != 'pagado')
-            throw new Exception('El trámite foraneo no esta pagado.');
-
         if($this->tramite_foraneo->servicio->clave_ingreso != 'DL28')
             throw new Exception('El trámite foraneo no valido.');
 
-        if($this->tramite_foraneo->adicionadoPor->count())
-            throw new Exception('El trámite foraneo ya esta asociado a otro trámite.');
+        if($this->tramite_foraneo->adicionadoPor->count() >= 5)
+            throw new Exception("El trámite de notario foraneo tiene 5 tramites adicionados.");
 
         $this->modelo_editar->adiciona = $this->tramite_foraneo->id;
 

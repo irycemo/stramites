@@ -32,7 +32,8 @@ class Subdivisiones extends Component
         'numero_inmuebles' => true,
         'tramite_foraneo' => false,
         'antecedente' => false,
-        'numero_propiedad' => false
+        'numero_propiedad' => false,
+        'tipo_servicio' => true,
     ];
 
     protected function rules(){

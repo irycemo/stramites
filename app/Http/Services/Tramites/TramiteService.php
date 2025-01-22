@@ -239,10 +239,10 @@ class TramiteService{
 
             if($this->tramite->seccion == 'Comercio') return;
 
-            /* Certificaciones */
+            /* Adiciona a consulta o notario foraneo */
             if($this->tramite->adiciona){
 
-                /* COPIAS */
+                /* Consulta */
                 if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93'){
 
                     if($this->tramite->adicionaAlTramite->estado != 'pagado'){
@@ -253,9 +253,17 @@ class TramiteService{
                     /* Caso de agregar copias a la consulta */
                     (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
+                /* Notario foraneo */
+                }if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL28'){
+
+                    if($this->tramite->adicionaAlTramite->estado != 'pagado'){
+
+                        throw new ErrorAlValidarLineaDeCaptura('El trámite de notario foraneo no esta pagado');
+                    }
+
+                /* Caso de agregar paginas a un tramite de copias existente */
                 }elseif($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL13' || $this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL14'){
 
-                    /* Caso de agregar numero de paginas a un tramite de copias existente */
                     (new SistemaRppService())->actualizarPaginas($this->tramite);
 
                 }

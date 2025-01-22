@@ -31,6 +31,8 @@
 
                         @include('livewire.entrada.comun.numero_oficio')
 
+                        @include('livewire.entrada.comun.tipo_servicio')
+
                         @include('livewire.entrada.comun.tramite_foraneo')
 
                     </div>
