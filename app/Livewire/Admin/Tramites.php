@@ -490,10 +490,14 @@ class Tramites extends Component
                 'estado' => 'pagado',
                 'documento_de_pago' => $this->referencia_pago,
                 'fecha_pago' => $this->fecha_pago,
+                'fecha_prelacion' => $this->fecha_pago,
                 'actualizado_por' => auth()->id()
             ]);
 
             $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Acreditó pago manualmente']);
+
+            if($this->modelo_editar->servicio->categoria->nombre === 'Certificaciones')
+                (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite acreditó con éxito. Guardar la documentación que acredita el pago."]);
 
