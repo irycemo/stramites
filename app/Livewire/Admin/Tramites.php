@@ -233,7 +233,12 @@ class Tramites extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
-        $this->modalAcreditar = true;
+        $this->validarPago();
+
+        $modelo->refresh();
+
+        if(!$modelo->fecha_pago)
+            $this->modalAcreditar = true;
 
     }
 
