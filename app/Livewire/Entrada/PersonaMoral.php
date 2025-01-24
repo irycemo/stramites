@@ -30,7 +30,11 @@ class PersonaMoral extends Component
         'observaciones' => true,
         'tipo_tramite' => false,
         'numero_oficio' => false,
-        'tramite_foraneo' => false
+        'tramite_foraneo' => false,
+        'distrito' => true,
+        'folio_real' => false,
+        'tomo' => false,
+        'registro' => false
     ];
 
     protected function rules(){
@@ -60,6 +64,10 @@ class PersonaMoral extends Component
             'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
+            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.folio_real' => 'nullable',
          ];
     }
 
@@ -299,9 +307,11 @@ class PersonaMoral extends Component
             'editar',
         ]);
 
-        if($this->servicio['nombre'] == 'Registro de personas morales'){
+        if($this->servicio['nombre'] == 'Acta de asamblea'){
 
-            $this->flags['distrito'] = true;
+            $this->flags['folio_real'] = true;
+            $this->flags['tomo'] = true;
+            $this->flags['registro'] = true;
 
         }
 

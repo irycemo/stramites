@@ -55,12 +55,15 @@ class LineaCapturaApi
 
         if($this->tramite->tipo_servicio == 'urgente'){
 
-            $this->tramite->cantidad = $this->tramite->cantidad * 2;
+            $cantidad = $this->tramite->cantidad * 2;
 
         }elseif($this->tramite->tipo_servicio == 'extra_urgente'){
 
-            $this->tramite->cantidad = $this->tramite->cantidad * 3;
+            $cantidad = $this->tramite->cantidad * 3;
 
+        }else{
+
+            $cantidad = $this->tramite->cantidad;
         }
 
         try {
@@ -77,7 +80,7 @@ class LineaCapturaApi
                     ],
                     "TB_CONCEPTOS" => [
                         "TP_INGRESO" => $this->tramite->servicio->clave_ingreso,
-                        "CANTIDAD" => $this->tramite->cantidad,
+                        "CANTIDAD" => $cantidad,
                         "IMPORTE" => round($this->tramite->monto, 2)
                     ]
                 ]

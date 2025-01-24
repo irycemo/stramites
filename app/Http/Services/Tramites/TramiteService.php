@@ -12,7 +12,6 @@ use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 use App\Models\AlertaInmobiliaria;
-use Exception;
 
 class TramiteService{
 

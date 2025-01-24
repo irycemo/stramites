@@ -15,6 +15,16 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
+                        @if($servicio['nombre'] == 'Acta de asamblea')
+
+                            @include('livewire.entrada.comun.folio_real')
+
+                            @include('livewire.entrada.comun.tomo')
+
+                            @include('livewire.entrada.comun.registro')
+
+                        @endif
+
                         @include('livewire.entrada.comun.distrito')
 
                         @include('livewire.entrada.comun.numero_oficio')
