@@ -51,12 +51,12 @@ class Certificaciones extends Component
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
-            'modelo_editar.tomo' => [Rule::requiredIf(($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13') && !$this->modelo_editar->folio_real), 'nullable', 'numeric'],
+            'modelo_editar.tomo' => [Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DL12', 'D110']) && !$this->modelo_editar->folio_real), 'nullable', 'numeric'],
             'modelo_editar.tomo_bis' => 'nullable',
-            'modelo_editar.registro' => [Rule::requiredIf(($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13') && !$this->modelo_editar->folio_real), 'nullable', 'numeric'],
+            'modelo_editar.registro' => [Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DL12', 'D110']) && !$this->modelo_editar->folio_real), 'nullable', 'numeric'],
             'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null),
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DM67', 'D111'])),
+            'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL12', 'DM67', 'D110', 'D111'])),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
@@ -65,11 +65,14 @@ class Certificaciones extends Component
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => [Rule::requiredIf($this->modelo_editar->asiento_registral != null), 'nullable'],
             'modelo_editar.asiento_registral' => 'nullable',
-            'modelo_editar.numero_propiedad' => ['nullable', 'numeric', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11'])), 'min:1'],
+            'modelo_editar.numero_propiedad' => ['nullable', 'numeric', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11', 'DL12', 'DM67', 'D110', 'D111'])), 'min:1'],
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
                                                     $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])
                                                 ),
+            'año' => Rule::requiredIf($this->adicionaTramite),
+            'folio' => Rule::requiredIf($this->adicionaTramite),
+            'usuario' => Rule::requiredIf($this->adicionaTramite),
          ];
     }
 
@@ -124,12 +127,31 @@ class Certificaciones extends Component
 
         }elseif($this->servicio['clave_ingreso'] == 'DL10' || $this->servicio['clave_ingreso'] == 'DL11'){
 
+            $this->flags['tomo'] = false;
+            $this->flags['registro'] = false;
             $this->flags['distrito'] = false;
+
+        }elseif(in_array($this->servicio['clave_ingreso'], ['DL12', 'D110'])){
+
+            $this->flags['distrito'] = true;
+            $this->flags['tomo'] = true;
+            $this->flags['registro'] = true;
             $this->flags['seccion'] = false;
-            $this->flags['antecedente'] = true;
+            $this->flags['tipo_servicio'] = false;
+
+        }elseif(in_array($this->servicio['clave_ingreso'], ['DM67', 'D111'])){
+
+            $this->flags['distrito'] = false;
+            $this->flags['tomo'] = false;
+            $this->flags['registro'] = false;
+            $this->flags['seccion'] = false;
+            $this->flags['tipo_servicio'] = false;
+            $this->flags['adiciona'] = true;
             $this->flags['cantidad'] = true;
+            $this->adicionaTramite = true;
 
         }
+
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
 
@@ -583,7 +605,7 @@ class Certificaciones extends Component
                                         ->where('numero_control', $this->folio)
                                         ->where('usuario', $this->usuario)
                                         ->whereHas('servicio', function($q){
-                                            $q->whereIn('clave_ingreso', ['DC93','DL13', 'DL14']);
+                                            $q->whereIn('clave_ingreso', ['DC93','DL13', 'DL14', 'Dl12', 'D110']);
                                         })
                                         ->first();
 
@@ -601,19 +623,9 @@ class Certificaciones extends Component
 
         if(!$this->tramiteAdicionado->fecha_pago){
 
-            $this->dispatch('mostrarMensaje', ['warning', "El trámite de consulta no esta pagado."]);
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite a adicionar no esta pagado."]);
 
         }
-
-        /* if(!$this->tramiteAdicionado->movimiento_registral){
-
-            $this->dispatch('mostrarMensaje', ['error', "El trámite " . $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . '-' . $this->tramiteAdicionado->usuario . " no esta dado de alta en Sistema RPP"]);
-
-            $this->modelo_editar->adiciona = null;
-
-            return;
-
-        } */
 
         if($this->tramiteAdicionado->servicio->clave_ingreso == 'DC93'){
 
@@ -638,6 +650,18 @@ class Certificaciones extends Component
             $this->flags['nombre_solicitante'] = true;
             $this->flags['movimiento_registral'] = true;
             $this->flags['folio_real'] = true;
+
+        }elseif(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL12', 'D110'])){
+
+            if($this->tramiteAdicionado->adicionadoPor->count()){
+
+                $this->dispatch('mostrarMensaje', ['error', "El trámite " .  $this->tramiteAdicionado->año . '-' . $this->tramiteAdicionado->numero_control . '-' . $this->tramiteAdicionado->usuario . " ya esta asociado a otro trámite."]);
+
+                $this->modelo_editar->adiciona = null;
+
+                return;
+
+            }
 
         }else{
 

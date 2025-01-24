@@ -132,6 +132,7 @@ class Entrada extends Component
                             'Folio real de persona moral' => 'PersonaMoral',
                             'Subdivisiones' => 'Subdivisiones',
                             'Comercio Inscripciones' => 'Comercio',
+                            'Comercio Certificaciones' => 'Comercio',
                             default => 'No encontrada',
 
                         };
