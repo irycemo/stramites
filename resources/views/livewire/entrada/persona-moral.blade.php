@@ -1,5 +1,5 @@
 <div class="">
-
+{{ $errors }}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
         {{-- Campos --}}
@@ -17,7 +17,7 @@
 
                         @if($servicio['nombre'] == 'Acta de asamblea')
 
-                            @include('livewire.entrada.comun.folio_real')
+                            @include('livewire.entrada.comun.folio_real_persona_moral')
 
                             @include('livewire.entrada.comun.tomo')
 

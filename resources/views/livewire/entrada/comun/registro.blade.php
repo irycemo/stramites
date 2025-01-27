@@ -12,7 +12,7 @@
 
             <div>
 
-                <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.registro" @if($modelo_editar->folio_real != null) readonly @endif>
+                <input type="number" class="bg-white rounded text-sm w-full" wire:model.lazy="modelo_editar.registro" @if($modelo_editar->folio_real != null || $modelo_editar->folio_real_persona_moral != null) readonly @endif>
 
             </div>
 

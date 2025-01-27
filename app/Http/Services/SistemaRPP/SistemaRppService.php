@@ -44,6 +44,7 @@ class SistemaRppService{
                 'servicio_nombre' => $tramite->servicio->nombre,
                 'numero_oficio' => $tramite->numero_oficio,
                 'folio_real' => $tramite->folio_real,
+                'folio_real_persona_moral' => $tramite->folio_real_persona_moral,
                 'tomo' => $tramite->tomo,
                 'tomo_bis' => $tramite->tomo_bis,
                 'registro' => $tramite->registro,

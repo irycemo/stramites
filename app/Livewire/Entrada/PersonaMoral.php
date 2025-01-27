@@ -45,7 +45,7 @@ class PersonaMoral extends Component
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.tipo_servicio' => 'required',
-            'modelo_editar.distrito' => Rule::requiredIf($this->servicio['nombre'] == 'Registro de personas morales'),
+            'modelo_editar.distrito' => Rule::requiredIf($this->servicio['nombre'] == 'Acta constitutiva'),
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
@@ -64,10 +64,9 @@ class PersonaMoral extends Component
             'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
-            'modelo_editar.tomo' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.registro' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null),
-            'modelo_editar.folio_real' => 'nullable',
+            'modelo_editar.tomo' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real_persona_moral == null && $this->servicio['nombre'] != 'Acta constitutiva')],
+            'modelo_editar.registro' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real_persona_moral == null && $this->servicio['nombre'] != 'Acta constitutiva')],
+            'modelo_editar.distrito' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real_persona_moral == null && $this->servicio['nombre'] != 'Acta constitutiva')],
          ];
     }
 
@@ -328,6 +327,8 @@ class PersonaMoral extends Component
         try {
 
             if($this->flags['tramite_foraneo']) $this->buscarforaneo();
+
+            if($this->servicio['nombre'] == 'Acta de asamblea') $this->consultarFolioRealPersonaMoral();
 
             DB::transaction(function (){
 

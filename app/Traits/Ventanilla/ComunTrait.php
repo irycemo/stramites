@@ -197,6 +197,12 @@ trait ComunTrait
 
     }
 
+    public function updatedModeloEditarFolioRealPersonaMoral(){
+
+        $this->updatedModeloEditarFolioReal();
+
+    }
+
     public function buscarforaneo(){
 
         $this->tramite_foraneo = Tramite::where('año',$this->año_foraneo)
@@ -425,6 +431,51 @@ trait ComunTrait
                 throw new Exception("La propiedad de encuentra en transición.");
 
             }
+
+        }
+
+    }
+
+    public function consultarFolioRealPersonaMoral(){
+
+        try {
+
+            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL_PERSONA_MORAL'),[
+                                'folio_real' => $this->modelo_editar->folio_real,
+                                'tomo' => $this->modelo_editar->tomo,
+                                'distrito' => $this->modelo_editar->distrito,
+                            ]);
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al consultar folio real de persona moral al crear trámite " . $th);
+
+            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+
+        }
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 200){
+
+            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->distrito = $data['data']['distrito'];
+
+
+        }elseif($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "Hubo un error.");
+
+        }elseif($response->status() == 404){
+
+            throw new Exception("El folio real no existe.");
+
+        }elseif($response->status() == 500){
+
+            throw new Exception("Hubo un error al consultar el folio real.");
 
         }
 
