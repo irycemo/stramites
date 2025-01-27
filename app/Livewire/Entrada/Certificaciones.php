@@ -127,9 +127,10 @@ class Certificaciones extends Component
 
         }elseif($this->servicio['clave_ingreso'] == 'DL10' || $this->servicio['clave_ingreso'] == 'DL11'){
 
-            $this->flags['tomo'] = false;
-            $this->flags['registro'] = false;
             $this->flags['distrito'] = false;
+            $this->flags['seccion'] = false;
+            $this->flags['antecedente'] = true;
+            $this->flags['cantidad'] = true;
 
         }elseif(in_array($this->servicio['clave_ingreso'], ['DL12', 'D110'])){
 
