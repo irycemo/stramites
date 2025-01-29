@@ -163,7 +163,7 @@
 
                 <p class="text-center tracking-wider font-semibold">RPP</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-auto">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -176,7 +176,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap text-ellipsis"><p>{{ $key }}</p></td>
                                 <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 

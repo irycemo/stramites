@@ -444,8 +444,9 @@ trait ComunTrait
                             ->accept('application/json')
                             ->asForm()
                             ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL_PERSONA_MORAL'),[
-                                'folio_real' => $this->modelo_editar->folio_real,
+                                'folio_real' => $this->modelo_editar->folio_real_persona_moral,
                                 'tomo' => $this->modelo_editar->tomo,
+                                'registro' => $this->modelo_editar->registro,
                                 'distrito' => $this->modelo_editar->distrito,
                             ]);
 

@@ -588,10 +588,11 @@ class Certificaciones extends Component
         $this->flags['tipo_servicio'] = false;
         $this->flags['cantidad'] = false;
         $this->flags['adiciona'] = false;
-        $this->flags['movimiento_registral'] = false;
-        $this->flags['folio_real'] = false;
+        $this->flags['movimiento_registral'] = true;
+        $this->flags['folio_real'] = true;
         $this->flags['tomo'] = true;
         $this->flags['registro'] = true;
+        $this->flags['distrito'] = true;
         $this->flags['observaciones'] = true;
 
         if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
