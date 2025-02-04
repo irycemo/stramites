@@ -462,7 +462,7 @@ trait ComunTrait
 
         if($response->status() == 200){
 
-            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->folio_real_persona_moral = $data['data']['folio'];
             $this->modelo_editar->distrito = $data['data']['distrito'];
 
 

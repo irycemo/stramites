@@ -311,6 +311,7 @@ class PersonaMoral extends Component
             $this->flags['folio_real'] = true;
             $this->flags['tomo'] = true;
             $this->flags['registro'] = true;
+            $this->flags['tipo_servicio'] = true;
 
         }
 
