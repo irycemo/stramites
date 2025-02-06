@@ -70,9 +70,9 @@ class Certificaciones extends Component
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
                                                     $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])
                                                 ),
-            'año' => Rule::requiredIf($this->adicionaTramite),
-            'folio' => Rule::requiredIf($this->adicionaTramite),
-            'usuario' => Rule::requiredIf($this->adicionaTramite),
+            'año' => [Rule::requiredIf($this->adicionaTramite && !$this->editar), 'nullable', 'numeric'],
+            'folio' => [Rule::requiredIf($this->adicionaTramite && !$this->editar), 'nullable', 'numeric'],
+            'usuario' => [Rule::requiredIf($this->adicionaTramite && !$this->editar), 'nullable', 'numeric'],
          ];
     }
 
