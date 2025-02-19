@@ -163,7 +163,7 @@
 
                 <p class="text-center tracking-wider font-semibold">RPP</p>
 
-                <table class="w-full table-auto">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -175,9 +175,9 @@
                         @foreach ($rpp as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-ellipsis"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php
@@ -213,7 +213,7 @@
 
                 <p class="text-center tracking-wider font-semibold">Regional 1</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -225,9 +225,9 @@
                         @foreach ($regional1 as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php
@@ -263,7 +263,7 @@
 
                 <p class="text-center tracking-wider font-semibold">Regional 2</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -275,9 +275,9 @@
                         @foreach ($regional2 as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php
@@ -313,7 +313,7 @@
 
                 <p class="text-center tracking-wider font-semibold">Regional 3</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -325,9 +325,9 @@
                         @foreach ($regional3 as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php
@@ -363,7 +363,7 @@
 
                 <p class="text-center tracking-wider font-semibold">Regional 4</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -375,9 +375,9 @@
                         @foreach ($regional4 as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php
@@ -413,7 +413,7 @@
 
                 <p class="text-center tracking-wider font-semibold">Regional 5</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -425,9 +425,9 @@
                         @foreach ($regional5 as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php
@@ -463,7 +463,7 @@
 
                 <p class="text-center tracking-wider font-semibold">Regional 6</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -475,9 +475,9 @@
                         @foreach ($regional6 as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php
@@ -513,7 +513,7 @@
 
                 <p class="text-center tracking-wider font-semibold">Regional 7</p>
 
-                <table class="w-full overflow-x-auto table-fixed">
+                <table class="w-full table-fixed">
 
                     <tbody class="divide-y divide-gray-200">
 
@@ -525,9 +525,9 @@
                         @foreach ($regional7 as $key => $item)
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
-                                <td class=" px-2 w-full"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap"><p>{{ $key }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
                             @php

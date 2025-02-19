@@ -65,7 +65,7 @@ class Certificaciones extends Component
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real' => [Rule::requiredIf($this->modelo_editar->asiento_registral != null), 'nullable'],
             'modelo_editar.asiento_registral' => 'nullable',
-            'modelo_editar.numero_propiedad' => ['nullable', 'numeric', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11', 'DL12', 'DM67', 'D110', 'D111'])), 'min:1'],
+            'modelo_editar.numero_propiedad' => ['nullable', 'numeric', 'min:1', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DC93', 'DL10' , 'DL11', 'DL12', 'DM67', 'D110', 'D111']))],
             'modelo_editar.movimiento_registral' => Rule::requiredIf(
                                                     $this->servicio['clave_ingreso'] == 'DL14' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14']) ||
                                                     $this->servicio['clave_ingreso'] == 'DL13' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])

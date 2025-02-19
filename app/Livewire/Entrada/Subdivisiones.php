@@ -346,7 +346,7 @@ class Subdivisiones extends Component
 
             $this->consultarFolioReal();
 
-            if(!$this->matriz && $this->modelo_editar->folio_real){
+            if(!$this->matriz && $this->modelo_editar->folio_real && $this->servicio['nombre'] != 'Subdivisiones por cada inmueble'){
 
                 throw new Exception("El folio real no es matriz.");
 
