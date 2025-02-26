@@ -189,8 +189,6 @@
                                 <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
                                 <p>{{ $tramite->linea_de_captura }}</p>
                                 <img src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
-                                <p>Convenio OXXO: 50001.</p>
-                                <p>Convenio Bancomer: 664685</p>
 
                             </div>
 
@@ -203,6 +201,8 @@
             </thead>
 
         </table>
+
+        <p style="font-size: 10px; text-align: center">Convenio OXXO: 50001. | Convenio BANCOMER: 664685 | Convenio BANCOMER: 100318647 | Convenio SANTANDER: 6361 | Convenio TELECOMM: 10 | Convenio BANAMEX: 4162 | Convenio BAJIO: 2717</p>
 
         <div class="footer">
 
@@ -299,8 +299,7 @@
                                 <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
                                 <p>{{ $tramite->linea_de_captura }}</p>
                                 <img src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
-                                <p>Convenio OXXO: 50001.</p>
-                                <p>Convenio Bancomer: 664685</p>
+
                             </div>
 
                         @endif
@@ -312,6 +311,8 @@
             </thead>
 
         </table>
+
+        <p style="font-size: 10px; text-align: center">Convenio OXXO: 50001. | Convenio BANCOMER: 664685 | Convenio BANCOMER: 100318647 | Convenio SANTANDER: 6361 | Convenio TELECOMM: 10 | Convenio BANAMEX: 4162 | Convenio BAJIO: 2717</p>
 
         <div class="footer">
 

@@ -19,6 +19,7 @@ class TramiteService{
     public $fecha_vencimiento;
     public $orden_de_pago;
     public $linea;
+    public $convenios;
 
     public function __construct(Tramite $tramite)
     {
@@ -124,7 +125,7 @@ class TramiteService{
         $this->tramite->linea_de_captura = $array['ES_OPAG']['LINEA_CAPTURA'];
         $this->tramite->limite_de_pago = $this->convertirFecha($array['ES_OPAG']['FECHA_VENCIMIENTO']);
 
-        /* $this->oxxo_cod = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['TB_CONV_BANCARIOS'][1]['COD_BANCO'];
+        /* $this->oxxo_cod = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['TB_CONV_BANCARIOS'];
 
         $this->oxxo_conv = $array['SOAPBody']['ns0MT_ServGralLC_PI_Receiver']['TB_CONV_BANCARIOS'][1]['COD_CONVENIO']; */
 

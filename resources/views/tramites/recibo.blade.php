@@ -108,8 +108,13 @@
             <img style="width: 100%;" src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($tramite->linea_de_captura, $generatorPNG::TYPE_CODE_128)) }}">
             <p> {{ $tramite->linea_de_captura }}</p>
             <img style="width: 100%;" src="{{ public_path('storage/img/convenio.png') }}" alt="Convenio">
-            <p>Convenio OXXO: 50001.</p>
-            <p>Convenio Bancomer: 664685</p>
+            <p style="font-size: 10px;">Convenio OXXO: 50001.</p>
+            <p style="font-size: 10px;">Convenio BANCOMER: 664685</p>
+            <p style="font-size: 10px;">Convenio BANCOMER: 100318647</p>
+            <p style="font-size: 10px;">Convenio SANTANDER: 6361</p>
+            <p style="font-size: 10px;">Convenio TELECOMM: 10</p>
+            <p style="font-size: 10px;">Convenio BANAMEX: 4162</p>
+            <p style="font-size: 10px;">Convenio BAJIO: 2717</p>
 
         </div>
 
