@@ -391,6 +391,12 @@ trait ComunTrait
 
         if($response->status() == 200){
 
+            if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
+
+                throw new Exception('EL folio no es del distrito 2');
+
+            }
+
             $this->modelo_editar->folio_real = $data['data']['folio'];
             $this->modelo_editar->tomo = $data['data']['tomo'];
             $this->modelo_editar->registro = $data['data']['registro'];
