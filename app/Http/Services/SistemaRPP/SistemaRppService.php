@@ -204,6 +204,7 @@ class SistemaRppService{
                 'numero_paginas' => $tramite->cantidad,
                 'monto' => $tramite->monto,
                 'movimiento_registral' => $tramite->movimiento_registral,
+                'tipo_servicio' => $tramite->tipo_servicio,
             ]);
 
         } catch (\Throwable $th) {

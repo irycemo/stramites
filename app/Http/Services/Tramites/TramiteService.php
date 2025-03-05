@@ -229,15 +229,25 @@ class TramiteService{
                 'fecha_entrega' => $this->calcularFechaEntrega()
             ]);
 
+            /* Comercio */
+            if($this->tramite->seccion == 'Comercio') return;
+
+            /* Complementos */
             if($this->tramite->tipo_tramite == 'complemento'){
 
-                (new SistemaRppService())->cambiarTipoServicio($this->tramite);
+                if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL13' || $this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL14'){
+
+                    (new SistemaRppService())->actualizarPaginas($this->tramite);
+
+                }else{
+
+                    (new SistemaRppService())->cambiarTipoServicio($this->tramite);
+
+                }
 
                 return;
 
             }
-
-            if($this->tramite->seccion == 'Comercio') return;
 
             /* Adiciona a consulta o notario foraneo */
             if($this->tramite->adiciona){

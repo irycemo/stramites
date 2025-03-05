@@ -68,6 +68,10 @@ class LineaCapturaApi
                 $cantidad = $this->tramite->cantidad;
             }
 
+        }else{
+
+            $cantidad = $this->tramite->cantidad;
+
         }
 
         try {
