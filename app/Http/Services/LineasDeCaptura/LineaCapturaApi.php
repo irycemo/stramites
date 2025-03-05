@@ -53,17 +53,21 @@ class LineaCapturaApi
 
         $observaciones = $observaciones . " Calificó: " . auth()->user()->name;
 
-        if($this->tramite->tipo_servicio == 'urgente'){
+        if($this->tramite->tipo_tramite == 'normal'){
 
-            $cantidad = $this->tramite->cantidad * 2;
+            if($this->tramite->tipo_servicio == 'urgente'){
 
-        }elseif($this->tramite->tipo_servicio == 'extra_urgente'){
+                $cantidad = $this->tramite->cantidad * 2;
 
-            $cantidad = $this->tramite->cantidad * 3;
+            }elseif($this->tramite->tipo_servicio == 'extra_urgente'){
 
-        }else{
+                $cantidad = $this->tramite->cantidad * 3;
 
-            $cantidad = $this->tramite->cantidad;
+            }else{
+
+                $cantidad = $this->tramite->cantidad;
+            }
+
         }
 
         try {
