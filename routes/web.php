@@ -22,6 +22,7 @@ use App\Http\Controllers\ManualController;
 use App\Http\Controllers\TramitesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SetPasswordController;
+use App\Livewire\Entrada\Complemento;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,7 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
     Route::get('auditoria', Auditoria::class)->middleware('permission:Auditoria')->name('auditoria');
 
     Route::get('entrada', Entrada::class)->middleware('permission:Lista de entradas')->name('entrada');
+    Route::get('complemento', Complemento::class)->middleware('permission:Lista de entradas')->name('complemento');
 
     Route::get('recepcion', Recepcion::class)->middleware('permission:Recepción')->name('recepcion');
 
@@ -77,12 +79,9 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
 
     Route::get('reportes', Reportes::class)->middleware('permission:Reportes')->name('reportes');
 
-    Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
-
+    Route::get('manual', ManualController::class)->name('manual');
 
 });
 
 Route::get('setpassword/{email}', [SetPasswordController::class, 'create'])->name('setpassword');
 Route::post('setpassword', [SetPasswordController::class, 'store'])->name('setpassword.store');
-
-Route::get('manual', ManualController::class)->name('manual');

@@ -70,7 +70,7 @@ class LineaCapturaApi
 
         }else{
 
-            $cantidad = $this->tramite->cantidad;
+            $cantidad = $this->tramite->monto / $this->tramite->servicio['ordinario'];
 
         }
 

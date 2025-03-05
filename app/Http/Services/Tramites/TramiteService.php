@@ -235,6 +235,7 @@ class TramiteService{
             /* Complementos */
             if($this->tramite->tipo_tramite == 'complemento'){
 
+                /* Complementos de copias o agregar paginas */
                 if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL13' || $this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL14'){
 
                     (new SistemaRppService())->actualizarPaginas($this->tramite);

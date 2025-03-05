@@ -180,14 +180,36 @@
 
                 @can('Lista de entradas')
 
-                    <a href="{{ route('entrada') }}" class="mb-3 capitalize font-medium text-md hover:text-red-600 transition ease-in-out duration-500 flex hover  hover:bg-gray-100 p-2 px-4 rounded-xl focus:outline-rojo focus:outline-offset-2">
+                    <x-nav-dropdown>
 
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-4 " fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                        </svg>
+                        <x-slot name="head">
 
-                        Entrada
-                    </a>
+                            <a href="{{ route('entrada') }}" class="capitalize font-medium text-md flex items-center w-full py-2 px-4 focus:outline-rojo focus:outline-offset-2">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-4 " fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                </svg>
+
+                                Entrada
+                            </a>
+
+                        </x-slot>
+
+                        <x-slot name="body">
+
+                            <a href="{{ 'complemento' }}" class="hover:bg-gray-100 hover:text-red-600 transition ease-in-out duration-500 rounded-full capitalize font-medium text-md flex items-center w-full py-2 px-4 focus:outline-rojo focus:outline-offset-2">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+
+                                Complemento
+
+                            </a>
+
+                        </x-slot>
+
+                    </x-nav-dropdown>
 
                 @endcan
 
