@@ -29,7 +29,7 @@ class Complemento extends Component
                                     ->where('año', $this->año)
                                     ->where('numero_control', $this->numero_control)
                                     ->where('usuario', $this->usuario)
-                                    ->whereIn('estado', ['nuevo', 'rechazado'])
+                                    ->whereIn('estado', ['pagado', 'rechazado'])
                                     ->first();
 
         if(!$this->tramite){
