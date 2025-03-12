@@ -176,7 +176,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
@@ -226,7 +226,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
@@ -276,7 +276,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
@@ -326,7 +326,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
@@ -376,7 +376,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
@@ -426,7 +426,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
@@ -476,7 +476,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
@@ -526,7 +526,7 @@
 
                             <tr class="text-gray-500 text-sm leading-relaxed">
                                 <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
-                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $key }}</p></td>
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ Str::limit($key, 25) }}</p></td>
                                 <td class=" px-2 w-3/12 whitespace-nowrap text-right"><p>${{ number_format($item['monto'], 2) }}</p></td>
                             </tr>
 
