@@ -16,6 +16,7 @@
                 <option selected value="">Selecciona una área</option>
                 <option value="tramites">Trámites</option>
                 <option value="recaudacion">Recaudación</option>
+                <option value="exentos">Exentos</option>
             </select>
 
         </div>
@@ -31,6 +32,12 @@
     @if ($verRecaudacion)
 
         @livewire('reportes.recaudacion', ['fecha1' => $this->fecha1, 'fecha2' => $this->fecha2, 'estado' => $this->estado])
+
+    @endif
+
+    @if ($exentos)
+
+        @livewire('reportes.exentos', ['fecha1' => $this->fecha1, 'fecha2' => $this->fecha2, 'estado' => $this->estado])
 
     @endif
 

@@ -14,6 +14,7 @@ class Reportes extends Component
 
     public $verTramites;
     public $verRecaudacion;
+    public $exentos;
 
     protected function rules(){
         return [
@@ -35,11 +36,23 @@ class Reportes extends Component
 
             $this->verRecaudacion = false;
 
+            $this->exentos = false;
+
         }elseif($this->area === 'recaudacion'){
 
             $this->verTramites = false;
 
             $this->verRecaudacion = true;
+
+            $this->exentos = false;
+
+        }elseif($this->area === 'exentos'){
+
+            $this->verTramites = false;
+
+            $this->verRecaudacion = false;
+
+            $this->exentos = true;
 
         }
 
