@@ -233,9 +233,15 @@ class Tramites extends Component
         if($this->modelo_editar->isNot($modelo))
             $this->modelo_editar = $modelo;
 
-        if($this->modelo_editar->adicionaAlTramite->servicio->clave_ingreso == 'DC93' && !$this->modelo_editar->adicionaAlTramite->fecha_pago){
+        if($this->modelo_editar->adicionaAlTramite?->servicio->clave_ingreso == 'DC93' && !$this->modelo_editar->adicionaAlTramite?->fecha_pago){
 
             $this->dispatch('mostrarMensaje', ['warning', "El trámite de consulta al que adiciona no esta pagado."]);
+
+            return;
+
+        }elseif($this->modelo_editar->adicionaAlTramite?->servicio->clave_ingreso == 'DL28' && !$this->modelo_editar->adicionaAlTramite?->fecha_pago){
+
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite foraneo al que adiciona no esta pagado."]);
 
             return;
 
