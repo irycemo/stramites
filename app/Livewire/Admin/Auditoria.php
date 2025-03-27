@@ -26,10 +26,10 @@ class Auditoria extends Component
     public $oldValues;
     public $newValues;
     public $modelos = [
-        'App\Models\CategoriaServicio',
-        'App\Models\Servicio',
-        'App\Models\Tramite',
-        'App\Models\User',
+        'CategoriaServicio' => 'App\Models\CategoriaServicio',
+        'Servicio' => 'App\Models\Servicio',
+        'Tramite' => 'App\Models\Tramite',
+        'User' => 'App\Models\User',
     ];
 
     public function ver(Audit $audit){
@@ -53,6 +53,10 @@ class Auditoria extends Component
     public function mount(){
 
         $this->usuarios = User::orderBy('name')->get();
+
+        if(request()->query('modelo')) $this->modelo = $this->modelos[request()->query('modelo')];
+
+        $this->modelo_id = request()->query('modelo_id');
 
     }
 

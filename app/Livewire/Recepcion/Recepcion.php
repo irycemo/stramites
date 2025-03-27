@@ -135,7 +135,7 @@ class Recepcion extends Component
 
             DB::transaction(function () {
 
-                $this->tramite->update(['fecha_prelacion' => now()->toDateString()]);
+                $this->tramite->update(['fecha_prelacion' => now()->format('Y-m-d H:i:s')]);
 
                 if($this->documento){
 
@@ -179,7 +179,7 @@ class Recepcion extends Component
 
             DB::transaction(function (){
 
-                $this->tramite->update(['fecha_prelacion' => now()->toDateString()]);
+                $this->tramite->update(['fecha_prelacion' => now()->format('Y-m-d H:i:s')]);
 
                 $this->tramite->audits()->latest()->first()->update(['tags' => 'Recibió documentación']);
 
