@@ -224,7 +224,7 @@ class TramiteService{
             $this->tramite->update([
                 'estado' => 'pagado',
                 'fecha_pago' => $this->convertirFecha($fecha),
-                'fecha_prelacion' => $this->convertirFecha($fecha),
+                'fecha_prelacion' => now()->format('Y-m-d H:i:s'),
                 'documento_de_pago' => $documento,
                 'fecha_entrega' => $this->calcularFechaEntrega()
             ]);

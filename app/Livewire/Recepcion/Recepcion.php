@@ -137,6 +137,8 @@ class Recepcion extends Component
 
                 $this->tramite->update(['fecha_prelacion' => now()->format('Y-m-d H:i:s')]);
 
+                $this->tramite->audits()->latest()->first()->update(['tags' => 'Recibió documentación']);
+
                 if($this->documento){
 
                     $pdf = $this->documento->store('/', 'tramites');
