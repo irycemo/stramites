@@ -40,7 +40,9 @@ class Varios extends Component
         'tipo_tramite' => false,
         'documento' => true,
         'email' => false,
-        'tramite_foraneo' => false
+        'tramite_foraneo' => false,
+        'folio_real' => false,
+        'movimiento_registral' => false,
     ];
 
     protected function rules(){
@@ -61,7 +63,8 @@ class Varios extends Component
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
-            'modelo_editar.folio_real' => 'nullable',
+            'modelo_editar.asiento_registral' => ['nullable', Rule::requiredIf(in_array($this->servicio['nombre'], ['Cancelación de primer aviso preventivo']))],
+            'modelo_editar.folio_real' => ['nullable', Rule::requiredIf(in_array($this->servicio['nombre'], ['Cancelación de primer aviso preventivo']))],
             'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'DL28'])), 'min:1'],
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.fecha_emision' => [
@@ -124,6 +127,13 @@ class Varios extends Component
             $this->flags['antecedente'] = false;
             $this->flags['documento'] = false;
             $this->flags['tipo_servicio'] = false;
+
+        }
+
+        if(in_array($this->servicio['nombre'], ['Cancelación de primer aviso preventivo', 'Cancelación de segundo aviso preventivo'])){
+
+            $this->flags['folio_real'] = true;
+            $this->flags['movimiento_registral'] = true;
 
         }
 
@@ -372,6 +382,18 @@ class Varios extends Component
             ){
 
                 $this->consultarFolioReal();
+
+            }
+
+            if($this->servicio['nombre'] == 'Cancelación de primer aviso preventivo'){
+
+                $this->consultarPrimerAviso();
+
+            }
+
+            if($this->servicio['nombre'] == 'Cancelación de segundo aviso preventivo'){
+
+                $this->consultarSegundoAviso();
 
             }
 

@@ -866,6 +866,16 @@
 
                         @endif
 
+                        @if ($modelo_editar->asiento_registral)
+
+                            <div class="rounded-lg bg-gray-100 py-1 px-2">
+
+                                <p><strong>Movimiento registral:</strong> {{ $modelo_editar->asiento_registral }}</p>
+
+                            </div>
+
+                        @endif
+
                         @if ($modelo_editar->tipo_documento)
 
                             <span class="lg:col-span-2 text-center ">Documento de entrada</span>

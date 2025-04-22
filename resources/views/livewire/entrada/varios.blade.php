@@ -11,7 +11,21 @@
 
                     @include('livewire.entrada.comun.solicitante')
 
-                    @include('livewire.entrada.comun.antecedente')
+                    @if(in_array($servicio['nombre'], ['Cancelación de primer aviso preventivo', 'Cancelación de segundo aviso preventivo']))
+
+                        <div class="flex gap-3">
+
+                            @include('livewire.entrada.comun.folio_real')
+
+                            @include('livewire.entrada.comun.movimiento_registral')
+
+                        </div>
+
+                    @else
+
+                        @include('livewire.entrada.comun.antecedente')
+
+                    @endif
 
                     @include('livewire.entrada.comun.documento_entrada')
 

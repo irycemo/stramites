@@ -600,4 +600,54 @@ trait ComunTrait
 
     }
 
+    public function consultarPrimerAviso(){
+
+        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                        ->accept('application/json')
+                        ->asForm()
+                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_PRIMER_AVISO'),[
+                            'folio_real' => $this->modelo_editar->folio_real,
+                            'folio' => $this->modelo_editar->asiento_registral
+                        ]);
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 404){
+
+            throw new Exception($data['error'] ?? 'No se encontro el recurso');
+
+        }if($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "No se encontro el recurso.");
+
+        }
+
+    }
+
+    public function consultarSegundoAviso(){
+
+        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                        ->accept('application/json')
+                        ->asForm()
+                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_SEGUNDO_AVISO'),[
+                            'folio_real' => $this->modelo_editar->folio_real,
+                            'folio' => $this->modelo_editar->asiento_registral
+                        ]);
+
+
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 404){
+
+            throw new Exception($data['error'] ?? 'No se encontro el recurso');
+
+        }if($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "No se encontro el recurso.");
+
+        }
+
+    }
+
 }
