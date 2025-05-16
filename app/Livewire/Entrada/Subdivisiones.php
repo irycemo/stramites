@@ -300,7 +300,7 @@ class Subdivisiones extends Component
 
     public function updatedModeloEditarNumeroInmuebles(){
 
-        $this->modelo_editar->cantidad = $this->modelo_editar->numero_inmuebles;
+        $this->modelo_editar->cantidad = $this->modelo_editar->numero_inmuebles + 1;
 
         $this->updatedModeloEditarTipoServicio();
 
@@ -320,6 +320,8 @@ class Subdivisiones extends Component
         if($borrado) $this->crearModeloVacio();
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
+
+        $this->modelo_editar->cantidad = $this->modelo_editar->numero_inmuebles + 1;
 
         if($this->servicio['clave_ingreso'] == 'D127'){
 
