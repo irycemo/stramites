@@ -344,6 +344,8 @@ class Subdivisiones extends Component
 
         try {
 
+            $this->modelo_editar->numero_inmuebles = $this->modelo_editar->cantidad;
+
             if($this->flags['tramite_foraneo']) $this->buscarforaneo();
 
             $this->consultarFolioReal();
