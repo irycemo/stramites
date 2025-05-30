@@ -34,7 +34,17 @@ class Complemento extends Component
 
         if(!$this->tramite){
 
-            $this->dispatch('mostrarMensaje', ['error', "No se encontro el trámite."]);
+            $this->dispatch('mostrarMensaje', ['warning', "No se encontro el trámite."]);
+
+            $this->tramite = null;
+
+        }
+
+        if(in_array($this->tramite->servicio->clave_ingreso, ['DL14', 'DL13'])){
+
+            $this->dispatch('mostrarMensaje', ['warning', "Los complementos para copias se registran en el área de entrada."]);
+
+            $this->tramite = null;
 
         }
 
