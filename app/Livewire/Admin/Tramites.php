@@ -569,11 +569,10 @@ class Tramites extends Component
                                         ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
                                         ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
                                         ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('numero_propiedad', 'LIKE', '%' . $this->search . '%')
                                         ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
                                         ->orWhere('numero_control', 'LIKE', '%' . $this->search . '%')
                                         ->orWhere('numero_escritura', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('numero_notaria', 'LIKE', '%' . $this->search . '%')
+                                        ->orWhere('numero_documento', 'LIKE', '%' . $this->search . '%')
                                         ->orWhere(function($q){
                                             return $q->whereHas('creadoPor', function($q){
                                                 return $q->where('name', 'LIKE', '%' . $this->search . '%');
