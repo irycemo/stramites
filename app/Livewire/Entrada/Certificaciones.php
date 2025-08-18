@@ -158,7 +158,7 @@ class Certificaciones extends Component
 
         if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
 
-        /* if(auth()->user()->hasRole('Oficialia de partes')){
+        if(auth()->user()->hasRole('Oficialia de partes')){
 
             $this->flags['cantidad'] = true;
             $this->flags['solicitante'] = true;
@@ -168,17 +168,12 @@ class Certificaciones extends Component
             $this->flags['folio_real'] = true;
             $this->flags['movimiento_registral'] = true;
             $this->flags['distrito'] = true;
-
+            $this->adicionaTramite = true;
+            $this->flags['adiciona'] = true;
             $this->flags['observaciones'] = true;
 
-            if($this->servicio['clave_ingreso'] == 'DL14' || $this->servicio['clave_ingreso'] == 'DL13'){
 
-                $this->adicionaTramite = true;
-                $this->flags['adiciona'] = true;
-
-            }
-
-        } */
+        }
 
     }
 
