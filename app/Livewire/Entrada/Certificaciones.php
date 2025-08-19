@@ -168,10 +168,9 @@ class Certificaciones extends Component
             $this->flags['folio_real'] = true;
             $this->flags['movimiento_registral'] = true;
             $this->flags['distrito'] = true;
-            $this->adicionaTramite = true;
-            $this->flags['adiciona'] = true;
+            $this->adicionaTramite = false;
+            $this->flags['adiciona'] = false;
             $this->flags['observaciones'] = true;
-
 
         }
 
