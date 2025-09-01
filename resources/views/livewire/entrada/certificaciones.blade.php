@@ -13,31 +13,35 @@
 
                     @include('livewire.entrada.comun.solicitante')
 
-                    @include('livewire.entrada.comun.antecedente')
+                    @if($servicio['nombre'] != 'Certificado negativo de vivienda bienestar')
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative" wire:loading.class.delay.longest="opacity-50">
+                        @include('livewire.entrada.comun.antecedente')
 
-                        @include('livewire.entrada.comun.folio_real')
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative" wire:loading.class.delay.longest="opacity-50">
 
-                        @include('livewire.entrada.comun.movimiento_registral')
+                            @include('livewire.entrada.comun.folio_real')
 
-                        @include('livewire.entrada.comun.tomo')
+                            @include('livewire.entrada.comun.movimiento_registral')
 
-                        @include('livewire.entrada.comun.registro')
+                            @include('livewire.entrada.comun.tomo')
 
-                        @include('livewire.entrada.comun.distrito')
+                            @include('livewire.entrada.comun.registro')
 
-                        @include('livewire.entrada.comun.seccion')
+                            @include('livewire.entrada.comun.distrito')
 
-                        @include('livewire.entrada.comun.cantidad')
+                            @include('livewire.entrada.comun.seccion')
 
-                        @include('livewire.entrada.comun.numero_oficio')
+                            @include('livewire.entrada.comun.cantidad')
 
-                        @include('livewire.entrada.comun.tipo_servicio')
+                            @include('livewire.entrada.comun.numero_oficio')
 
-                        @include('livewire.entrada.comun.tipo_tramite')
+                            @include('livewire.entrada.comun.tipo_servicio')
 
-                    </div>
+                            @include('livewire.entrada.comun.tipo_tramite')
+
+                        </div>
+
+                    @endif
 
                     @include('livewire.entrada.comun.observaciones')
 

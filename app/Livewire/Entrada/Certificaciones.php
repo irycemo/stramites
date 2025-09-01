@@ -55,7 +55,7 @@ class Certificaciones extends Component
             'modelo_editar.tomo_bis' => 'nullable',
             'modelo_editar.registro' => [Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['DL14', 'DL13', 'DL12', 'D110']) && !$this->modelo_editar->folio_real), 'nullable', 'numeric'],
             'modelo_editar.registro_bis' => 'nullable',
-            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DM67', 'D111'])),
+            'modelo_editar.distrito' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DM67', 'D111']) && $this->servicio['nombre'] != 'Certificado negativo de vivienda bienestar'),
             'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL12', 'DM67', 'D110', 'D111'])),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
@@ -227,7 +227,7 @@ class Certificaciones extends Component
         $this->flags['notarias'] = false;
         $this->flags['numero_oficio'] = false;
 
-        if($this->modelo_editar->solicitante == 'Usuario'){
+        if(in_array($this->modelo_editar->solicitante , ['Usuario', 'Vivienda Bienestar'])){
 
             $this->flags['nombre_solicitante'] = true;
 

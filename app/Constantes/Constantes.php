@@ -81,7 +81,8 @@ class Constantes{
         'SAT',
         'Usuario',
         'Notaría',
-        'S.T.A.S.P.E.'
+        'S.T.A.S.P.E.',
+        'Vivienda Bienestar'
     ];
 
     const SECCIONES = [
