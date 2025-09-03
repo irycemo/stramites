@@ -47,7 +47,7 @@ class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, Wit
     */
     public function query()
     {
-        return Tramite::with('servicio', 'creadoPor', 'actualizadoPor')
+        return Tramite::with('servicio:id,nombre', 'creadoPor:id,name,ubicacion', 'actualizadoPor:id,name')
                         ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                             return $q->where('id_servicio', $this->servicio_id);
                         })
