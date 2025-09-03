@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Tramite;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithDrawings;
@@ -19,6 +20,8 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, WithEvents, WithCustomStartCell, WithColumnWidths, WithHeadings, WithMapping, FromQuery
 {
 
+    use Exportable;
+
     public $servicio_id;
     public $ubicacion;
     public $usuario_id;
@@ -27,9 +30,10 @@ class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, Wit
     public $estado;
     public $fecha1;
     public $fecha2;
+    public $creator;
 
 
-    public function __construct($estado, $ubicacion, $servicio, $usuario, $tipo_servicio, $solicitante, $fecha1, $fecha2)
+    public function __construct($estado, $ubicacion, $servicio, $usuario, $tipo_servicio, $solicitante, $fecha1, $fecha2, $creator)
     {
         $this->servicio_id = $servicio;
         $this->ubicacion = $ubicacion;
@@ -39,6 +43,7 @@ class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, Wit
         $this->estado = $estado;
         $this->fecha1 = $fecha1;
         $this->fecha2 = $fecha2;
+        $this->creator = $creator;
 
     }
 
@@ -160,7 +165,7 @@ class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, Wit
     public function properties(): array
     {
         return [
-            'creator'        => auth()->user()->name,
+            'creator'        => $this->creator,
             'title'          => 'Reporte de Faltas (Sistema de Gestión Personal)',
             'company'        => 'Instituto Registral Y Catastral Del Estado De Michoacán De Ocampo',
         ];
