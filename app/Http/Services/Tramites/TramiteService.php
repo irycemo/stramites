@@ -42,6 +42,12 @@ class TramiteService{
 
             $this->procesarLineaCaptura();
 
+            if($this->tramite->servicio->nombre == 'Certificado negativo de vivienda bienestar'){
+
+                $this->tramite->distrito = 1;
+
+            }
+
             $this->tramite->save();
 
             if($this->tramite->solicitante == 'Oficialia de partes' || $this->tramite->solicitante == 'SAT'){
