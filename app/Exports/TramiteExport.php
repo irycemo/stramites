@@ -4,19 +4,19 @@ namespace App\Exports;
 
 use App\Models\Tramite;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithProperties;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
-class TramiteExport implements FromCollection, WithProperties, WithDrawings, ShouldAutoSize, WithEvents, WithCustomStartCell, WithColumnWidths, WithHeadings, WithMapping
+class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, WithEvents, WithCustomStartCell, WithColumnWidths, WithHeadings, WithMapping, FromQuery
 {
 
     public $servicio_id;
@@ -45,7 +45,7 @@ class TramiteExport implements FromCollection, WithProperties, WithDrawings, Sho
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function query()
     {
         return Tramite::with('servicio', 'creadoPor', 'actualizadoPor')
                         ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
@@ -68,8 +68,7 @@ class TramiteExport implements FromCollection, WithProperties, WithDrawings, Sho
                                 $q->where('ubicacion', $this->ubicacion);
                             });
                         })
-                        ->whereBetween('created_at', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
-                        ->get();
+                        ->whereBetween('created_at', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59']);
     }
 
     public function drawings()
