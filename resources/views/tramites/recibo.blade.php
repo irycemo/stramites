@@ -75,11 +75,11 @@
             <p><strong>Solicitante:</strong> {{ $tramite->nombre_solicitante }}</p>
             <p><strong>Tipo de servicio:</strong> {{ $tramite->tipo_servicio }}</p>
             @if($tramite->folio_real)
-                <p><strong>Folio real:</strong> {{ $tramite->folio_real }},</p>
+                <p><strong>Folio real:</strong> {{ $tramite->folio_real }}</p>
             @else
                 @if($tramite->tomo) <p><strong>Tomo:</strong> {{ $tramite->tomo }}, <strong>Registro:</strong> {{ $tramite->registro}}</p>@endif
                 @if($tramite->numero_propiedad) <p><strong>Número propiedad:</strong> {{ $tramite->numero_propiedad }}</p>@endif
-                @if($tramite->distrito)<p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}</p>@endif
+                @if($tramite->distrito && $tramite->servicio->nombre != 'Certificado negativo de vivienda bienestar')<p><strong>Distrito:</strong> {{ App\Constantes\Constantes::DISTRITOS[$tramite->distrito] }}</p>@endif
                 @if($tramite->seccion)<p><strong>Sección:</strong> {{ $tramite->seccion }}</p>@endif
             @endif
             @if($tramite->tomo_gravamen) <p><strong>Tomo gravamen:</strong> {{ $tramite->tomo_gravamen }}, <strong>Registro gravamen:</strong> {{ $tramite->registro_gravamen}}</p>@endif
