@@ -23,7 +23,7 @@ class TramitesApiController extends Controller
         $validated = $request->validated();
 
         $tramites = Tramite::with('servicio')
-                                ->where('usuario', 4)
+                                ->where('usuario', 67)
                                 ->where('usuario_tramites_linea_id', $validated['entidad'])
                                 ->when(isset($validated['año']), fn($q) => $q->where('año', $validated['año']))
                                 ->when(isset($validated['folio']), fn($q) => $q->where('folio', $validated['folio']))
@@ -37,20 +37,36 @@ class TramitesApiController extends Controller
 
     }
 
-    public function crearTramtie(CrearTramiteRequest $request){
+    public function crearTramite(CrearTramiteRequest $request){
 
         $validated = $request->validated();
 
         $tramite = Tramite::make();
 
-        $tramite->tipo_tramite = $validated['tipo_tramite'];
+        $tramite->tipo_tramite = 'normal';
         $tramite->tipo_servicio = $validated['tipo_servicio'];
         $tramite->id_servicio = $validated['servicio_id'];
         $tramite->solicitante = $validated['solicitante'];
         $tramite->nombre_solicitante = $validated['nombre_solicitante'];
         $tramite->monto = $validated['monto'];
-        $tramite->cantidad = $validated['cantidad'];
+        $tramite->cantidad = 1;
         $tramite->usuario_tramites_linea_id = $validated['usuario_tramites_linea_id'];
+
+        if(isset($validated['predio'])){
+
+            if(isset($validated['predio']['folio_real'])){
+
+                $tramite->folio_real = $validated['predio']['folio_real'];
+
+            }
+
+            $tramite->tomo = $validated['predio']['tomo'];
+            $tramite->registro = $validated['predio']['registro'];
+            $tramite->distrito = $validated['predio']['distrito'];
+            $tramite->numero_propiedad = $validated['predio']['numero_propiedad'];
+            $tramite->seccion = 'Propiedad';
+
+        }
 
         $nuevo_tramite = null;
 

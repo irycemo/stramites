@@ -25,6 +25,7 @@ class TramiteResource extends JsonResource
             'monto' => (float)$this->monto,
             'cantidad' => $this->cantidad,
             'linea_de_captura' => $this->linea_de_captura,
+            'folio_pago' => $this->documento_de_pago,
             'orden_de_pago' => $this->orden_de_pago,
             'fecha_pago' => $this->fecha_pago?->format('d-m-Y'),
             'fecha_entrega' => $this->fecha_entrega?->format('d-m-Y'),
@@ -32,6 +33,13 @@ class TramiteResource extends JsonResource
             'tipo_tramite' => $this->tipo_tramite,
             'fecha_vencimiento' => $this->limite_de_pago?->format('d/m/Y'),
             'nombre_solicitante' => $this->nombre_solicitante,
+            'solicitante' => $this->solicitante,
+            'numero_oficio' => $this->numero_oficio,
+            'folio_real' => $this->folio_real,
+            'tomo' => $this->tomo,
+            'registro' => $this->registro,
+            'distrito' => $this->distrito,
+            'numero_propiedad' => $this->numero_propiedad,
         ];
     }
 }

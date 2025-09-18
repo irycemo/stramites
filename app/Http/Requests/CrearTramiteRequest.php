@@ -22,14 +22,14 @@ class CrearTramiteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tipo_tramite' => 'required',
             'tipo_servicio' => 'required',
             'servicio_id' => 'required',
             'solicitante' => 'required',
             'nombre_solicitante' => 'required',
             'monto' => 'required',
-            'cantidad' => 'required',
             'usuario_tramites_linea_id' => 'required',
+            'predio' => 'array|nullable'
         ];
     }
+
 }

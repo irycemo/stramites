@@ -434,7 +434,7 @@ trait ComunTrait
 
             if($transicion){
 
-                throw new Exception("La propiedad de encuentra en transición.");
+                throw new Exception("La propiedad se encuentra en transición.");
 
             }
 

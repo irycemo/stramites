@@ -26,13 +26,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('rechazar_tramite', [TramitesApiController::class, 'rechazarTramite']);
 
-    Route::get('consultar_servicios', [ServiciosApiController::class, 'consultarServicios']);
+    Route::post('consultar_servicios', [ServiciosApiController::class, 'consultarServicios']);
 
     Route::get('consultar_servicio', [ServiciosApiController::class, 'consultarServicio']);
 
-    Route::post('crear_tramite', [TramitesApiController::class, 'crearTramtie']);
+    Route::post('crear_tramite', [TramitesApiController::class, 'crearTramite']);
 
-    Route::get('consultar_tramites', [TramitesApiController::class, 'consultarTramites']);
+    Route::post('consultar_tramites', [TramitesApiController::class, 'consultarTramites']);
 
     Route::post('acreditar_tramite', [TramitesApiController::class, 'acreditarTramite']);
 

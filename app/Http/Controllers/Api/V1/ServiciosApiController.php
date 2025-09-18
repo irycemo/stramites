@@ -13,9 +13,9 @@ class ServiciosApiController extends Controller
 
     public function consultarServicios(Request $request){
 
-        $validated = $request->validate(['claves' => 'required|array']);
+        $validated = $request->validate(['claves_ingreso' => 'required|array']);
 
-        return ServicioResource::collection(Servicio::where('estado', 'activo')->whereIn('clave_ingreso', $validated['claves'])->get())->response()->setStatusCode(200);
+        return ServicioResource::collection(Servicio::where('estado', 'activo')->whereIn('clave_ingreso', $validated['claves_ingreso'])->get())->response()->setStatusCode(200);
 
     }
 
