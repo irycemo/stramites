@@ -60,10 +60,25 @@ class TramitesApiController extends Controller
 
             }
 
-            $tramite->tomo = $validated['predio']['tomo'];
-            $tramite->registro = $validated['predio']['registro'];
+            if(isset($validated['predio']['tomo'])){
+
+                $tramite->tomo = $validated['predio']['tomo'];
+
+            }
+
+            if(isset($validated['predio']['registro'])){
+
+                $tramite->registro = $validated['predio']['registro'];
+
+            }
+
+            if(isset($validated['predio']['numero_propiedad'])){
+
+                $tramite->numero_propiedad = $validated['predio']['numero_propiedad'];
+
+            }
+
             $tramite->distrito = $validated['predio']['distrito'];
-            $tramite->numero_propiedad = $validated['predio']['numero_propiedad'];
             $tramite->seccion = 'Propiedad';
 
         }
