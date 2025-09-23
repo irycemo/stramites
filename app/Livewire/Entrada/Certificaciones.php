@@ -178,11 +178,11 @@ class Certificaciones extends Component
 
             if(auth()->user()->ubicacion == 'Regional 4'){
 
-                $this->tramite->distrito = 2;
+                $this->modelo_editar->distrito = 2;
 
             }else{
 
-                $this->tramite->distrito = 1;
+                $this->modelo_editar->distrito = 1;
 
             }
 
