@@ -174,7 +174,7 @@ class Certificaciones extends Component
 
         }
 
-        if($this->tramite->servicio->nombre == 'Certificado negativo de vivienda bienestar'){
+        if($this->servicio['nombre'] == 'Certificado negativo de vivienda bienestar'){
 
             if(auth()->user()->ubicacion == 'Regional 4'){
 
