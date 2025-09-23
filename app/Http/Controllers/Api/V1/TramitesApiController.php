@@ -109,9 +109,9 @@ class TramitesApiController extends Controller
 
     public function acreditarTramite(Request $request){
 
-        $validated = $request->validate(['linea_de_captura' => 'required']);
+        $validated = $request->validate(['linea_captura' => 'required']);
 
-        $tramite = Tramite::where('linea_de_captura', $validated['linea_de_captura'])->first();
+        $tramite = Tramite::where('linea_de_captura', $validated['linea_captura'])->first();
 
         if(!$tramite){
 

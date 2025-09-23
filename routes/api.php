@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\SapControllerApi;
-use App\Http\Controllers\Api\TramitesController;
 use App\Http\Controllers\Api\V1\TramitesApiController;
 use App\Http\Controllers\Api\V1\ServiciosApiController;
 
@@ -20,7 +17,7 @@ use App\Http\Controllers\Api\V1\ServiciosApiController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::post('acredita_pago', SapControllerApi::class);
+    Route::post('acredita_pago', [TramitesApiController::class, 'acreditarTramite']);
 
     Route::post('finalizar_tramite', [TramitesApiController::class, 'finalizarTramite']);
 

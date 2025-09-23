@@ -174,6 +174,21 @@ class Certificaciones extends Component
 
         }
 
+        if($this->tramite->servicio->nombre == 'Certificado negativo de vivienda bienestar'){
+
+            if(auth()->user()->ubicacion == 'Regional 4'){
+
+                $this->tramite->distrito = 2;
+
+            }else{
+
+                $this->tramite->distrito = 1;
+
+            }
+
+
+        }
+
     }
 
     public function updatedAdicionaTramite(){
