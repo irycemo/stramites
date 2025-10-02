@@ -180,6 +180,30 @@ class Certificaciones extends Component
 
                 $this->modelo_editar->distrito = 2;
 
+            }elseif(auth()->user()->ubicacion == 'Regional 1'){
+
+                $this->modelo_editar->distrito = 3;
+
+            }elseif(auth()->user()->ubicacion == 'Regional 2'){
+
+                $this->modelo_editar->distrito = 12;
+
+            }elseif(auth()->user()->ubicacion == 'Regional 3'){
+
+                $this->modelo_editar->distrito = 4;
+
+            }elseif(auth()->user()->ubicacion == 'Regional 5'){
+
+                $this->modelo_editar->distrito = 13;
+
+            }elseif(auth()->user()->ubicacion == 'Regional 6'){
+
+                $this->modelo_editar->distrito = 15;
+
+            }elseif(auth()->user()->ubicacion == 'Regional 7'){
+
+                $this->modelo_editar->distrito = 5;
+
             }else{
 
                 $this->modelo_editar->distrito = 1;
