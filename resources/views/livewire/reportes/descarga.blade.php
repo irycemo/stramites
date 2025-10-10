@@ -26,7 +26,7 @@
 
         </x-button-green>
 
-    @elseif(!$exporting && $exportFinished)
+    @elseif(!$exporting && !$exportFinished)
 
         <x-button-green wire:click="exportar" >
 
