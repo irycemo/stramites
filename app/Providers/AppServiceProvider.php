@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             });
 
             Livewire::setUpdateRoute(function ($handle) {
-                return Route::post('/stramites/public/livewire/update', $handle);
+                return Route::post('/stramites/livewire/update', $handle);
             });
 
         }elseif(app()->environment('staging')){
@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
             });
 
             Livewire::setUpdateRoute(function ($handle) {
-                return Route::post('/stramites/public/livewire/update', $handle);
+                return Route::post('/stramites/livewire/update', $handle);
             });
 
         }
