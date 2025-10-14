@@ -21,6 +21,36 @@
 
                 <input type="text" wire:model.live.debounce.500ms="filters.usuario" placeholder="Usuario" class="bg-white rounded-full text-sm w-20">
 
+                <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="filters.estado">
+
+                    <option value="" selected>Seleccione una opción</option>
+                    <option value="nuevo">Nuevo</option>
+                    <option value="caducado">Caducado</option>
+                    <option value="rechazado">Rechazado</option>
+                    <option value="pagado">Pagado</option>
+                    <option value="finalizado">Finalizado</option>
+                    <option value="recibido">Recibido</option>
+
+                </x-input-select>
+
+                <x-input-select class="bg-white rounded-full text-sm w-40" wire:model.live="filters.categoria">
+
+                    <option value="" selected>Categoría</option>
+                    @foreach ($categorias as $categoria)
+                        <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                    @endforeach
+
+                </x-input-select>
+
+                <x-input-select class="bg-white rounded-full text-sm w-40" wire:model.live="filters.servicio">
+
+                    <option value="" selected>Servicio</option>
+                    @foreach ($servicios as $servicio)
+                        <option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+                    @endforeach
+
+                </x-input-select>
+
                 <input type="text" wire:model.live.debounce.500ms="search" placeholder="Buscar" class="bg-white rounded-full text-sm">
 
                 <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="pagination">

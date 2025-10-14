@@ -16,6 +16,8 @@ use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
+use App\Models\CategoriaServicio;
+use App\Models\Servicio;
 
 class Tramites extends Component
 {
@@ -47,7 +49,10 @@ class Tramites extends Component
     public $filters = [
         'año' => '',
         'folio' => '',
-        'usuario' => ''
+        'usuario' => '',
+        'estado' => '',
+        'categoria' => '',
+        'servicio' => '',
     ];
 
     public Tramite $modelo_editar;
@@ -134,7 +139,21 @@ class Tramites extends Component
         'modelo_editar.numero_oficio' => 'número de oficio'
     ];
 
-    public function updatedFilters() { $this->resetPage(); }
+    public function updatedFilters() {
+
+        $this->resetPage();
+
+        if($this->filters['categoria'] != ''){
+
+            $this->servicios = Servicio::select('id', 'nombre')->where('estado', 'activo')->where('categoria_servicio_id', $this->filters['categoria'])->orderBy('nombre')->get();
+
+        }else{
+
+            $this->servicios = Servicio::select('id', 'nombre')->where('estado', 'activo')->orderBy('nombre')->get();
+
+        }
+
+    }
 
     public function updatedModeloEditarSolicitante(){
 
@@ -544,6 +563,10 @@ class Tramites extends Component
 
         $this->secciones = Constantes::SECCIONES;
 
+        $this->servicios = Servicio::select('id', 'nombre')->where('estado', 'activo')->orderBy('nombre')->get();
+
+        $this->categorias = CategoriaServicio::select('id', 'nombre')->orderBy('nombre')->get();
+
     }
 
     public function render()
@@ -561,6 +584,19 @@ class Tramites extends Component
                                 ->when($this->filters['usuario'] != '', function($q){
                                     return $q->where('usuario', $this->filters['usuario']);
 
+                                })
+                                ->when($this->filters['estado'] != '', function($q){
+                                    return $q->where('estado', $this->filters['estado']);
+
+                                })
+                                ->when($this->filters['servicio'] != '', function($q){
+                                    return $q->where('id_servicio', $this->filters['servicio']);
+
+                                })
+                                ->when($this->filters['categoria'] != '', function($q){
+                                    return $q->whereHas('servicio', function ($q){
+                                        $q->where('categoria_servicio_id', $this->filters['categoria']);
+                                    });
                                 })
                                 ->where(function($q){
                                     $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
