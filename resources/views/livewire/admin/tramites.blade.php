@@ -6,7 +6,7 @@
 
         <div class="flex justify-between">
 
-            <div class="flex gap-3">
+            <div class="flex gap-3 overflow-auto p-1">
 
                 <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="filters.año">
 
@@ -33,7 +33,7 @@
 
                 </x-input-select>
 
-                <x-input-select class="bg-white rounded-full text-sm w-40" wire:model.live="filters.categoria">
+                <x-input-select class="bg-white rounded-full text-sm w-20" wire:model.live="filters.categoria">
 
                     <option value="" selected>Categoría</option>
                     @foreach ($categorias as $categoria)
@@ -42,11 +42,20 @@
 
                 </x-input-select>
 
-                <x-input-select class="bg-white rounded-full text-sm w-40" wire:model.live="filters.servicio">
+                <x-input-select class="bg-white rounded-full text-sm w-10" wire:model.live="filters.servicio">
 
                     <option value="" selected>Servicio</option>
                     @foreach ($servicios as $servicio)
                         <option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+                    @endforeach
+
+                </x-input-select>
+
+                <x-input-select class="bg-white rounded-full text-sm w-28" wire:model.live="filters.regional">
+
+                    <option value="" selected>Regional</option>
+                    @foreach ($regionales as $regional)
+                        <option value="{{ $regional }}">{{ $regional }}</option>
                     @endforeach
 
                 </x-input-select>

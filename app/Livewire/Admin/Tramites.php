@@ -46,6 +46,7 @@ class Tramites extends Component
     public $años;
     public $referencia_pago;
     public $fecha_pago;
+    public $regionales;
     public $filters = [
         'año' => '',
         'folio' => '',
@@ -53,6 +54,7 @@ class Tramites extends Component
         'estado' => '',
         'categoria' => '',
         'servicio' => '',
+        'regional' => ''
     ];
 
     public Tramite $modelo_editar;
@@ -567,6 +569,8 @@ class Tramites extends Component
 
         $this->categorias = CategoriaServicio::select('id', 'nombre')->orderBy('nombre')->get();
 
+        $this->regionales = Constantes::UBICACIONES;
+
     }
 
     public function render()
@@ -596,6 +600,11 @@ class Tramites extends Component
                                 ->when($this->filters['categoria'] != '', function($q){
                                     return $q->whereHas('servicio', function ($q){
                                         $q->where('categoria_servicio_id', $this->filters['categoria']);
+                                    });
+                                })
+                                ->when($this->filters['regional'] != '', function($q){
+                                    return $q->whereHas('creadoPor', function ($q){
+                                        $q->where('ubicacion', $this->filters['regional']);
                                     });
                                 })
                                 ->where(function($q){
