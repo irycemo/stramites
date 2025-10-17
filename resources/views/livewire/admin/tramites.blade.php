@@ -1084,20 +1084,6 @@
 
                 @endif
 
-                @if($editar)
-
-                    <x-button-blue
-                        wire:click="actualizar"
-                        wire:loading.attr="disabled"
-                        wire:target="actualizar">
-
-                        <img wire:loading wire:target="actualizar" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
-
-                        <span>Actualizar</span>
-                    </x-button-blue>
-
-                @endif
-
                 <x-button-red
                     wire:click="resetearTodo"
                     wire:loading.attr="disabled"
