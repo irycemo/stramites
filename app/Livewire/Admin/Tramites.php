@@ -402,6 +402,8 @@ class Tramites extends Component
 
         if($this->modelo_editar->movimiento_registral){
 
+            info($this->modelo_editar->movimiento_registral);
+
             $this->dispatch('mostrarMensaje', ['warning', "El trámite ya se encuentra en Sistema RPP."]);
 
             return;
