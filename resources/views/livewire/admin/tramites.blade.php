@@ -1051,7 +1051,7 @@
 
                 @endif
 
-                @if($modelo_editar->solicitante === 'Oficialia de partes' || !$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago)
+                @if(!$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago)
 
                     <x-button-gray
                         wire:click="enviarTramiteRpp"
