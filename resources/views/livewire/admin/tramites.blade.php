@@ -1051,7 +1051,7 @@
 
                 @endif
 
-                @if(!$modelo_editar->movimiento_registral)
+                {{-- @if($modelo_editar->solicitante === 'Oficialia de partes' || !$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago) --}}
 
                     <x-button-gray
                         wire:click="enviarTramiteRpp"
@@ -1063,7 +1063,7 @@
                         <span>Enviar al Sistema RPP</span>
                     </x-button-gray>
 
-                @endif
+                {{-- @endif --}}
 
                 @if($modelo_editar->estado == 'nuevo')
 
