@@ -1051,7 +1051,7 @@
 
                 @endif
 
-                @if(!$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago)
+                @if(!$modelo_editar->movimiento_registral)
 
                     <x-button-gray
                         wire:click="enviarTramiteRpp"
