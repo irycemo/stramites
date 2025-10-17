@@ -1098,7 +1098,7 @@
                     wire:loading.attr="disabled"
                     wire:target="resetearTodo"
                     type="button">
-                    Cerrar
+                    Cerrars
                 </x-button-red>
 
             </div>
