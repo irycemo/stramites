@@ -1051,24 +1051,19 @@
 
                 @endif
 
-                <div>
+                @if($modelo_editar->solicitante === 'Oficialia de partes' || !$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago)
 
+                    <x-button-gray
+                        wire:click="enviarTramiteRpp"
+                        wire:loading.attr="disabled"
+                        wire:target="enviarTramiteRpp">
 
-                    {{-- @if($modelo_editar->solicitante === 'Oficialia de partes' || !$modelo_editar->movimiento_registral && $modelo_editar->fecha_pago) --}}
+                        <img wire:loading wire:target="enviarTramiteRpp" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
 
-                        <x-button-gray
-                            wire:click="enviarTramiteRpp"
-                            wire:loading.attr="disabled"
-                            wire:target="enviarTramiteRpp">
+                        <span>Enviar al Sistema RPP</span>
+                    </x-button-gray>
 
-                            <img wire:loading wire:target="enviarTramiteRpp" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
-
-                            <span>Enviar al Sistema RPP</span>
-                        </x-button-gray>
-
-                    {{-- @endif --}}
-
-                </div>
+                @endif
 
                 @if($modelo_editar->estado == 'nuevo')
 
