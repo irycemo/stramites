@@ -64,7 +64,8 @@ class SistemaRppService{
                 'numero_documento' => $tramite->numero_documento,
                 'fecha_emision' => $tramite->fecha_emision,
                 'procedencia' => $tramite->procedencia,
-                'asiento_registral' => $tramite->asiento_registral
+                'asiento_registral' => $tramite->asiento_registral,
+                'usuario_tramites_linea_id' => $tramite->usuario_tramites_linea_id
             ]);
 
         } catch (ConnectionException $th) {
