@@ -181,7 +181,16 @@ class TramitesApiController extends Controller
 
             $data = $request->validated();
 
-            $tramite = Tramite::where('año', $data['año'])->where('numero_control', $data['tramite'])->where('usuario', $data['usuario'])->firstOrFail();
+            $tramite = Tramite::where('año', $data['año'])->where('numero_control', $data['tramite'])->where('usuario', $data['usuario'])->first();
+
+            if(!$tramite){
+
+                return response()->json([
+                    'result' => 'error',
+                    'data' => 'El trámite no existe',
+                ], 404);
+
+            }
 
             $tramite->update([
                         'estado' => 'rechazado',
@@ -196,6 +205,8 @@ class TramitesApiController extends Controller
             ], 200);
 
         } catch (\Throwable $th) {
+
+            Log::error('Error al rechazar tramite desde sistema RPP.' . $th);
 
             return response()->json([
                 'result' => 'error',
