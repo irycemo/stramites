@@ -136,16 +136,6 @@ class LineaCapturaApi
 
         }
 
-        if(!isset($data['ES_MSJ']['NRO_ORD_PAGO'])){
-
-            Log::error("Error de comunicación con SAP.");
-
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
-
-            return;
-
-        }
-
         return $data;
 
     }
