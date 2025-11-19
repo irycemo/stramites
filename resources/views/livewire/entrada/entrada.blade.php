@@ -90,7 +90,7 @@
 
                 <div class="flex lg:w-1/2 mx-auto">
 
-                    <select class="bg-white rounded-l text-sm border border-r-transparent  focus:ring-0" wire:model="año">
+                    <select class="bg-white rounded-l text-sm border border-r-transparent  focus:ring-0" wire:model="año" id="buscar_año" tabindex="-1">
                         @foreach ($años as $año)
 
                             <option value="{{ $año }}">{{ $año }}</option>
@@ -98,11 +98,13 @@
                         @endforeach
                     </select>
 
-                    <input type="number" placeholder="# Control" min="1" class="bg-white text-sm w-full focus:ring-0 border border-r-transparent @error('numero_control') border-red-500 @enderror" wire:model="numero_control">
+                    <input id="buscar_folio" tabindex="-1" type="number" placeholder="# Control" min="1" class="bg-white text-sm w-full focus:ring-0 border border-r-transparent @error('numero_control') border-red-500 @enderror" wire:model="numero_control">
 
-                    <input type="number" placeholder="Usuario" min="1" class="bg-white text-sm w-full focus:ring-0 @error('usuario') border-red-500 @enderror" wire:model="usuario">
+                    <input id="buscar_usuario" tabindex="-1" type="number" placeholder="Usuario" min="1" class="bg-white text-sm w-full focus:ring-0 @error('usuario') border-red-500 @enderror" wire:model="usuario">
 
                     <button
+                        id="buscar_boton"
+                        tabindex="-1"
                         wire:click="buscarTramite"
                         wire:loading.attr="disabled"
                         wire:target="buscarTramite"
@@ -204,6 +206,22 @@
             window.open(url_ticket, '_blank');
 
         });
+
+        function setIndex() {
+
+            const focusableElements = Array.from(
+
+                                                    document.querySelectorAll('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])')
+                                                )
+
+            document.getElementById("buscar_boton").setAttribute('tabindex', focusableElements.length - 1);
+            document.getElementById("buscar_usuario").setAttribute('tabindex', focusableElements.length - 2);
+            document.getElementById("buscar_folio").setAttribute('tabindex', focusableElements.length - 3);
+            document.getElementById("buscar_año").setAttribute('tabindex', focusableElements.length - 4);
+
+        }
+
+        setIndex()
 
     </script>
 
