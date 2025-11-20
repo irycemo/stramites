@@ -29,7 +29,6 @@ class Complemento extends Component
                                     ->where('año', $this->año)
                                     ->where('numero_control', $this->numero_control)
                                     ->where('usuario', $this->usuario)
-                                    ->whereIn('estado', ['pagado', 'rechazado'])
                                     ->first();
 
         if(!$this->tramite){
@@ -38,6 +37,18 @@ class Complemento extends Component
 
             $this->tramite = null;
 
+            return;
+
+        }
+
+        if($this->tramite->estado != 'pagado'){
+
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite no esta pagado."]);
+
+            $this->tramite = null;
+
+            return;
+
         }
 
         if(in_array($this->tramite->servicio->clave_ingreso, ['DL14', 'DL13'])){
@@ -45,6 +56,8 @@ class Complemento extends Component
             $this->dispatch('mostrarMensaje', ['warning', "Los complementos para copias se registran en el área de entrada."]);
 
             $this->tramite = null;
+
+            return;
 
         }
 
