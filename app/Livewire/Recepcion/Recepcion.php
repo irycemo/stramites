@@ -141,7 +141,16 @@ class Recepcion extends Component
 
                 if($this->documento){
 
-                    $pdf = $this->documento->store('/', 'tramites');
+
+                    if(app()->isProduction()){
+
+                        $pdf = $this->documento->store(config('services.ses.ruta_documento_entrada'), 's3');
+
+                    }else{
+
+                        $pdf = $this->documento->store('/', 'documento_entrada');
+
+                    }
 
                     File::create([
                         'fileable_id' => $this->selected_id,

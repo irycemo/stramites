@@ -236,19 +236,9 @@ class TramitesApiController extends Controller
 
         }
 
-        if(env('LOCAL') === "0" || env('LOCAL') === "2"){
-
-            return response()->json([
-                'url' => Storage::disk('tramites')->url($tramite->file->url)
-            ], 200);
-
-        }elseif(env('LOCAL') === "1"){
-
-            return response()->json([
-                'url' => Storage::disk('s3')->url('tramites/' . $tramite->file->url)
-            ], 200);
-
-        }
+        return response()->json([
+            'url' => $tramite->file->getUrl()
+        ], 200);
 
     }
 
