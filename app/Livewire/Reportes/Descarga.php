@@ -4,6 +4,7 @@ namespace App\Livewire\Reportes;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use App\Jobs\TramiteExportJob;
 use Illuminate\Support\Facades\Bus;
 
@@ -45,6 +46,13 @@ class Descarga extends Component
     public function descargarExcel(){
 
         return response()->download(storage_path('app/livewire-tmp/' . $this->file_name), 'Reporte_de_tramites_' . now()->format('d-m-Y') . '.xlsx');
+
+    }
+
+    #[On('reciveData')]
+    public function reciveData($data){
+
+        $this->data = $data;
 
     }
 

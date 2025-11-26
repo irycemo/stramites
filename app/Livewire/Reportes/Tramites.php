@@ -17,8 +17,8 @@ class Tramites extends Component
     public $usuarios;
     public $servicios;
     public $estados;
-    public $ubicaciones;
-    public $ubicacion;
+    public $distritos;
+    public $distrito;
     public $estado;
     public $servicio_id;
     public $usuario_id;
@@ -39,7 +39,7 @@ class Tramites extends Component
 
         $this->data = [
             $this->estado,
-            $this->ubicacion,
+            $this->distrito,
             $this->servicio_id,
             $this->usuario_id,
             $this->tipo_servicio,
@@ -48,6 +48,8 @@ class Tramites extends Component
             $this->fecha2 . ' 23:59:59',
             auth()->user()->name
         ];
+
+        $this->dispatch('reciveData', $this->data);
 
     }
 
@@ -59,7 +61,7 @@ class Tramites extends Component
 
         $this->solicitantes = Constantes::SOLICITANTES;
 
-        $this->ubicaciones = Constantes::UBICACIONES;
+        $this->distritos = Constantes::DISTRITOS;
 
     }
 
@@ -68,24 +70,22 @@ class Tramites extends Component
 
         $tramites = Tramite::with('servicio', 'creadoPor', 'actualizadoPor')
                                 ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
-                                    return $q->where('id_servicio', $this->servicio_id);
+                                    $q->where('id_servicio', $this->servicio_id);
                                 })
                                 ->when(isset($this->usuario_id) && $this->usuario_id != "", function($q){
-                                    return $q->where('creado_por', $this->usuario_id);
+                                    $q->where('creado_por', $this->usuario_id);
                                 })
                                 ->when(isset($this->estado) && $this->estado != "", function($q){
-                                    return $q->where('estado', $this->estado);
+                                    $q->where('estado', $this->estado);
                                 })
                                 ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
-                                    return $q->where('tipo_servicio', $this->tipo_servicio);
+                                    $q->where('tipo_servicio', $this->tipo_servicio);
                                 })
                                 ->when(isset($this->solicitante) && $this->solicitante != "", function($q){
-                                    return $q->where('solicitante', $this->solicitante);
+                                    $q->where('solicitante', $this->solicitante);
                                 })
-                                ->when(isset($this->ubicacion) && $this->ubicacion != "", function($q){
-                                    return $q->whereHas('creadoPor', function($q){
-                                        $q->where('ubicacion', $this->ubicacion);
-                                    });
+                                ->when(isset($this->distrito) && $this->distrito != "", function($q){
+                                    $q->where('distrito', $this->distrito);
                                 })
                                 ->whereBetween('created_at', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
                                 ->paginate($this->pagination);

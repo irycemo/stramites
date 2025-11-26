@@ -89,17 +89,17 @@
 
             <div>
 
-                <Label>Ubicación</Label>
+                <Label>Distrito</Label>
             </div>
 
             <div>
 
-                <select class="rounded text-sm w-full" wire:model.live="ubicacion">
+                <select class="rounded text-sm w-full" wire:model.live="distrito">
 
                     <option value="" selected>Seleccione una opción</option>
-                    @foreach ($ubicaciones as $ubicacion)
+                    @foreach ($distritos as $key => $distrito)
 
-                        <option value="{{$ubicacion}}" >{{$ubicacion}}</option>
+                        <option value="{{$key}}" >{{$distrito}}</option>
 
                     @endforeach
 
@@ -244,7 +244,7 @@
 
             <p class="text-xl font-extralight">Se encontraron: {{ number_format($tramites->total()) }} registros con los filtros seleccionados.</p>
 
-            @livewire('reportes.descarga', ['data' => $data])
+            @livewire('reportes.descarga')
 
         </div>
 

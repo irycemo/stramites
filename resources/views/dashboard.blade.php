@@ -6,9 +6,9 @@
 
         <div class=" mb-10">
 
-            <h2 class="text-2xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-semibold mb-6  bg-white">Estadisticas del mes actual</h2>
+            <h2 class="text-2xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-semibold mb-6  bg-white">Estadisticas del mes actual (Todo el estado)</h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-5">
 
                 <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-blue-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
 
@@ -98,6 +98,112 @@
 
                             @if($tramtiesEstado->where('estado', 'expirado')->count())
                                 {{ $tramtiesEstado->where('estado', 'expirado')->first()->count }}
+                            @else
+                                0
+                            @endif
+
+                        </span>
+
+                        <h5 class="text-blueGray-400 uppercase font-semibold text-center  tracking-widest md:tracking-normal">Expirados</h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <h2 class="text-2xl tracking-widest py-3 px-6 text-gray-600 rounded-xl border-b-2 border-gray-500 font-semibold mb-6  bg-white">Estadisticas del mes actual (Uruapan)</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+
+                <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-blue-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
+
+                    <div class="  mb-2 items-center">
+
+                        <span class="font-bold text-2xl text-blueGray-600 mb-2">
+
+                            @if($tramtiesUruapan->where('estado', 'nuevo')->count())
+                                {{ $tramtiesUruapan->where('estado', 'nuevo')->first()->count }}
+                            @else
+                                0
+                            @endif
+
+                        </span>
+
+                        <h5 class="text-blueGray-400 uppercase font-semibold text-center  tracking-widest md:tracking-normal">Nuevos</h5>
+
+                    </div>
+
+                </div>
+
+                <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-green-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
+
+                    <div class="  mb-2 items-center">
+
+                        <span class="font-bold text-2xl text-blueGray-600 mb-2">
+
+                            @if($tramtiesUruapan->where('estado', 'pagado')->count())
+                                {{ $tramtiesUruapan->where('estado', 'pagado')->first()->count }}
+                            @else
+                                0
+                            @endif
+
+                        </span>
+
+                        <h5 class="text-blueGray-400 uppercase font-semibold text-center  tracking-widest md:tracking-normal">Pagados</h5>
+
+                    </div>
+
+                </div>
+
+                <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-gray-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
+
+                    <div class="  mb-2 items-center">
+
+                        <span class="font-bold text-2xl text-blueGray-600 mb-2">
+
+                            @if($tramtiesUruapan->where('estado', 'concluido')->count())
+                                {{ $tramtiesUruapan->where('estado', 'concluido')->first()->count }}
+                            @else
+                                0
+                            @endif
+
+                        </span>
+
+                        <h5 class="text-blueGray-400 uppercase font-semibold text-center  tracking-widest md:tracking-normal">Concluidos</h5>
+
+                    </div>
+
+                </div>
+
+                <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-red-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
+
+                    <div class="  mb-2 items-center">
+
+                        <span class="font-bold text-2xl text-blueGray-600 mb-2">
+
+                            @if($tramtiesUruapan->where('estado', 'rechazado')->count())
+                                {{ $tramtiesUruapan->where('estado', 'rechazado')->first()->count }}
+                            @else
+                                0
+                            @endif
+
+                        </span>
+
+                        <h5 class="text-blueGray-400 uppercase font-semibold text-center  tracking-widest md:tracking-normal">Rechazados</h5>
+
+                    </div>
+
+                </div>
+
+                <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-red-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
+
+                    <div class="  mb-2 items-center">
+
+                        <span class="font-bold text-2xl text-blueGray-600 mb-2">
+
+                            @if($tramtiesUruapan->where('estado', 'expirado')->count())
+                                {{ $tramtiesUruapan->where('estado', 'expirado')->first()->count }}
                             @else
                                 0
                             @endif

@@ -19,7 +19,7 @@ class TramiteExportJob implements ShouldQueue
     public $timeout = 0;
 
     public $estado;
-    public $ubicacion;
+    public $distrito;
     public $servicio_id;
     public $usuario_id;
     public $tipo_servicio;
@@ -35,7 +35,7 @@ class TramiteExportJob implements ShouldQueue
     {
 
         $this->estado = $this->data[0];
-        $this->ubicacion = $this->data[1];
+        $this->distrito = $this->data[1];
         $this->servicio_id = $this->data[2];
         $this->usuario_id = $this->data[3];
         $this->tipo_servicio = $this->data[4];
@@ -50,8 +50,18 @@ class TramiteExportJob implements ShouldQueue
      */
     public function handle(): void
     {
-        (new TramiteExport($this->estado, $this->ubicacion, $this->servicio_id, $this->usuario_id, $this->tipo_servicio, $this->solicitante, $this->fecha1, $this->fecha2, $this->creator))
-        ->store('livewire-tmp/' . $this->file_name);
+
+        (new TramiteExport(
+                            $this->estado,
+                            $this->distrito,
+                            $this->servicio_id,
+                            $this->usuario_id,
+                            $this->tipo_servicio,
+                            $this->solicitante,
+                            $this->fecha1,
+                            $this->fecha2,
+                            $this->creator
+                        ))->store('livewire-tmp/' . $this->file_name);
 
     }
 

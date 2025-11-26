@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Tramite;
-use App\Models\Servicio;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -16,7 +13,7 @@ class DashboardController extends Controller
         if(auth()->user()->hasRole('Administrador')){
 
             $tramtiesEstado = Tramite::selectRaw('estado, count(estado) count')
-                                        ->whereMonth('created_at', Carbon::now()->month)
+                                        ->whereMonth('created_at', now()->month)
                                         ->groupBy('estado')
                                         ->get();
 
@@ -46,7 +43,13 @@ class DashboardController extends Controller
 
             }
 
-            return view('dashboard', compact('data', 'tramtiesEstado'));
+            $tramtiesUruapan = Tramite::selectRaw('estado, count(estado) count')
+                                        ->where('distrito', 2)
+                                        ->whereMonth('created_at', now()->month)
+                                        ->groupBy('estado')
+                                        ->get();
+
+            return view('dashboard', compact('data', 'tramtiesEstado', 'tramtiesUruapan'));
 
         }
 

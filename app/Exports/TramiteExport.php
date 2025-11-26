@@ -23,7 +23,7 @@ class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, Wit
     use Exportable;
 
     public $servicio_id;
-    public $ubicacion;
+    public $distrito;
     public $usuario_id;
     public $tipo_servicio;
     public $solicitante;
@@ -33,10 +33,10 @@ class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, Wit
     public $creator;
 
 
-    public function __construct($estado, $ubicacion, $servicio, $usuario, $tipo_servicio, $solicitante, $fecha1, $fecha2, $creator)
+    public function __construct($estado, $distrito, $servicio, $usuario, $tipo_servicio, $solicitante, $fecha1, $fecha2, $creator)
     {
         $this->servicio_id = $servicio;
-        $this->ubicacion = $ubicacion;
+        $this->distrito = $distrito;
         $this->usuario_id = $usuario;
         $this->tipo_servicio = $tipo_servicio;
         $this->solicitante = $solicitante;
@@ -54,24 +54,22 @@ class TramiteExport implements WithProperties, WithDrawings, ShouldAutoSize, Wit
     {
         return Tramite::with('servicio:id,nombre', 'creadoPor:id,name,ubicacion', 'actualizadoPor:id,name')
                         ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
-                            return $q->where('id_servicio', $this->servicio_id);
+                            $q->where('id_servicio', $this->servicio_id);
                         })
                         ->when(isset($this->usuario_id) && $this->usuario_id != "", function($q){
-                            return $q->where('creado_por', $this->usuario_id);
+                            $q->where('creado_por', $this->usuario_id);
                         })
                         ->when(isset($this->estado) && $this->estado != "", function($q){
-                            return $q->where('estado', $this->estado);
+                            $q->where('estado', $this->estado);
                         })
                         ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
-                            return $q->where('tipo_servicio', $this->tipo_servicio);
+                            $q->where('tipo_servicio', $this->tipo_servicio);
                         })
                         ->when(isset($this->solicitante) && $this->solicitante != "", function($q){
-                            return $q->where('solicitante', $this->solicitante);
+                            $q->where('solicitante', $this->solicitante);
                         })
-                        ->when(isset($this->ubicacion) && $this->ubicacion != "", function($q){
-                            return $q->whereHas('creadoPor', function($q){
-                                $q->where('ubicacion', $this->ubicacion);
-                            });
+                        ->when(isset($this->distrito) && $this->distrito != "", function($q){
+                            $q->where('distrito', $this->distrito);
                         })
                         ->whereBetween('created_at', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59']);
     }
