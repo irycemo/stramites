@@ -2,22 +2,24 @@
 
 namespace App\Livewire\Admin;
 
+use Exception;
 use App\Models\Notaria;
 use App\Models\Tramite;
 use Livewire\Component;
+use App\Models\Servicio;
 use App\Models\Dependencia;
 use Livewire\WithPagination;
 use App\Models\Configuracion;
 use App\Constantes\Constantes;
 use App\Traits\ComponentesTrait;
+use App\Models\CategoriaServicio;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
-use App\Models\CategoriaServicio;
-use App\Models\Servicio;
 
 class Tramites extends Component
 {
@@ -199,6 +201,21 @@ class Tramites extends Component
 
     }
 
+    public function updatedModeloEditarFolioReal(){
+
+        if($this->modelo_editar->folio_real == ''){
+
+            $this->modelo_editar->folio_real = null;
+
+        }
+
+        $this->modelo_editar->tomo = null;
+        $this->modelo_editar->registro = null;
+        $this->modelo_editar->numero_propiedad = null;
+        $this->modelo_editar->distrito = null;
+
+    }
+
     public function crearModeloVacio(){
         $this->modelo_editar = Tramite::make();
     }
@@ -313,7 +330,19 @@ class Tramites extends Component
 
         try{
 
-            (new TramiteService($this->modelo_editar))->actualizar();
+            $this->consultarFolioReal();
+
+            if($this->modelo_editar->movimiento_registral)
+
+                (new TramiteService($this->modelo_editar))->actualizar();
+
+            else{
+
+                $this->modelo_editar->actualizado_por = auth()->id();
+
+                $this->modelo_editar->save();
+
+            }
 
             $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Actualizó trámite']);
 
@@ -335,6 +364,67 @@ class Tramites extends Component
 
             $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
             $this->resetearTodo($borrado = true);
+        }
+
+    }
+
+    public function consultarFolioReal(){
+
+        try {
+
+            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
+                                'folio_real' => $this->modelo_editar->folio_real,
+                                'tomo' => $this->modelo_editar->tomo,
+                                'registro' => $this->modelo_editar->registro,
+                                'numero_propiedad' => $this->modelo_editar->numero_propiedad,
+                                'distrito' => $this->modelo_editar->distrito,
+                                'seccion' => $this->modelo_editar->seccion,
+                            ]);
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al consultar folio real al crear trámite " . $th);
+
+            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+
+        }
+
+        $data = json_decode($response, true);
+
+        if($response->status() == 200){
+
+            if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
+
+                throw new Exception('EL folio no es del distrito 2');
+
+            }
+
+            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->tomo = $data['data']['tomo'];
+            $this->modelo_editar->registro = $data['data']['registro'];
+            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+            $this->modelo_editar->distrito = $data['data']['distrito'];
+            $this->modelo_editar->seccion = $data['data']['seccion'];
+
+        }elseif($response->status() == 401){
+
+            throw new Exception($data['error'] ?? "Hubo un error.");
+
+        }elseif($response->status() == 403){
+
+            throw new Exception($data['error'] ?? 'Hubo un error');
+
+        }elseif($response->status() == 404){
+
+            throw new Exception("El folio real no existe.");
+
+        }elseif($response->status() == 500){
+
+            throw new Exception("Hubo un error al consultar el folio real.");
+
         }
 
     }

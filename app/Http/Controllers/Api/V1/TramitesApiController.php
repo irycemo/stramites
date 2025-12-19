@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TramiteRequest;
 use App\Http\Resources\TramiteResource;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
 use App\Http\Services\Tramites\TramiteService;
