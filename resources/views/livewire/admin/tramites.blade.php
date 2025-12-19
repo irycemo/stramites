@@ -23,7 +23,7 @@
 
                 <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="filters.estado">
 
-                    <option value="" selected>Seleccione una opción</option>
+                    <option value="" selected>Estado</option>
                     <option value="nuevo">Nuevo</option>
                     <option value="caducado">Caducado</option>
                     <option value="rechazado">Rechazado</option>
