@@ -51,7 +51,7 @@
 
                 </x-input-select>
 
-                <x-input-select class="bg-white rounded-full text-sm w-28" wire:model.live="filters.regional">
+                <x-input-select class="bg-white rounded-full text-sm w-10" wire:model.live="filters.regional">
 
                     <option value="" selected>Regional</option>
                     @foreach ($regionales as $regional)
