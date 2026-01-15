@@ -103,7 +103,8 @@ class Entrega extends Component
     public function render()
     {
 
-        $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio', 'recibidoPor')
+        $tramites = Tramite::select('id', 'año', 'numero_control', 'usuario', 'solicitante', 'adiciona', 'id_servicio', 'recibido_por', 'nombre_solicitante', 'folio_real', 'tomo', 'registro', 'distrito', 'tipo_servicio', 'creado_por', 'actualizado_por', 'created_at', 'updated_at')
+                                ->with('creadoPor:id,name', 'actualizadoPor:id,name', 'adicionaAlTramite:id', 'servicio:id,nombre', 'recibidoPor:id,name')
                                 ->whereIn('estado', ['concluido', 'recibido'])
                                 ->when(auth()->user()->ubicacion == 'Regional 4', function($q){
                                     $q->where('distrito', 2);
@@ -123,13 +124,15 @@ class Entrega extends Component
                                                 ->orWhere('numero_escritura', 'LIKE', '%' . $this->search . '%')
                                                 ->orWhere('numero_notaria', 'LIKE', '%' . $this->search . '%')
                                                 ->orWhere(function($q){
-                                                    return $q->whereHas('creadoPor', function($q){
-                                                        return $q->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    $q->whereHas('creadoPor', function($q){
+                                                        $q->select('id','name')
+                                                                    ->where('name', 'LIKE', '%' . $this->search . '%');
                                                     });
                                                 })
                                                 ->orWhere(function($q){
-                                                    return $q->whereHas('servicio', function($q){
-                                                        return $q->where('nombre', 'LIKE', '%' . $this->search . '%');
+                                                    $q->whereHas('servicio', function($q){
+                                                        $q->select('id', 'nombre')
+                                                            ->where('nombre', 'LIKE', '%' . $this->search . '%');
                                                     });
                                                 });
                                 })

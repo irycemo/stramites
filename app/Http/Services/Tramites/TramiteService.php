@@ -4,10 +4,6 @@ namespace App\Http\Services\Tramites;
 
 use App\Models\Tramite;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
-use App\Exceptions\TramiteServiceException;
-use App\Exceptions\SistemaRppServiceException;
-use App\Exceptions\ErrorAlGenerarLineaDeCaptura;
 use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
@@ -31,74 +27,48 @@ class TramiteService{
     public function crear():Tramite
     {
 
-        try {
+        $this->tramite->estado = 'nuevo';
+        $this->tramite->fecha_entrega = $this->calcularFechaEntrega();
+        $this->tramite->monto = $this->calcularMonto();
+        $this->tramite->año = now()->format('Y');
+        $this->tramite->usuario = auth()->user()->clave;
+        $this->tramite->numero_control = (Tramite::where('año', $this->tramite->año)->where('usuario', auth()->user()->clave)->max('numero_control') ?? 0) + 1;
 
-            $this->tramite->estado = 'nuevo';
-            $this->tramite->fecha_entrega = $this->calcularFechaEntrega();
-            $this->tramite->monto = $this->calcularMonto();
-            $this->tramite->año = now()->format('Y');
-            $this->tramite->usuario = auth()->user()->clave;
-            $this->tramite->numero_control = (Tramite::where('año', $this->tramite->año)->where('usuario', auth()->user()->clave)->max('numero_control') ?? 0) + 1;
+        $this->procesarLineaCaptura();
 
-            $this->procesarLineaCaptura();
+        $this->tramite->save();
 
-            $this->tramite->save();
+        if($this->tramite->solicitante == 'Oficialia de partes' || $this->tramite->solicitante == 'SAT'){
 
-            if($this->tramite->solicitante == 'Oficialia de partes' || $this->tramite->solicitante == 'SAT'){
+            $this->tramite->update([
+                'estado' => 'pagado',
+                'fecha_pago' => now(),
+                'fecha_prelacion' => now()->toDateString(),
+            ]);
 
-                $this->tramite->update([
-                    'estado' => 'pagado',
-                    'fecha_pago' => now(),
-                    'fecha_prelacion' => now()->toDateString(),
-                ]);
+            if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && in_array($this->tramite->servicio->clave_ingreso, ['DL13', 'DL14', 'DL07', 'DL10'])){
 
-                if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && in_array($this->tramite->servicio->clave_ingreso, ['DL13', 'DL14', 'DL07', 'DL10']))
-                    (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
             }
 
-            return $this->tramite;
-
-        } catch (ErrorAlGenerarLineaDeCaptura $th) {
-
-            throw new TramiteServiceException($th->getMessage());
-
-        }catch (SistemaRppServiceException $th) {
-
-            throw new TramiteServiceException($th->getMessage());
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al crear trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '-' . $this->tramite->usuario . '. ' . $th);
-
-            throw new TramiteServiceException("Error al crear trámite");
         }
+
+        return $this->tramite;
 
     }
 
     public function actualizar():void
     {
 
-        try {
+        $this->tramite->actualizado_por = auth()->user()->id;
+        $this->tramite->save();
 
-            $this->tramite->actualizado_por = auth()->user()->id;
-            $this->tramite->save();
+        if($this->tramite->fecha_pago || $this->tramite->solicitante == 'Oficialia de partes'){
 
-            if($this->tramite->fecha_pago || $this->tramite->solicitante == 'Oficialia de partes')
-                (new SistemaRppService())->actualizarSistemaRpp($this->tramite);
-
-        } catch (SistemaRppServiceException $th) {
-
-            throw new TramiteServiceException($th->getMessage());
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al actualizar trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '. '  . $this->tramite->usuario . $th);
-
-            throw new TramiteServiceException("Error al actualizar trámite");
+            (new SistemaRppService())->actualizarSistemaRpp($this->tramite);
 
         }
-
 
     }
 
@@ -134,8 +104,7 @@ class TramiteService{
     public function convertirFecha($fecha):string
     {
 
-        if(Str::length($fecha) == 10)
-            return $fecha;
+        if(Str::length($fecha) == 10) return $fecha;
 
         return Str::substr($fecha, 0, 4) . '-' . Str::substr($fecha, 4, 2) . '-' . Str::substr($fecha, 6, 2);
 
@@ -214,107 +183,89 @@ class TramiteService{
     public function procesarPago():void
     {
 
-        try {
+        $array = (new LineaCapturaApi($this->tramite))->validarLineaDeCaptura();
 
-            $array = (new LineaCapturaApi($this->tramite))->validarLineaDeCaptura();
+        $fecha = $this->convertirFecha($array['FEC_PAGO']);
+        $documento = $array['DOC_PAGO'];
 
-            $fecha = $this->convertirFecha($array['FEC_PAGO']);
-            $documento = $array['DOC_PAGO'];
+        $this->tramite->update([
+            'estado' => 'pagado',
+            'fecha_pago' => $this->convertirFecha($fecha),
+            'fecha_prelacion' => now()->format('Y-m-d H:i:s'),
+            'documento_de_pago' => $documento,
+            'fecha_entrega' => $this->calcularFechaEntrega()
+        ]);
 
-            $this->tramite->update([
-                'estado' => 'pagado',
-                'fecha_pago' => $this->convertirFecha($fecha),
-                'fecha_prelacion' => now()->format('Y-m-d H:i:s'),
-                'documento_de_pago' => $documento,
-                'fecha_entrega' => $this->calcularFechaEntrega()
-            ]);
+        /* Comercio */
+        if($this->tramite->seccion == 'Comercio') return;
 
-            /* Comercio */
-            if($this->tramite->seccion == 'Comercio') return;
+        /* Complementos */
+        if($this->tramite->tipo_tramite == 'complemento'){
 
-            /* Complementos */
-            if($this->tramite->tipo_tramite == 'complemento'){
+            /* Complementos de copias o agregar paginas */
+            if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL13' || $this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL14'){
 
-                /* Complementos de copias o agregar paginas */
-                if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL13' || $this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL14'){
-
-                    (new SistemaRppService())->actualizarPaginas($this->tramite);
-
-                }else{
-
-                    (new SistemaRppService())->cambiarTipoServicio($this->tramite);
-
-                }
-
-                return;
-
-            }
-
-            /* Adiciona a consulta o notario foraneo */
-            if($this->tramite->adiciona){
-
-                /* Consulta */
-                if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93'){
-
-                    if($this->tramite->adicionaAlTramite->estado != 'pagado'){
-
-                        throw new ErrorAlValidarLineaDeCaptura('El trámite de consulta no esta pagado');
-                    }
-
-                    /* Caso de agregar copias a la consulta */
-                    (new SistemaRppService())->insertarSistemaRpp($this->tramite);
-
-                /* Notario foraneo */
-                }if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL28'){
-
-                    if($this->tramite->adicionaAlTramite->estado != 'pagado'){
-
-                        throw new ErrorAlValidarLineaDeCaptura('El trámite de notario foraneo no esta pagado');
-                    }
-
-                /* Caso de agregar paginas a un tramite de copias existente */
-                }elseif($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL13' || $this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL14'){
-
-                    (new SistemaRppService())->actualizarPaginas($this->tramite);
-
-                }
+                (new SistemaRppService())->actualizarPaginas($this->tramite);
 
             }else{
 
-                if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && !in_array($this->tramite->servicio->clave_ingreso, ['DL12', 'D110', 'DM67', 'D111']))
-                    (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+                (new SistemaRppService())->cambiarTipoServicio($this->tramite);
 
             }
 
-            /* Alerta inmobiliaria */
-            if($this->tramite->servicio->clave_ingreso == 'DL19' && $this->tramite->folio_real){
+            return;
 
-                AlertaInmobiliaria::craete([
-                    'estado' => 'activo',
-                    'folio_real' => $this->tramite->folio_real,
-                    'fecha_vencimiento' => now()->addYear()->toDateString(),
-                    'email' => $this->tramite->email
-                ]);
+        }
 
-                $this->tramite->update([
-                    'estado' => 'finalizado'
-                ]);
+        /* Adiciona a consulta o notario foraneo */
+        if($this->tramite->adiciona){
+
+            /* Consulta */
+            if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93'){
+
+                if($this->tramite->adicionaAlTramite->estado != 'pagado'){
+
+                    throw new ErrorAlValidarLineaDeCaptura('El trámite de consulta no esta pagado');
+                }
+
+                /* Caso de agregar copias a la consulta */
+                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+
+            /* Notario foraneo */
+            }if($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL28'){
+
+                if($this->tramite->adicionaAlTramite->estado != 'pagado'){
+
+                    throw new ErrorAlValidarLineaDeCaptura('El trámite de notario foraneo no esta pagado');
+                }
+
+            /* Caso de agregar paginas a un tramite de copias existente */
+            }elseif($this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL13' || $this->tramite->adicionaAlTramite->servicio->clave_ingreso == 'DL14'){
+
+                (new SistemaRppService())->actualizarPaginas($this->tramite);
 
             }
 
-        } catch (ErrorAlValidarLineaDeCaptura $th) {
+        }else{
 
-            throw new TramiteServiceException($th->getMessage());
+            if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && !in_array($this->tramite->servicio->clave_ingreso, ['DL12', 'D110', 'DM67', 'D111']))
+                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
-        } catch (SistemaRppServiceException $th) {
+        }
 
-            throw new TramiteServiceException($th->getMessage());
+        /* Alerta inmobiliaria */
+        if($this->tramite->servicio->clave_ingreso == 'DL19' && $this->tramite->folio_real){
 
-        } catch (\Throwable $th) {
+            AlertaInmobiliaria::craete([
+                'estado' => 'activo',
+                'folio_real' => $this->tramite->folio_real,
+                'fecha_vencimiento' => now()->addYear()->toDateString(),
+                'email' => $this->tramite->email
+            ]);
 
-            Log::error("Error al procesar pago de trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '-' . $this->tramite->usuario . '. ' . $th);
-
-            throw new TramiteServiceException("Error al procesar pago del trámite");
+            $this->tramite->update([
+                'estado' => 'finalizado'
+            ]);
 
         }
 
@@ -323,27 +274,17 @@ class TramiteService{
     public function cambiarEstado($estado):void
     {
 
-        try {
+        $this->tramite->update(['estado' => $estado]);
 
-            $this->tramite->update(['estado' => $estado]);
+        $this->tramite->load('adicionadoPor');
 
-            $this->tramite->load('adicionadoPor');
+        if($estado == 'concluido'){
 
-            if($estado == 'concluido'){
+            foreach($this->tramite->adicionadoPor as $tramite){
 
-                foreach($this->tramite->adicionadoPor as $tramite){
-
-                    $tramite->update(['estado' => $estado]);
-
-                }
+                $tramite->update(['estado' => $estado]);
 
             }
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al cambiar estado de trámite por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $this->tramite->año . '-' . $this->tramite->numero_control . '. ' . $this->tramite->usuario .$th);
-
-            throw new TramiteServiceException("Error al cambiar estado del trámite.");
 
         }
 

@@ -182,6 +182,12 @@
 
         @endif
 
+        @if($flags['Folio simplificado'])
+
+            @livewire('entrada.folio-simplificado', ['servicio' => $servicio, 'tramite' => $tramite, 'tramiteMantener' => $tramiteMantener])
+
+        @endif
+
     </div>
 
 </div>

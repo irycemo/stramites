@@ -2,106 +2,90 @@
 
 namespace App\Http\Services\SistemaRPP;
 
-use App\Models\Tramite;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Http;
-use App\Exceptions\SistemaRppServiceException;
-use Illuminate\Http\Client\ConnectionException;
 
 class SistemaRppService{
 
-    public $token;
-
-    public function __construct()
-    {
-
-        $this->token = env('SISTEMA_RPP_SERVICE_TOKEN');
-
-    }
-
     public function insertarSistemaRpp($tramite){
 
-        $url = env('SISTEMA_RPP_SERVICE_INSERT');
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.insertar_movimiento_registral'),
+                                [
+                                    'monto' => $tramite->monto,
+                                    'solicitante' => $tramite->solicitante,
+                                    'nombre_solicitante' => $tramite->nombre_solicitante,
+                                    'año' => $tramite->año,
+                                    'tramite' => $tramite->numero_control,
+                                    'usuario' => $tramite->usuario,
+                                    'fecha_prelacion' => $tramite->fecha_prelacion,
+                                    'tipo_servicio' => $tramite->tipo_servicio,
+                                    'tipo_tramite' => $tramite->tipo_tramite,
+                                    'seccion' => $tramite->seccion,
+                                    'distrito' => $tramite->distrito,
+                                    'fecha_entrega' => $tramite->fecha_entrega->toDateString(),
+                                    'fecha_pago' => $tramite->fecha_pago?->toDateString(),
+                                    'categoria_servicio' => $tramite->servicio->categoria->nombre,
+                                    'servicio' => $tramite->servicio->clave_ingreso,
+                                    'servicio_nombre' => $tramite->servicio->nombre,
+                                    'numero_oficio' => $tramite->numero_oficio,
+                                    'folio_real' => $tramite->folio_real,
+                                    'folio_real_persona_moral' => $tramite->folio_real_persona_moral,
+                                    'tomo' => $tramite->tomo,
+                                    'tomo_bis' => $tramite->tomo_bis,
+                                    'registro' => $tramite->registro,
+                                    'registro_bis' => $tramite->registro_bis,
+                                    'tomo_gravamen' => $tramite->tomo_gravamen,
+                                    'registro_gravamen' => $tramite->registro_gravamen,
+                                    'observaciones' => $tramite->observaciones,
+                                    'numero_paginas' => $tramite->cantidad,
+                                    'numero_inmuebles' => $tramite->numero_inmuebles,
+                                    'numero_propiedad' => $tramite->numero_propiedad,
+                                    'numero_escritura' => $tramite->numero_escritura,
+                                    'numero_notaria' => $tramite->numero_notaria,
+                                    'valor_propiedad' => $tramite->valor_propiedad,
+                                    'tipo_documento' => $tramite->tipo_documento,
+                                    'autoridad_cargo' => $tramite->autoridad_cargo,
+                                    'autoridad_nombre' => $tramite->nombre_autoridad,
+                                    'numero_documento' => $tramite->numero_documento,
+                                    'fecha_emision' => $tramite->fecha_emision,
+                                    'procedencia' => $tramite->procedencia,
+                                    'asiento_registral' => $tramite->asiento_registral,
+                                    'usuario_tramites_linea_id' => $tramite->usuario_tramites_linea_id
+                                ]
+                            );
 
-        try {
+        if($response->status() !== 200){
 
-            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
-                'monto' => $tramite->monto,
-                'solicitante' => $tramite->solicitante,
-                'nombre_solicitante' => $tramite->nombre_solicitante,
-                'año' => $tramite->año,
-                'tramite' => $tramite->numero_control,
-                'usuario' => $tramite->usuario,
-                'fecha_prelacion' => $tramite->fecha_prelacion,
-                'tipo_servicio' => $tramite->tipo_servicio,
-                'tipo_tramite' => $tramite->tipo_tramite,
-                'seccion' => $tramite->seccion,
-                'distrito' => $tramite->distrito,
-                'fecha_entrega' => $tramite->fecha_entrega->toDateString(),
-                'fecha_pago' => $tramite->fecha_pago?->toDateString(),
-                'categoria_servicio' => $tramite->servicio->categoria->nombre,
-                'servicio' => $tramite->servicio->clave_ingreso,
-                'servicio_nombre' => $tramite->servicio->nombre,
-                'numero_oficio' => $tramite->numero_oficio,
-                'folio_real' => $tramite->folio_real,
-                'folio_real_persona_moral' => $tramite->folio_real_persona_moral,
-                'tomo' => $tramite->tomo,
-                'tomo_bis' => $tramite->tomo_bis,
-                'registro' => $tramite->registro,
-                'registro_bis' => $tramite->registro_bis,
-                'tomo_gravamen' => $tramite->tomo_gravamen,
-                'registro_gravamen' => $tramite->registro_gravamen,
-                'observaciones' => $tramite->observaciones,
-                'numero_paginas' => $tramite->cantidad,
-                'numero_inmuebles' => $tramite->numero_inmuebles,
-                'numero_propiedad' => $tramite->numero_propiedad,
-                'numero_escritura' => $tramite->numero_escritura,
-                'numero_notaria' => $tramite->numero_notaria,
-                'valor_propiedad' => $tramite->valor_propiedad,
-                'tipo_documento' => $tramite->tipo_documento,
-                'autoridad_cargo' => $tramite->autoridad_cargo,
-                'autoridad_nombre' => $tramite->nombre_autoridad,
-                'numero_documento' => $tramite->numero_documento,
-                'fecha_emision' => $tramite->fecha_emision,
-                'procedencia' => $tramite->procedencia,
-                'asiento_registral' => $tramite->asiento_registral,
-                'usuario_tramites_linea_id' => $tramite->usuario_tramites_linea_id
-            ]);
+            Log::error("Error al insertar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
 
-        } catch (ConnectionException $th) {
+            $data = json_decode($response, true);
 
-            Log::error($th);
+            if(isset($data['error'])){
 
-            throw new SistemaRppServiceException("Error al comunicar con SistemaRPP.");
-
-            return;
-
-        }
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
-
-            $tramite = Tramite::find($tramite->id);
-
-            if(!$tramite){
-
-                throw new SistemaRppServiceException('Error al actualizar movimiento registral del tramite: ' . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . '.');
+                throw new GeneralException($data['error']);
 
             }
 
-            $tramite->update(['movimiento_registral' => $data['data']['id']]);
-
-            if($tramite->adicionaAlTramite && $tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93')
-                $tramite->adicionaAlTramite->update(['movimiento_registral' => $data['data']['id']]);
-
-            return $data['usuario_asignado'];
+            throw new GeneralException("Error al insertar trámite en Sistema RPP.");
 
         }else{
 
-            Log::error("Error al insertar trámite en Sistema RPP. por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". Trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . '. ' . $response);
+            $data = json_decode($response, true)['data'];
 
-            throw new SistemaRppServiceException("Error al insertar trámite en Sistema RPP.");
+            $tramite->update(['movimiento_registral' => $data['id']]);
+
+            if($tramite->adicionaAlTramite && $tramite->adicionaAlTramite->servicio->clave_ingreso == 'DC93'){
+
+                $tramite->adicionaAlTramite->update(['movimiento_registral' => $data['id']]);
+
+            }
+
+            return $data['usuario_asignado'];
 
         }
 
@@ -109,57 +93,59 @@ class SistemaRppService{
 
     public function actualizarSistemaRpp($tramite){
 
-        $url = env('SISTEMA_RPP_SERVICE_UPDATE');
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.actualizar_movimiento_registral'),
+                                [
+                                    'solicitante' => $tramite->solicitante,
+                                    'nombre_solicitante' => $tramite->nombre_solicitante,
+                                    'tipo_servicio' => $tramite->tipo_servicio,
+                                    'tipo_tramite' => $tramite->tipo_tramite,
+                                    'seccion' => $tramite->seccion,
+                                    'observaciones' => $tramite->observaciones,
+                                    'distrito' => $tramite->distrito,
+                                    'categoria_servicio' => $tramite->servicio->categoria->nombre,
+                                    'servicio' => $tramite->servicio->clave_ingreso,
+                                    'numero_oficio' => $tramite->numero_oficio,
+                                    'folio_real' => $tramite->folio_real,
+                                    'tomo' => $tramite->tomo,
+                                    'tomo_bis' => $tramite->tomo_bis,
+                                    'registro' => $tramite->registro,
+                                    'registro_bis' => $tramite->registro_bis,
+                                    'numero_paginas' => $tramite->cantidad,
+                                    'numero_inmuebles' => $tramite->numero_inmuebles,
+                                    'numero_propiedad' => $tramite->numero_propiedad,
+                                    'numero_escritura' => $tramite->numero_escritura,
+                                    'numero_notaria' => $tramite->numero_notaria,
+                                    'valor_propiedad' => $tramite->valor_propiedad,
+                                    'movimiento_registral' => $tramite->movimiento_registral,
+                                    'tipo_documento' => $tramite->tipo_documento,
+                                    'autoridad_cargo' => $tramite->autoridad_cargo,
+                                    'autoridad_nombre' => $tramite->nombre_autoridad,
+                                    'numero_documento' => $tramite->numero_documento,
+                                    'fecha_emision' => $tramite->fecha_emision,
+                                    'procedencia' => $tramite->procedencia,
+                                    'tomo_gravamen' => $tramite->tomo_gravamen,
+                                    'registro_gravamen' => $tramite->registro_gravamen,
+                                    'asiento_registral' => $tramite->asiento_registral
+                                ]
+                            );
 
-        try {
-
-            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
-                'solicitante' => $tramite->solicitante,
-                'nombre_solicitante' => $tramite->nombre_solicitante,
-                'tipo_servicio' => $tramite->tipo_servicio,
-                'tipo_tramite' => $tramite->tipo_tramite,
-                'seccion' => $tramite->seccion,
-                'observaciones' => $tramite->observaciones,
-                'distrito' => $tramite->distrito,
-                'categoria_servicio' => $tramite->servicio->categoria->nombre,
-                'servicio' => $tramite->servicio->clave_ingreso,
-                'numero_oficio' => $tramite->numero_oficio,
-                'folio_real' => $tramite->folio_real,
-                'tomo' => $tramite->tomo,
-                'tomo_bis' => $tramite->tomo_bis,
-                'registro' => $tramite->registro,
-                'registro_bis' => $tramite->registro_bis,
-                'numero_paginas' => $tramite->cantidad,
-                'numero_inmuebles' => $tramite->numero_inmuebles,
-                'numero_propiedad' => $tramite->numero_propiedad,
-                'numero_escritura' => $tramite->numero_escritura,
-                'numero_notaria' => $tramite->numero_notaria,
-                'valor_propiedad' => $tramite->valor_propiedad,
-                'movimiento_registral' => $tramite->movimiento_registral,
-                'tipo_documento' => $tramite->tipo_documento,
-                'autoridad_cargo' => $tramite->autoridad_cargo,
-                'autoridad_nombre' => $tramite->nombre_autoridad,
-                'numero_documento' => $tramite->numero_documento,
-                'fecha_emision' => $tramite->fecha_emision,
-                'procedencia' => $tramite->procedencia,
-                'tomo_gravamen' => $tramite->tomo_gravamen,
-                'registro_gravamen' => $tramite->registro_gravamen,
-                'asiento_registral' => $tramite->asiento_registral
-            ]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al actualizar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            throw new SistemaRppServiceException("Error al comunicar con SistemaRPP.");
-
-        }
-
-        if($response->status() != 200){
+        if($response->status() !== 200){
 
             Log::error("Error al actualizar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
 
-            throw new SistemaRppServiceException("Error al actualizar información en Sistema RPP");
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al actualizar trámite en Sistema RPP.");
 
         }
 
@@ -167,29 +153,32 @@ class SistemaRppService{
 
     public function cambiarTipoServicio($tramite){
 
-        $url = env('SISTEMA_RPP_SERVICE_UPDATE_SERVICE');
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.actualizar_movimiento_registral'),
+                                [
+                                    'categoria_servicio' => $tramite->servicio->categoria->nombre,
+                                    'tipo_servicio' => $tramite->tipo_servicio,
+                                    'monto' => $tramite->monto,
+                                    'movimiento_registral' => $tramite->movimiento_registral,
+                                ]
+                            );
 
-        try {
+        if($response->status() !== 200){
 
-            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
-                'tipo_servicio' => $tramite->tipo_servicio,
-                'monto' => $tramite->monto,
-                'movimiento_registral' => $tramite->movimiento_registral,
-            ]);
+            Log::error("Error al actualizar tipo de servicio en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
 
-        } catch (\Throwable $th) {
+            $data = json_decode($response, true);
 
-            Log::error("Error al actualizar tipo de servicio en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            if(isset($data['error'])){
 
-            throw new SistemaRppServiceException("Error al comunicar con SistemaRPP.");
+                throw new GeneralException($data['error']);
 
-        }
+            }
 
-        if($response->status() != 200){
-
-            Log::error("Error al actualizar tipo de servicio en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". ". $response);
-
-            throw new SistemaRppServiceException("Error al cambiar tipo de servicio en Sistema RPP.");
+            throw new GeneralException("Error al actualizar tipo de servicio trámite en Sistema RPP.");
 
         }
 
@@ -197,30 +186,32 @@ class SistemaRppService{
 
     public function actualizarPaginas($tramite){
 
-        $url = env('SISTEMA_RPP_SERVICE_UPDATE_PAGES');
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.actualizar_paginas'),
+                                [
+                                    'numero_paginas' => $tramite->cantidad,
+                                    'monto' => $tramite->monto,
+                                    'movimiento_registral' => $tramite->movimiento_registral,
+                                    'tipo_servicio' => $tramite->tipo_servicio,
+                                ]
+                            );
 
-        try {
+        if($response->status() !== 200){
 
-            $response = Http::withToken($this->token)->accept('application/json')->asForm()->post($url,[
-                'numero_paginas' => $tramite->cantidad,
-                'monto' => $tramite->monto,
-                'movimiento_registral' => $tramite->movimiento_registral,
-                'tipo_servicio' => $tramite->tipo_servicio,
-            ]);
+            Log::error("Error al actualizar páginas en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
 
-        } catch (\Throwable $th) {
+            $data = json_decode($response, true);
 
-            Log::error("Error al actualizar páginas en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+            if(isset($data['error'])){
 
-            throw new SistemaRppServiceException("Error al comunicar con SistemaRPP.");
+                throw new GeneralException($data['error']);
 
-        }
+            }
 
-        if($response->status() != 200){
-
-            Log::error("Error al actualizar páginas en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". ". $response);
-
-            throw new SistemaRppServiceException("Error al actualizar número de páginas en Sistema RPP.");
+            throw new GeneralException("Error al actualizar páginas trámite en Sistema RPP.");
 
         }
 

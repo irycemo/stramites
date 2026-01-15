@@ -1,58 +1,54 @@
 <div class="">
 
-    <div class="mb-5">
+    <div class="mb-2 lg:mb-5">
 
         <x-header>Auditoria</x-header>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between gap-3 overflow-auto p-1">
 
-            <div>
+            <select class="bg-white rounded-full text-sm" wire:model.live="usuario">
 
-                <select class="bg-white rounded-full text-sm" wire:model.live="usuario">
+                <option value="" selected>Seleccione un usuario</option>
 
-                    <option value="" selected>Seleccione un usuario</option>
+                @foreach ($usuarios as $item)
 
-                    @foreach ($usuarios as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
 
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
 
-                    @endforeach
+            </select>
 
-                </select>
+            <select class="bg-white rounded-full text-sm" wire:model.live="modelo">
 
-                <select class="bg-white rounded-full text-sm" wire:model.live="modelo">
+                <option value="" selected>Seleccione un modelo</option>
 
-                    <option value="" selected>Seleccione un área</option>
+                @foreach ($modelos as $key => $item)
 
-                    @foreach ($modelos as $key => $item)
+                    <option value="{{ $item }}">{{ $key }}</option>
 
-                        <option value="{{ $item }}">{{ $key }}</option>
+                @endforeach
 
-                    @endforeach
+            </select>
 
-                </select>
+            <select class="bg-white rounded-full text-sm" wire:model.live="evento">
 
-                <select class="bg-white rounded-full text-sm" wire:model.live="evento">
+                <option value="" selected>Seleccione una acción</option>
+                <option value="created" selected>Creación</option>
+                <option value="updated" selected>Actualización</option>
+                <option value="deleted" selected>Borrado</option>
 
-                    <option value="" selected>Seleccione una acción</option>
-                    <option value="created" selected>Creación</option>
-                    <option value="updated" selected>Actualización</option>
-                    <option value="deleted" selected>Borrado</option>
+            </select>
 
-                </select>
+            <input type="number" class="bg-white rounded-full text-sm p-2 border border-gray-500" wire:model.live="modelo_id" placeholder="Modelo ID">
 
-                <input type="number" class="bg-white rounded-full text-sm p-2 border border-gray-500" wire:model.live="modelo_id" placeholder="Modelo ID">
+            <select class="bg-white rounded-full text-sm" wire:model.live="pagination">
 
-                <select class="bg-white rounded-full text-sm" wire:model.live="pagination">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
 
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-
-                </select>
-
-            </div>
+            </select>
 
         </div>
 
@@ -83,15 +79,15 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Usuario</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Usuario</span>
 
-                            {{ $audit->user->name ?? 'N/A' }}
+                            <p class="mt-2">{{ $audit->user->name ?? 'N/A' }}</p>
 
                         </x-table.cell>
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Evento</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Evento</span>
 
                             @if( $audit->event  == 'updated')
                                 Actualización
@@ -109,15 +105,15 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Modelo</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Modelo</span>
 
-                            {{ Str::substr($audit->auditable_type, 11) }}
+                            <p class="mt-2">{{ Str::substr($audit->auditable_type, 11) }}</p>
 
                         </x-table.cell>
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">ID</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">ID</span>
 
                             {{ $audit->auditable_id }}
 
@@ -125,15 +121,15 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">IP</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">IP</span>
 
-                            {{ $audit->ip_address }}
+                            <p class="mt-2">{{ $audit->ip_address }}</p>
 
                         </x-table.cell>
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registrado</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Registrado</span>
 
                             {{ $audit->created_at }}
 
@@ -141,7 +137,7 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Actualizado</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Actualizado</span>
 
                             {{ $audit->updated_at }}
 
@@ -149,7 +145,7 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Acciones</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Acciones</span>
 
                             <div class="flex justify-center lg:justify-start gap-2">
 

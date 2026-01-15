@@ -8,6 +8,7 @@ use App\Models\Servicio;
 use Livewire\WithPagination;
 use App\Traits\ComponentesTrait;
 use App\Models\CategoriaServicio;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Log;
 
 class Servicios extends Component
@@ -17,6 +18,7 @@ class Servicios extends Component
     use ComponentesTrait;
 
     public $categorias;
+    public $categoria;
 
     public Servicio $modelo_editar;
     public $flag_uma = false;
@@ -163,6 +165,24 @@ class Servicios extends Component
         }
 
     }
+    #[Computed]
+    public function servicios(){
+
+        return Servicio::select('id', 'categoria_servicio_id', 'nombre', 'estado', 'tipo', 'clave_ingreso', 'ordinario', 'urgente', 'extra_urgente', 'creado_por', 'actualizado_por', 'created_at', 'updated_at')
+                            ->with('categoria:id,nombre', 'creadoPor:id,name', 'actualizadoPor:id,name')
+                            ->where(function($q){
+                                $q->where('nombre', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('tipo', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('clave_ingreso', 'LIKE', '%' . $this->search . '%');
+                            })
+                            ->when($this->categoria, function($q){
+                              $q->where('categoria_servicio_id', $this->categoria);
+                            })
+                            ->orderBy($this->sort, $this->direction)
+                            ->paginate($this->pagination);
+
+    }
 
     public function mount(){
 
@@ -174,26 +194,7 @@ class Servicios extends Component
 
     public function render()
     {
-
-        $servicios = Servicio::with('categoria', 'creadoPor', 'actualizadoPor')
-                                ->where('nombre', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('tipo', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('umas', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('ordinario', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('clave_ingreso', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('urgente', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere('extra_urgente', 'LIKE', '%' . $this->search . '%')
-                                ->orWhere(function($q){
-                                    return $q->whereHas('categoria', function($q){
-                                        return $q->where('nombre', 'LIKE', '%' . $this->search . '%');
-                                    });
-                                })
-                                ->orderBy($this->sort, $this->direction)
-                                ->paginate($this->pagination);
-
-
-        return view('livewire.admin.servicios', compact('servicios'))->extends('layouts.admin');
+        return view('livewire.admin.servicios')->extends('layouts.admin');
     }
 
 }

@@ -13,6 +13,7 @@ use App\Models\Configuracion;
 use App\Constantes\Constantes;
 use App\Traits\ComponentesTrait;
 use App\Models\CategoriaServicio;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -637,6 +638,73 @@ class Tramites extends Component
 
     }
 
+    #[Computed]
+    public function tramites(){
+
+        return Tramite::select('id', 'año', 'numero_control', 'usuario', 'estado', 'adiciona', 'nombre_solicitante', 'fecha_pago', 'id_servicio', 'solicitante', 'folio_real', 'tomo', 'registro', 'distrito', 'monto', 'tipo_servicio', 'creado_por', 'actualizado_por', 'created_at', 'updated_at')
+                        ->with('creadoPor:id,name', 'actualizadoPor:id,name', 'adicionaAlTramite:id', 'servicio.categoria:id,nombre')
+                        ->when($this->filters['año'] != '', function($q){
+                            return $q->where('año', $this->filters['año']);
+
+                        })
+                        ->when($this->filters['folio'] != '', function($q){
+                            return $q->where('numero_control', $this->filters['folio']);
+
+                        })
+                        ->when($this->filters['usuario'] != '', function($q){
+                            return $q->where('usuario', $this->filters['usuario']);
+
+                        })
+                        ->when($this->filters['estado'] != '', function($q){
+                            return $q->where('estado', $this->filters['estado']);
+
+                        })
+                        ->when($this->filters['servicio'] != '', function($q){
+                            return $q->where('id_servicio', $this->filters['servicio']);
+
+                        })
+                        ->when($this->filters['categoria'] != '', function($q){
+                            return $q->whereHas('servicio', function ($q){
+                                $q->select('id', 'categoria_servicio_id')
+                                    ->where('categoria_servicio_id', $this->filters['categoria']);
+                            });
+                        })
+                        ->when($this->filters['regional'] != '', function($q){
+                            return $q->whereHas('creadoPor', function ($q){
+                                $q->select('id', 'ubicacion')
+                                    ->where('ubicacion', $this->filters['regional']);
+                            });
+                        })
+                        ->where(function($q){
+                            $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('nombre_solicitante', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('folio_real', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('numero_control', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('numero_escritura', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('numero_documento', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere('numero_oficio', 'LIKE', '%' . $this->search . '%')
+                                ->orWhere(function($q){
+                                    return $q->whereHas('creadoPor', function($q){
+                                        return $q->select('id', 'name')
+                                                ->where('name', 'LIKE', '%' . $this->search . '%');
+                                    });
+                                })
+                                ->orWhere(function($q){
+                                    return $q->whereHas('servicio', function($q){
+                                        return $q->select('id', 'nombre')
+                                                ->where('nombre', 'LIKE', '%' . $this->search . '%');
+                                    });
+                                });
+                        })
+                        ->orderBy($this->sort, $this->direction)
+                        ->paginate($this->pagination);
+
+    }
+
     public function mount(){
 
         array_push($this->fields, 'adicionaTramite', 'flags', 'modalVer', 'modalAcreditar', 'referencia_pago', 'fecha_pago');
@@ -667,65 +735,7 @@ class Tramites extends Component
 
     public function render()
     {
-
-        $tramites = Tramite::with('creadoPor', 'actualizadoPor', 'adicionaAlTramite', 'servicio.categoria')
-                                ->when($this->filters['año'] != '', function($q){
-                                    return $q->where('año', $this->filters['año']);
-
-                                })
-                                ->when($this->filters['folio'] != '', function($q){
-                                    return $q->where('numero_control', $this->filters['folio']);
-
-                                })
-                                ->when($this->filters['usuario'] != '', function($q){
-                                    return $q->where('usuario', $this->filters['usuario']);
-
-                                })
-                                ->when($this->filters['estado'] != '', function($q){
-                                    return $q->where('estado', $this->filters['estado']);
-
-                                })
-                                ->when($this->filters['servicio'] != '', function($q){
-                                    return $q->where('id_servicio', $this->filters['servicio']);
-
-                                })
-                                ->when($this->filters['categoria'] != '', function($q){
-                                    return $q->whereHas('servicio', function ($q){
-                                        $q->where('categoria_servicio_id', $this->filters['categoria']);
-                                    });
-                                })
-                                ->when($this->filters['regional'] != '', function($q){
-                                    return $q->whereHas('creadoPor', function ($q){
-                                        $q->where('ubicacion', $this->filters['regional']);
-                                    });
-                                })
-                                ->where(function($q){
-                                    $q->where('solicitante', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('nombre_solicitante', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('folio_real', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('tomo', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('estado', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('registro', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('distrito', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('numero_control', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('numero_escritura', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('numero_documento', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere('numero_oficio', 'LIKE', '%' . $this->search . '%')
-                                        ->orWhere(function($q){
-                                            return $q->whereHas('creadoPor', function($q){
-                                                return $q->where('name', 'LIKE', '%' . $this->search . '%');
-                                            });
-                                        })
-                                        ->orWhere(function($q){
-                                            return $q->whereHas('servicio', function($q){
-                                                return $q->where('nombre', 'LIKE', '%' . $this->search . '%');
-                                            });
-                                        });
-                                })
-                                ->orderBy($this->sort, $this->direction)
-                                ->paginate($this->pagination);
-
-        return view('livewire.admin.tramites', compact('tramites'))->extends('layouts.admin');
+        return view('livewire.admin.tramites')->extends('layouts.admin');
     }
 
 }

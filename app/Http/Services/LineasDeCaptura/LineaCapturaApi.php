@@ -5,9 +5,8 @@ namespace App\Http\Services\LineasDeCaptura;
 use App\Models\Tramite;
 use App\Constantes\Constantes;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Http;
-use App\Exceptions\ErrorAlGenerarLineaDeCaptura;
-use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 
 class LineaCapturaApi
 {
@@ -98,7 +97,7 @@ class LineaCapturaApi
 
             Log::error($th);
 
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 
@@ -110,7 +109,7 @@ class LineaCapturaApi
 
             Log::error($data['mensaje'] . ' EN SAP');
 
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 
@@ -120,7 +119,7 @@ class LineaCapturaApi
 
             Log::error($data['ES_MSJ']['V1Mens'] . ' EN SAP');
 
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 
@@ -130,7 +129,7 @@ class LineaCapturaApi
 
             Log::error($data['ERROR'] . ' SAP');
 
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 
@@ -140,7 +139,7 @@ class LineaCapturaApi
 
             Log::error("Error de comunicación con SAP. " . json_encode($data));
 
-            throw new ErrorAlGenerarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 
@@ -162,7 +161,7 @@ class LineaCapturaApi
 
             Log::error($th);
 
-            throw new ErrorAlValidarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 
@@ -170,7 +169,7 @@ class LineaCapturaApi
 
         if($response->status() != 200){
 
-            throw new ErrorAlValidarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 
@@ -182,7 +181,7 @@ class LineaCapturaApi
 
             Log::error($data['ES_MSJ']['V1_MENS'] . ' EN SAP');
 
-            throw new ErrorAlValidarLineaDeCaptura($data['ES_MSJ']['V1_MENS'] ." en SAP.");
+            throw new GeneralException($data['ES_MSJ']['V1_MENS'] ." en SAP.");
 
             return;
 
@@ -192,7 +191,7 @@ class LineaCapturaApi
 
             Log::error($data['ERROR'] . ' SAP');
 
-            throw new ErrorAlValidarLineaDeCaptura("Error de comunicación con SAP.");
+            throw new GeneralException("Error de comunicación con SAP.");
 
             return;
 

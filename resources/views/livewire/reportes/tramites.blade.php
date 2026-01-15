@@ -1,6 +1,6 @@
 <div>
 
-    <div class="md:flex md:flex-row flex-col md:space-x-4 items-end bg-white rounded-xl mb-5 p-4">
+    <div class="md:flex md:flex-row flex-col md:space-x-4 justify-center items-end bg-white rounded-xl mb-5 p-4 text-center text-sm">
 
         <div>
 
@@ -48,7 +48,7 @@
 
     </div>
 
-    <div class="md:flex flex-col md:flex-row justify-between md:space-x-3 items-center bg-white rounded-xl mb-5 p-4">
+    <div class="lg:flex lg:justify-between space-y-2 lg:space-y-0 gap-3 items-end bg-white rounded-xl mb-5 p-4 text-sm">
 
         <div class="flex-auto ">
 
@@ -278,7 +278,6 @@
                     <x-table.heading>Documento de pago</x-table.heading>
                     <x-table.heading>Linea de captura</x-table.heading>
                     <x-table.heading>Movimiento registral</x-table.heading>
-                    <x-table.heading>Observaciones</x-table.heading>
                     <x-table.heading>Registro</x-table.heading>
                     <x-table.heading>Actualizado</x-table.heading>
 
@@ -481,14 +480,6 @@
                                 <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Movimeinto registral</span>
 
                                 {{ $tramite->movimiento_registral ?? 'N/A' }}
-
-                            </x-table.cell>
-
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Observaciones</span>
-
-                                {{ $tramite->observaciones ? $tramite->observaciones : 'N/A' }}
 
                             </x-table.cell>
 

@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Traits\ComponentesTrait;
 use App\Models\CategoriaServicio;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Log;
 
 class Categorias extends Component
@@ -91,6 +92,18 @@ class Categorias extends Component
 
     }
 
+    #[Computed]
+    public function categorias(){
+
+        return CategoriaServicio::select('id', 'nombre', 'concepto', 'creado_por', 'actualizado_por', 'created_at', 'updated_at')
+                                    ->with('creadoPor:id,name', 'actualizadoPor:id,name')
+                                    ->where('nombre', 'LIKE', '%' . $this->search . '%')
+                                    ->where('concepto', 'LIKE', '%' . $this->search . '%')
+                                    ->orderBy($this->sort, $this->direction)
+                                    ->paginate($this->pagination);
+
+    }
+
     public function borrar(){
 
         try{
@@ -115,14 +128,7 @@ class Categorias extends Component
 
     public function render()
     {
-
-        $categorias = CategoriaServicio::with('creadoPor', 'actualizadoPor')
-                                            ->where('nombre', 'LIKE', '%' . $this->search . '%')
-                                            ->where('concepto', 'LIKE', '%' . $this->search . '%')
-                                            ->orderBy($this->sort, $this->direction)
-                                            ->paginate($this->pagination);
-
-        return view('livewire.admin.categorias', compact('categorias'))->extends('layouts.admin');
+        return view('livewire.admin.categorias')->extends('layouts.admin');
     }
 
 }

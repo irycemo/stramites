@@ -1,14 +1,26 @@
 <div class="">
 
-    <div class="mb-6">
+    <div class="mb-2 lg:mb-5">
 
         <x-header>Usuarios</x-header>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between gap-3 overflow-auto p-1">
 
             <div class="flex gap-3">
 
                 <input type="text" wire:model.live.debounce.500ms="search" placeholder="Buscar" class="bg-white rounded-full text-sm">
+
+                <select class="bg-white rounded-full text-sm" wire:model.live="filters.role">
+
+                    <option value="">Seleccione un rol</option>
+
+                    @foreach ($roles as $rolitem)
+
+                        <option value="{{ $rolitem->name }}">{{ $rolitem->name }}</option>
+
+                    @endforeach
+
+                </select>
 
                 <x-input-select class="bg-white rounded-full text-sm w-min" wire:model.live="pagination">
 
@@ -45,8 +57,8 @@
             <x-slot name="head">
 
                 <x-table.heading sortable wire:click="sortBy('name')" :direction="$sort === 'name' ? $direction : null">Nombre</x-table.heading>
-                <x-table.heading sortable wire:click="sortBy('clave')" :direction="$sort === 'clave' ? $direction : null">Clave</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('email')" :direction="$sort === 'email' ? $direction : null">Correo</x-table.heading>
+                <x-table.heading sortable wire:click="sortBy('clave')" :direction="$sort === 'clave' ? $direction : null">Clave</x-table.heading>
                 <x-table.heading >Rol</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('ubicacion')" :direction="$sort === 'ubicacion' ? $direction : null">Ubicación</x-table.heading>
                 <x-table.heading sortable wire:click="sortBy('area')" :direction="$sort === 'area' ? $direction : null">Área</x-table.heading>
@@ -59,13 +71,13 @@
 
             <x-slot name="body">
 
-                @forelse ($usuarios as $usuario)
+                @forelse ($this->usuarios as $usuario)
 
                     <x-table.row wire:loading.class.delaylongest="opacity-50" wire:key="row-{{ $usuario->id }}">
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Nombre</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Nombre</span>
 
                             <div class="flex items-center justify-center lg:justify-start">
 
@@ -79,27 +91,27 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Clave</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Email</span>
 
-                            {{ $usuario->clave }}
-
-                        </x-table.cell>
-
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Email</span>
-
-                            {{ $usuario->email }}
+                            <p class="mt-2">{{ $usuario->email }}</p>
 
                         </x-table.cell>
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Role</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Clave</span>
+
+                            <p class="mt-2">{{ $usuario->clave }}</p>
+
+                        </x-table.cell>
+
+                        <x-table.cell>
+
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Role</span>
 
                             @if ($usuario->roles()->count())
 
-                                {{ $usuario->getRoleNames()->first() }}
+                                {{ implode(', ', $usuario->getRoleNames()->toArray()) }}
 
                             @endif
 
@@ -107,7 +119,7 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden  absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Localidad</span>
+                            <span class="lg:hidden  absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Localidad</span>
 
                             {{ $usuario->ubicacion }}
 
@@ -115,15 +127,15 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden  absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Área</span>
+                            <span class="lg:hidden  absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Área</span>
 
-                            {{ $usuario->area }}
+                            <p class="mt-2">{{ $usuario->area }}</p>
 
                         </x-table.cell>
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Status</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Status</span>
 
                             @if($usuario->status == 'activo')
 
@@ -139,28 +151,35 @@
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registrado</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Registrado</span>
 
+                            <p class="mt-2">
 
-                            <span class="font-semibold">@if($usuario->creadoPor != null)Registrado por: {{$usuario->creadoPor->name}} @else Registro: @endif</span> <br>
+                                <span class="font-semibold">@if($usuario->creadoPor != null)Registrado por: {{$usuario->creadoPor->name}} @else Registro: @endif</span> <br>
 
-                            {{ $usuario->created_at }}
+                                {{ $usuario->created_at }}
 
-                        </x-table.cell>
-
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Actualizado</span>
-
-                            <span class="font-semibold">@if($usuario->actualizadoPor != null)Actualizado por: {{$usuario->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
-
-                            {{ $usuario->updated_at }}
+                            </p>
 
                         </x-table.cell>
 
                         <x-table.cell>
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Acciones</span>
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Actualizado</span>
+
+                            <p class="mt-2">
+
+                                <span class="font-semibold">@if($usuario->actualizadoPor != null)Actualizado por: {{$usuario->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
+
+                                {{ $usuario->updated_at }}
+
+                            </p>
+
+                        </x-table.cell>
+
+                        <x-table.cell>
+
+                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Acciones</span>
 
                             <div class="ml-3 relative" x-data="{ open_drop_down:false }">
 
@@ -222,7 +241,7 @@
 
                     <x-table.row>
 
-                        <x-table.cell colspan="10">
+                        <x-table.cell colspan="9">
 
                             <div class="bg-white text-gray-500 text-center p-5 rounded-full text-lg">
 
@@ -242,9 +261,9 @@
 
                 <x-table.row>
 
-                    <x-table.cell colspan="10" class="bg-gray-50">
+                    <x-table.cell colspan="9" class="bg-gray-50">
 
-                        {{ $usuarios->links()}}
+                        {{ $this->usuarios->links()}}
 
                     </x-table.cell>
 
@@ -300,23 +319,6 @@
 
                 </x-input-group>
 
-                <x-input-group for="role" label="Rol" :error="$errors->first('role')" class="w-full">
-
-                    <x-input-select id="role" wire:model="role" class="w-full">
-
-                        <option value="">Seleccione una opción</option>
-
-                        @foreach ($roles as $role)
-
-
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-
-                        @endforeach
-
-                    </x-input-select>
-
-                </x-input-group>
-
             </div>
 
             <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
@@ -346,6 +348,27 @@
                         @foreach ($areas_adscripcion as $area)
 
                             <option value="{{ $area }}">{{ $area }}</option>
+
+                        @endforeach
+
+                    </x-input-select>
+
+                </x-input-group>
+
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between gap-3 mb-3">
+
+                <x-input-group for="role" label="Rol" :error="$errors->first('role')" class="w-full">
+
+                    <x-input-select id="role" wire:model="role" class="w-full" multiple>
+
+                        <option value="">Seleccione una opción</option>
+
+                        @foreach ($roles as $role)
+
+
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
 
                         @endforeach
 

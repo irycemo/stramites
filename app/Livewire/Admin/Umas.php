@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Servicio;
 use Livewire\WithPagination;
 use App\Traits\ComponentesTrait;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -126,15 +127,20 @@ class Umas extends Component
 
     }
 
+    #[Computed]
+    public function umas(){
+
+        return Uma::select('id', 'año', 'diario', 'mensual', 'anual', 'creado_por', 'actualizado_por', 'created_at', 'updated_at')
+                    ->with('creadoPor:id,name', 'actualizadoPor:id,name')
+                    ->where('año', 'like', '%' . $this->search .'%')
+                    ->orderBy($this->sort, $this->direction)
+                    ->paginate($this->pagination);
+
+    }
+
     public function render()
     {
-
-        $umas = Uma::with('creadoPor', 'actualizadoPor')
-                            ->where('año', 'like', '%' . $this->search .'%')
-                            ->orderBy($this->sort, $this->direction)
-                            ->paginate($this->pagination);
-
-        return view('livewire.admin.umas', compact('umas'))->extends('layouts.admin');
+        return view('livewire.admin.umas')->extends('layouts.admin');
     }
 
 }

@@ -32,4 +32,12 @@ return [
         'ruta_documento_entrada' => 'stramites/documento_entrada',
     ],
 
+    'sistema_rpp' =>[
+        'token' => env('SISTEMA_RPP_SERVICE_TOKEN'),
+        'insertar_movimiento_registral' => env('SISTEMA_RPP_SERVICE_INSERT'),
+        'actualizar_movimiento_registral' => env('SISTEMA_RPP_SERVICE_UPDATE'),
+        'cambiar_tipo_servicio' => env('SISTEMA_RPP_SERVICE_UPDATE_SERVICE'),
+        'actualizar_paginas' => env('SISTEMA_RPP_SERVICE_UPDATE_PAGES'),
+    ]
+
 ];
