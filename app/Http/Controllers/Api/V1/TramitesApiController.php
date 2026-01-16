@@ -225,13 +225,17 @@ class TramitesApiController extends Controller
 
         if(!$tramite){
 
-            abort(404, 'Page not found');
+            return response()->json([
+                'eror' => "No se encontró el trámite",
+            ], 404);
 
         }
 
         if(!$tramite->file){
 
-            abort(404, 'Page not found');
+            return response()->json([
+                'eror' => "El trámite no tiene archivo",
+            ], 404);
 
         }
 

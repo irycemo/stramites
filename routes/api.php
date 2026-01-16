@@ -37,10 +37,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
-Route::fallback(function(){
+/* Route::fallback(function(){
     return response()->json([
             'result' => 'error',
-            'data' => 'Página no encontrada.']
+            'data' => 'Página no encontradass.']
         , 404);
-});
+}); */
 
