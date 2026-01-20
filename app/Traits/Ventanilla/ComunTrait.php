@@ -468,7 +468,7 @@ trait ComunTrait
 
             $data = (new SistemaRppService)->consultarAntecedentes($this->modelo_editar);
 
-            $this->antecedentes = $data['data']['antecedentes'];
+            $this->antecedentes = $data['antecedentes'];
 
         } catch (GeneralException $ex) {
 
