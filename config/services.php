@@ -38,6 +38,12 @@ return [
         'actualizar_movimiento_registral' => env('SISTEMA_RPP_SERVICE_UPDATE'),
         'cambiar_tipo_servicio' => env('SISTEMA_RPP_SERVICE_UPDATE_SERVICE'),
         'actualizar_paginas' => env('SISTEMA_RPP_SERVICE_UPDATE_PAGES'),
+        'consultar_gravamen' => env('SISTEMA_RPP_SERVICE_CONSULTAR_GRAVAMEN'),
+        'consultar_folio_real' => env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),
+        'consultar_folio_real_peresona_moral' => env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL_PERSONA_MORAL'),
+        'consultar_folio_movimiento' => env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_MOVIMIENTO'),
+        'consultar_antecedentes' => env('SISTEMA_RPP_SERVICE_CONSULTAR_ANTECEDENTES'),
+        'consultar_primer_aviso_preventivo' => env('SISTEMA_RPP_SERVICE_CONSULTAR_PRIMER_AVISO'),
     ]
 
 ];

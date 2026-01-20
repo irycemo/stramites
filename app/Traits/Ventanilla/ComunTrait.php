@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Exceptions\TramiteServiceException;
 use App\Exceptions\SistemaRppServiceException;
+use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\Tramites\TramiteService;
 
 trait ComunTrait
@@ -272,17 +273,9 @@ trait ComunTrait
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite se actualizó con éxito."]);
 
-        } catch (Exception $ex) {
+        } catch (GeneralException $ex) {
 
             $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (SistemaRppServiceException $th) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $th->getMessage()]);
-
-        } catch (TramiteServiceException $th) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $th->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -308,9 +301,9 @@ trait ComunTrait
 
             });
 
-        } catch (TramiteServiceException $th) {
+        } catch (GeneralException $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -330,35 +323,23 @@ trait ComunTrait
 
     public function consultarGravamen(){
 
-        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                        ->accept('application/json')
-                        ->asForm()
-                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_GRAVAMEN'),[
-                            'folio_real' => $this->modelo_editar->folio_real,
-                            'folio' => $this->modelo_editar->asiento_registral,
-                            'tomo_gravamen' => $this->modelo_editar->tomo_gravamen,
-                            'registro_gravamen' => $this->modelo_editar->registro_gravamen,
-                            'distrito' => $this->modelo_editar->distrito,
-                            'seccion' => $this->modelo_editar->seccion,
-                        ]);
+        try {
 
-
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
+            $data = (new SistemaRppService)->consultarGravamen($this->modelo_editar);
 
             $this->modelo_editar->asiento_registral = $data['data']['folio'];
             $this->modelo_editar->tomo_gravamen = $data['data']['tomo_gravamen'];
             $this->modelo_editar->registro_gravamen = $data['data']['registro_gravamen'];
 
-        }if($response->status() == 404){
+        } catch (GeneralException $ex) {
 
-            throw new GeneralException($data['error'] ?? 'No se encontro el recurso');
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
-        }if($response->status() == 401){
+        } catch (\Throwable $th) {
 
-            throw new GeneralException($data['error'] ?? "No se encontro el recurso.");
+            Log::error("Error al consultar gravamen trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 
@@ -368,29 +349,7 @@ trait ComunTrait
 
         try {
 
-            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                            ->accept('application/json')
-                            ->asForm()
-                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
-                                'folio_real' => $this->modelo_editar->folio_real,
-                                'tomo' => $this->modelo_editar->tomo,
-                                'registro' => $this->modelo_editar->registro,
-                                'numero_propiedad' => $this->modelo_editar->numero_propiedad,
-                                'distrito' => $this->modelo_editar->distrito,
-                                'seccion' => $this->modelo_editar->seccion,
-                            ]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar folio real al crear trámite " . $th);
-
-            throw new GeneralException("Error al comunicar con Sistema RPP.");
-
-        }
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
+            $data = (new SistemaRppService)->consultarFolioReal($this->modelo_editar);
 
             if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
 
@@ -406,38 +365,32 @@ trait ComunTrait
             $this->modelo_editar->seccion = $data['data']['seccion'];
             $this->matriz = $data['data']['matriz'];
 
-        }elseif($response->status() == 401){
+            if($this->modelo_editar->tomo && $this->modelo_editar->registro && $this->modelo_editar->numero_propiedad && $this->modelo_editar->distrito && $this->modelo_editar->seccion){
 
-            throw new GeneralException($data['error'] ?? "Hubo un error.");
+                $transicion = Transicion::where('tomo', $this->modelo_editar->tomo)
+                                            ->where('registro', $this->modelo_editar->registro)
+                                            ->where('numero_propiedad', $this->modelo_editar->numero_propiedad)
+                                            ->where('distrito', $this->modelo_editar->distrito)
+                                            ->where('seccion', $this->modelo_editar->seccion)
+                                            ->first();
 
-        }elseif($response->status() == 403){
+                if($transicion){
 
-            throw new GeneralException($data['error'] ?? 'Hubo un error');
+                    throw new GeneralException("La propiedad se encuentra en transición.");
 
-        }elseif($response->status() == 404){
-
-            throw new GeneralException("El folio real no existe.");
-
-        }elseif($response->status() == 500){
-
-            throw new GeneralException("Hubo un error al consultar el folio real.");
-
-        }
-
-        if($this->modelo_editar->tomo && $this->modelo_editar->registro && $this->modelo_editar->numero_propiedad && $this->modelo_editar->distrito && $this->modelo_editar->seccion){
-
-            $transicion = Transicion::where('tomo', $this->modelo_editar->tomo)
-                                        ->where('registro', $this->modelo_editar->registro)
-                                        ->where('numero_propiedad', $this->modelo_editar->numero_propiedad)
-                                        ->where('distrito', $this->modelo_editar->distrito)
-                                        ->where('seccion', $this->modelo_editar->seccion)
-                                        ->first();
-
-            if($transicion){
-
-                throw new GeneralException("La propiedad se encuentra en transición.");
+                }
 
             }
+
+        } catch (GeneralException $ex) {
+
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
+
+        } catch (\Throwable $th) {
+
+            Log::error("Error al consultar folio real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 
@@ -447,43 +400,26 @@ trait ComunTrait
 
         try {
 
-            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                            ->accept('application/json')
-                            ->asForm()
-                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL_PERSONA_MORAL'),[
-                                'folio_real' => $this->modelo_editar->folio_real_persona_moral,
-                                'tomo' => $this->modelo_editar->tomo,
-                                'registro' => $this->modelo_editar->registro,
-                                'distrito' => $this->modelo_editar->distrito,
-                            ]);
+            $data = (new SistemaRppService)->consultarFolioRealPersonaMoral($this->modelo_editar);
 
-        } catch (\Throwable $th) {
+            if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
 
-            Log::error("Error al consultar folio real de persona moral al crear trámite " . $th);
+                throw new GeneralException('EL folio no es del distrito 2');
 
-            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
-
-        }
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
+            }
 
             $this->modelo_editar->folio_real_persona_moral = $data['data']['folio'];
             $this->modelo_editar->distrito = $data['data']['distrito'];
 
+        } catch (GeneralException $ex) {
 
-        }elseif($response->status() == 401){
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
-            throw new GeneralException($data['error'] ?? "Hubo un error.");
+        } catch (\Throwable $th) {
 
-        }elseif($response->status() == 404){
+            Log::error("Error al consultar folio real  de persona moral trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
-            throw new GeneralException("El folio real no existe.");
-
-        }elseif($response->status() == 500){
-
-            throw new GeneralException("Hubo un error al consultar el folio real.");
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 
@@ -493,25 +429,7 @@ trait ComunTrait
 
         try {
 
-            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                            ->accept('application/json')
-                            ->asForm()
-                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_MOVIMIENTO'),[
-                                'folio_real' => $this->modelo_editar->folio_real,
-                                'asiento_registral' => $this->modelo_editar->asiento_registral,
-                            ]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar folio real al crear trámite " . $th);
-
-            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
-
-        }
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
+            $data = (new SistemaRppService)->consultarFolioMovimiento($this->modelo_editar);
 
             $this->modelo_editar->folio_real = $data['data']['folio'];
             $this->modelo_editar->tomo = $data['data']['tomo'];
@@ -520,17 +438,15 @@ trait ComunTrait
             $this->modelo_editar->distrito = $data['data']['distrito'];
             $this->modelo_editar->seccion = $data['data']['seccion'];
 
-        }elseif($response->status() == 401){
+        } catch (GeneralException $ex) {
 
-            throw new GeneralException($data['error'] ?? "Hubo un error.");
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
-        }elseif($response->status() == 404){
+        } catch (\Throwable $th) {
 
-            throw new GeneralException($data['error'] ?? 'Hubo un error');
+            Log::error("Error al consultar folio de movimiento registral real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
-        }elseif($response->status() == 500){
-
-            throw new GeneralException("Hubo un error al consultar el folio real.");
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 
@@ -550,46 +466,19 @@ trait ComunTrait
 
         try {
 
-            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                            ->accept('application/json')
-                            ->asForm()
-                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_ANTECEDENTES'),[
-                                'tomo' => $this->modelo_editar->tomo,
-                                'registro' => $this->modelo_editar->registro,
-                                'distrito' => $this->modelo_editar->distrito,
-                            ]);
+            $data = (new SistemaRppService)->consultarAntecedentes($this->modelo_editar);
+
+            $this->antecedentes = $data['data']['antecedentes'];
+
+        } catch (GeneralException $ex) {
+
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al consultar antecedentes en entrada " . $th);
+            Log::error("Error al consultar antecedentes trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
-            $this->dispatch('mostrarMensaje', ['error', 'Error al comunicar con Sistema RPP.']);
-
-        }
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
-
-            $this->antecedentes = $data['antecedentes'];
-
-        }elseif($response->status() == 401){
-
-            $this->dispatch('mostrarMensaje', ['error', $data['error'] ?? "Hubo un error."]);
-
-        }elseif($response->status() == 403){
-
-            $this->dispatch('mostrarMensaje', ['error', $data['error'] ?? "Hubo un error."]);
-
-        }elseif($response->status() == 404){
-
-            $this->dispatch('mostrarMensaje', ['warning', "No hay resultados con la información ingresada, ingresa manualmente el número de propiedad."]);
-
-            $this->flags['numero_propiedad'] = true;
-
-        }elseif($response->status() == 500){
-
-            $this->dispatch('mostrarMensaje', ['error', "Hubo un error al consultar antecedentes."]);
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 
@@ -603,23 +492,19 @@ trait ComunTrait
 
     public function consultarPrimerAviso(){
 
-        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                        ->accept('application/json')
-                        ->asForm()
-                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_PRIMER_AVISO'),[
-                            'folio_real' => $this->modelo_editar->folio_real,
-                            'folio' => $this->modelo_editar->asiento_registral
-                        ]);
+        try {
 
-        $data = json_decode($response, true);
+            (new SistemaRppService)->consultarPrimerAvisoPreventivo($this->modelo_editar);
 
-        if($response->status() == 404){
+        } catch (GeneralException $ex) {
 
-            throw new GeneralException($data['error'] ?? 'No se encontro el recurso');
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
-        }if($response->status() == 401){
+        } catch (\Throwable $th) {
 
-            throw new GeneralException($data['error'] ?? "No se encontro el recurso.");
+            Log::error("Error al consultar primer aviso preventivo real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 
@@ -627,25 +512,19 @@ trait ComunTrait
 
     public function consultarSegundoAviso(){
 
-        $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                        ->accept('application/json')
-                        ->asForm()
-                        ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_SEGUNDO_AVISO'),[
-                            'folio_real' => $this->modelo_editar->folio_real,
-                            'folio' => $this->modelo_editar->asiento_registral
-                        ]);
+        try {
 
+            (new SistemaRppService)->consultarSegundoAvisoPreventivo($this->modelo_editar);
 
+        } catch (GeneralException $ex) {
 
-        $data = json_decode($response, true);
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
-        if($response->status() == 404){
+        } catch (\Throwable $th) {
 
-            throw new GeneralException($data['error'] ?? 'No se encontro el recurso');
+            Log::error("Error al consultar segundo aviso preventivo real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
-        }if($response->status() == 401){
-
-            throw new GeneralException($data['error'] ?? "No se encontro el recurso.");
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 

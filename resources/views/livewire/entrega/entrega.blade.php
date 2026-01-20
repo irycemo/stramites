@@ -1,6 +1,6 @@
 <div class="">
 
-    <div class="mb-6">
+    <div class="mb-5">
 
         <x-header>Entrega</x-header>
 

@@ -217,4 +217,262 @@ class SistemaRppService{
 
     }
 
+    public function consultarGravamen($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_gravamen'),
+                                [
+                                    'folio_real' => $tramite->folio_real,
+                                    'folio' => $tramite->asiento_registral,
+                                    'tomo_gravamen' => $tramite->tomo_gravamen,
+                                    'registro_gravamen' => $tramite->registro_gravamen,
+                                    'distrito' => $tramite->distrito,
+                                    'seccion' => $tramite->seccion,
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar gravamen en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar gravamen trámite en Sistema RPP.");
+
+        }else{
+
+            $data = json_decode($response, true);
+
+            return $data;
+
+        }
+
+    }
+
+    public function consultarFolioReal($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_folio_real'),
+                                [
+                                    'folio_real' => $tramite->folio_real,
+                                    'tomo' => $tramite->tomo,
+                                    'registro' => $tramite->registro,
+                                    'numero_propiedad' => $tramite->numero_propiedad,
+                                    'distrito' => $tramite->distrito,
+                                    'seccion' => $tramite->seccion,
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar folio real en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar folio real trámite en Sistema RPP.");
+
+        }else{
+
+            $data = json_decode($response, true);
+
+            return $data;
+
+        }
+
+    }
+
+    public function consultarFolioRealPersonaMoral($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_folio_real_peresona_moral'),
+                                [
+                                    'folio_real' => $tramite->folio_real_persona_moral,
+                                    'tomo' => $tramite->tomo,
+                                    'registro' => $tramite->registro,
+                                    'distrito' => $tramite->distrito,
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar folio real de persona moral en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar folio real de persona moral trámite en Sistema RPP.");
+
+        }else{
+
+            $data = json_decode($response, true);
+
+            return $data;
+
+        }
+
+    }
+
+    public function consultarFolioMovimiento($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_folio_movimiento'),
+                                [
+                                    'folio_real' => $tramite->folio_real,
+                                    'asiento_registral' => $tramite->asiento_registral,
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar folio de movimiento registral en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar folio de movimiento registral trámite en Sistema RPP.");
+
+        }else{
+
+            $data = json_decode($response, true);
+
+            return $data;
+
+        }
+
+    }
+
+    public function consultarAntecedentes($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_antecedentes'),
+                                [
+                                    'tomo' => $tramite->tomo,
+                                    'registro' => $tramite->registro,
+                                    'distrito' => $tramite->distrito,
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar antecedentes en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar antecedentes trámite en Sistema RPP.");
+
+        }else{
+
+            $data = json_decode($response, true);
+
+            return $data;
+
+        }
+
+    }
+
+    public function consultarPrimerAvisoPreventivo($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_primer_aviso_preventivo'),
+                                [
+                                    'folio_real' => $tramite->folio_real,
+                                    'folio' => $tramite->asiento_registral
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar primer aviso preventivo en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar primer aviso preventivo trámite en Sistema RPP.");
+
+        }
+
+    }
+
+    public function consultarSegundoAvisoPreventivo($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_primer_aviso_preventivo'),
+                                [
+                                    'folio_real' => $tramite->folio_real,
+                                    'folio' => $tramite->asiento_registral
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar segundo aviso preventivo en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar segundo aviso preventivo trámite en Sistema RPP.");
+
+        }
+
+    }
+
 }
