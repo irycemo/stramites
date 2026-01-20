@@ -160,4 +160,5 @@ class Roles extends Component
     {
         return view('livewire.admin.roles')->extends('layouts.admin');
     }
+
 }

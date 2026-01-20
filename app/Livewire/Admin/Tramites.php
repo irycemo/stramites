@@ -11,6 +11,7 @@ use App\Models\Dependencia;
 use Livewire\WithPagination;
 use App\Models\Configuracion;
 use App\Constantes\Constantes;
+use App\Exceptions\GeneralException;
 use App\Traits\ComponentesTrait;
 use App\Models\CategoriaServicio;
 use Livewire\Attributes\Computed;
@@ -311,9 +312,9 @@ class Tramites extends Component
 
             });
 
-        } catch (TramiteServiceException $th) {
+        } catch (GeneralException $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -351,13 +352,9 @@ class Tramites extends Component
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite se actualizó con éxito."]);
 
-        } catch (SistemaRppServiceException $th) {
+        } catch (GeneralException $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
-
-        } catch (TramiteServiceException $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -371,62 +368,14 @@ class Tramites extends Component
 
     public function consultarFolioReal(){
 
-        try {
+        $data = (new SistemaRppService())->consultarFolioReal($this->modelo_editar);
 
-            $response = Http::withToken(env('SISTEMA_RPP_SERVICE_TOKEN'))
-                            ->accept('application/json')
-                            ->asForm()
-                            ->post(env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),[
-                                'folio_real' => $this->modelo_editar->folio_real,
-                                'tomo' => $this->modelo_editar->tomo,
-                                'registro' => $this->modelo_editar->registro,
-                                'numero_propiedad' => $this->modelo_editar->numero_propiedad,
-                                'distrito' => $this->modelo_editar->distrito,
-                                'seccion' => $this->modelo_editar->seccion,
-                            ]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar folio real al crear trámite " . $th);
-
-            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
-
-        }
-
-        $data = json_decode($response, true);
-
-        if($response->status() == 200){
-
-            if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
-
-                throw new Exception('EL folio no es del distrito 2');
-
-            }
-
-            $this->modelo_editar->folio_real = $data['data']['folio'];
-            $this->modelo_editar->tomo = $data['data']['tomo'];
-            $this->modelo_editar->registro = $data['data']['registro'];
-            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
-            $this->modelo_editar->distrito = $data['data']['distrito'];
-            $this->modelo_editar->seccion = $data['data']['seccion'];
-
-        }elseif($response->status() == 401){
-
-            throw new Exception($data['error'] ?? "Hubo un error.");
-
-        }elseif($response->status() == 403){
-
-            throw new Exception($data['error'] ?? 'Hubo un error');
-
-        }elseif($response->status() == 404){
-
-            throw new Exception("El folio real no existe.");
-
-        }elseif($response->status() == 500){
-
-            throw new Exception("Hubo un error al consultar el folio real.");
-
-        }
+        $this->modelo_editar->folio_real = $data['data']['folio'];
+        $this->modelo_editar->tomo = $data['data']['tomo'];
+        $this->modelo_editar->registro = $data['data']['registro'];
+        $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+        $this->modelo_editar->distrito = $data['data']['distrito'];
+        $this->modelo_editar->seccion = $data['data']['seccion'];
 
     }
 
@@ -493,8 +442,6 @@ class Tramites extends Component
 
         if($this->modelo_editar->movimiento_registral){
 
-            info($this->modelo_editar->movimiento_registral);
-
             $this->dispatch('mostrarMensaje', ['warning', "El trámite ya se encuentra en Sistema RPP."]);
 
             return;
@@ -519,9 +466,9 @@ class Tramites extends Component
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite se envió al Sistema RPP con éxito."]);
 
-        } catch (SistemaRppServiceException $th) {
+        } catch (GeneralException $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -631,9 +578,15 @@ class Tramites extends Component
 
             $this->resetearTodo();
 
+        } catch (GeneralException $ex) {
+
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
+
         } catch (\Throwable $th) {
+
             Log::error("Error al acreditar trámite  por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
             $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
+
         }
 
     }
