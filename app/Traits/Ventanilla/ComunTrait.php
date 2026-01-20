@@ -2,6 +2,7 @@
 
 namespace App\Traits\Ventanilla;
 
+use App\Exceptions\GeneralException;
 use Exception;
 use App\Models\Tramite;
 use App\Models\Transicion;
@@ -211,13 +212,13 @@ trait ComunTrait
                                     ->first();
 
         if(!$this->tramite_foraneo)
-            throw new Exception('El trámite foraneo no existe.');
+            throw new GeneralException('El trámite foraneo no existe.');
 
         if($this->tramite_foraneo->servicio->clave_ingreso != 'DL28')
-            throw new Exception('El trámite foraneo no valido.');
+            throw new GeneralException('El trámite foraneo no valido.');
 
         if($this->tramite_foraneo->adicionadoPor->count() >= 5)
-            throw new Exception("El trámite de notario foraneo tiene 5 tramites adicionados.");
+            throw new GeneralException("El trámite de notario foraneo tiene 5 tramites adicionados.");
 
         $this->modelo_editar->adiciona = $this->tramite_foraneo->id;
 
@@ -273,15 +274,15 @@ trait ComunTrait
 
         } catch (Exception $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
         } catch (SistemaRppServiceException $th) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $th->getMessage()]);
 
         } catch (TramiteServiceException $th) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $th->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -353,11 +354,11 @@ trait ComunTrait
 
         }if($response->status() == 404){
 
-            throw new Exception($data['error'] ?? 'No se encontro el recurso');
+            throw new GeneralException($data['error'] ?? 'No se encontro el recurso');
 
         }if($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "No se encontro el recurso.");
+            throw new GeneralException($data['error'] ?? "No se encontro el recurso.");
 
         }
 
@@ -383,7 +384,7 @@ trait ComunTrait
 
             Log::error("Error al consultar folio real al crear trámite " . $th);
 
-            throw new SistemaRppServiceException("Error al comunicar con Sistema RPP.");
+            throw new GeneralException("Error al comunicar con Sistema RPP.");
 
         }
 
@@ -393,7 +394,7 @@ trait ComunTrait
 
             if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
 
-                throw new Exception('EL folio no es del distrito 2');
+                throw new GeneralException('EL folio no es del distrito 2');
 
             }
 
@@ -407,19 +408,19 @@ trait ComunTrait
 
         }elseif($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "Hubo un error.");
+            throw new GeneralException($data['error'] ?? "Hubo un error.");
 
         }elseif($response->status() == 403){
 
-            throw new Exception($data['error'] ?? 'Hubo un error');
+            throw new GeneralException($data['error'] ?? 'Hubo un error');
 
         }elseif($response->status() == 404){
 
-            throw new Exception("El folio real no existe.");
+            throw new GeneralException("El folio real no existe.");
 
         }elseif($response->status() == 500){
 
-            throw new Exception("Hubo un error al consultar el folio real.");
+            throw new GeneralException("Hubo un error al consultar el folio real.");
 
         }
 
@@ -434,7 +435,7 @@ trait ComunTrait
 
             if($transicion){
 
-                throw new Exception("La propiedad se encuentra en transición.");
+                throw new GeneralException("La propiedad se encuentra en transición.");
 
             }
 
@@ -474,15 +475,15 @@ trait ComunTrait
 
         }elseif($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "Hubo un error.");
+            throw new GeneralException($data['error'] ?? "Hubo un error.");
 
         }elseif($response->status() == 404){
 
-            throw new Exception("El folio real no existe.");
+            throw new GeneralException("El folio real no existe.");
 
         }elseif($response->status() == 500){
 
-            throw new Exception("Hubo un error al consultar el folio real.");
+            throw new GeneralException("Hubo un error al consultar el folio real.");
 
         }
 
@@ -521,15 +522,15 @@ trait ComunTrait
 
         }elseif($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "Hubo un error.");
+            throw new GeneralException($data['error'] ?? "Hubo un error.");
 
         }elseif($response->status() == 404){
 
-            throw new Exception($data['error'] ?? 'Hubo un error');
+            throw new GeneralException($data['error'] ?? 'Hubo un error');
 
         }elseif($response->status() == 500){
 
-            throw new Exception("Hubo un error al consultar el folio real.");
+            throw new GeneralException("Hubo un error al consultar el folio real.");
 
         }
 
@@ -614,11 +615,11 @@ trait ComunTrait
 
         if($response->status() == 404){
 
-            throw new Exception($data['error'] ?? 'No se encontro el recurso');
+            throw new GeneralException($data['error'] ?? 'No se encontro el recurso');
 
         }if($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "No se encontro el recurso.");
+            throw new GeneralException($data['error'] ?? "No se encontro el recurso.");
 
         }
 
@@ -640,11 +641,11 @@ trait ComunTrait
 
         if($response->status() == 404){
 
-            throw new Exception($data['error'] ?? 'No se encontro el recurso');
+            throw new GeneralException($data['error'] ?? 'No se encontro el recurso');
 
         }if($response->status() == 401){
 
-            throw new Exception($data['error'] ?? "No se encontro el recurso.");
+            throw new GeneralException($data['error'] ?? "No se encontro el recurso.");
 
         }
 
