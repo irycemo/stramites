@@ -7,11 +7,11 @@ use App\Models\Tramite;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Constantes\Constantes;
+use App\Exceptions\GeneralException;
 use App\Traits\ComponentesTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\TramiteServiceException;
-use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 
@@ -58,7 +58,7 @@ class Recepcion extends Component
 
         if(!$this->tramite){
 
-            $this->dispatch('mostrarMensaje', ['error', "El trámtie no existe."]);
+            $this->dispatch('mostrarMensaje', ['warning', "El trámtie no existe."]);
 
             $this->crearModeloVacio();
 
@@ -66,7 +66,7 @@ class Recepcion extends Component
 
             if(in_array($this->tramite->servicio->categoria->nombre, ['Certificaciones', 'Comercio Inscripciones'])){
 
-                $this->dispatch('mostrarMensaje', ['error', "El trámtie no es una inscripción."]);
+                $this->dispatch('mostrarMensaje', ['warning', "El trámtie no es una inscripción."]);
 
                 $this->crearModeloVacio();
 
@@ -78,7 +78,7 @@ class Recepcion extends Component
 
             if(in_array($this->tramite->servicio->clave_ingreso, ['DL28', 'DL19'])){
 
-                $this->dispatch('mostrarMensaje', ['error', "El trámtie no se recepciona."]);
+                $this->dispatch('mostrarMensaje', ['warning', "El trámtie no se recepciona."]);
 
                 $this->crearModeloVacio();
 
@@ -90,7 +90,7 @@ class Recepcion extends Component
 
             if($this->tramite->movimiento_registral){
 
-                $this->dispatch('mostrarMensaje', ['error', "El trámtie ya se encuentra en Sistema RPP."]);
+                $this->dispatch('mostrarMensaje', ['warning', "El trámtie ya se encuentra en Sistema RPP."]);
 
                 $this->crearModeloVacio();
 
@@ -170,9 +170,9 @@ class Recepcion extends Component
 
             $this->dispatch('removeFiles');
 
-        } catch (SistemaRppServiceException $th) {
+        } catch (GeneralException $th) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $th->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -202,9 +202,9 @@ class Recepcion extends Component
 
             $this->resetearTodo();
 
-        } catch (SistemaRppServiceException $th) {
+        } catch (GeneralException $th) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $th->getMessage()]);
 
         } catch (\Throwable $th) {
 
@@ -228,11 +228,9 @@ class Recepcion extends Component
 
             });
 
-        } catch (TramiteServiceException $th) {
+        } catch (GeneralException $th) {
 
-            Log::error("Error al validar el trámite en recepción: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . '-' . $this->modelo_editar->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $th->getMessage()]);
 
             $this->tramite = null;
 

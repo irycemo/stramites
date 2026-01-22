@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin;
 
-use Exception;
 use App\Models\Notaria;
 use App\Models\Tramite;
 use Livewire\Component;
@@ -17,9 +16,6 @@ use App\Models\CategoriaServicio;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use App\Exceptions\TramiteServiceException;
-use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 
