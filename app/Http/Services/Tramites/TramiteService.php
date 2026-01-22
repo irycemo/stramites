@@ -62,6 +62,7 @@ class TramiteService{
     {
 
         $this->tramite->actualizado_por = auth()->user()->id;
+        $this->tramite->estado = 'pagado';
         $this->tramite->save();
 
         if($this->tramite->fecha_pago || $this->tramite->solicitante == 'Oficialia de partes'){
