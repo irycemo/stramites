@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Entrada;
 
-use Exception;
 use App\Models\Notaria;
 use App\Models\Tramite;
 use Livewire\Component;
@@ -12,9 +11,9 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\TramiteServiceException;
-use App\Http\Services\Tramites\TramiteService;
+use App\Exceptions\GeneralException;
 use App\Traits\Ventanilla\ComunTrait;
+use App\Http\Services\Tramites\TramiteService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Certificaciones extends Component
@@ -591,17 +590,9 @@ class Certificaciones extends Component
 
             });
 
-        } catch (Exception $th) {
+        } catch (GeneralException $ex) {
 
-            Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
-
-        } catch (TramiteServiceException $th) {
-
-            Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
 
         }  catch (\Throwable $th) {
 

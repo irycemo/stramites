@@ -323,74 +323,46 @@ trait ComunTrait
 
     public function consultarGravamen(){
 
-        try {
+        $data = (new SistemaRppService)->consultarGravamen($this->modelo_editar);
 
-            $data = (new SistemaRppService)->consultarGravamen($this->modelo_editar);
-
-            $this->modelo_editar->asiento_registral = $data['data']['folio'];
-            $this->modelo_editar->tomo_gravamen = $data['data']['tomo_gravamen'];
-            $this->modelo_editar->registro_gravamen = $data['data']['registro_gravamen'];
-
-        } catch (GeneralException $ex) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar gravamen trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-
-        }
+        $this->modelo_editar->asiento_registral = $data['data']['folio'];
+        $this->modelo_editar->tomo_gravamen = $data['data']['tomo_gravamen'];
+        $this->modelo_editar->registro_gravamen = $data['data']['registro_gravamen'];
 
     }
 
     public function consultarFolioReal(){
 
-        try {
+        $data = (new SistemaRppService)->consultarFolioReal($this->modelo_editar);
 
-            $data = (new SistemaRppService)->consultarFolioReal($this->modelo_editar);
+        if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
 
-            if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
+            throw new GeneralException('EL folio no es del distrito 2');
 
-                throw new GeneralException('EL folio no es del distrito 2');
+        }
 
-            }
+        $this->modelo_editar->folio_real = $data['data']['folio'];
+        $this->modelo_editar->tomo = $data['data']['tomo'];
+        $this->modelo_editar->registro = $data['data']['registro'];
+        $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+        $this->modelo_editar->distrito = $data['data']['distrito'];
+        $this->modelo_editar->seccion = $data['data']['seccion'];
+        $this->matriz = $data['data']['matriz'];
 
-            $this->modelo_editar->folio_real = $data['data']['folio'];
-            $this->modelo_editar->tomo = $data['data']['tomo'];
-            $this->modelo_editar->registro = $data['data']['registro'];
-            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
-            $this->modelo_editar->distrito = $data['data']['distrito'];
-            $this->modelo_editar->seccion = $data['data']['seccion'];
-            $this->matriz = $data['data']['matriz'];
+        if($this->modelo_editar->tomo && $this->modelo_editar->registro && $this->modelo_editar->numero_propiedad && $this->modelo_editar->distrito && $this->modelo_editar->seccion){
 
-            if($this->modelo_editar->tomo && $this->modelo_editar->registro && $this->modelo_editar->numero_propiedad && $this->modelo_editar->distrito && $this->modelo_editar->seccion){
+            $transicion = Transicion::where('tomo', $this->modelo_editar->tomo)
+                                        ->where('registro', $this->modelo_editar->registro)
+                                        ->where('numero_propiedad', $this->modelo_editar->numero_propiedad)
+                                        ->where('distrito', $this->modelo_editar->distrito)
+                                        ->where('seccion', $this->modelo_editar->seccion)
+                                        ->first();
 
-                $transicion = Transicion::where('tomo', $this->modelo_editar->tomo)
-                                            ->where('registro', $this->modelo_editar->registro)
-                                            ->where('numero_propiedad', $this->modelo_editar->numero_propiedad)
-                                            ->where('distrito', $this->modelo_editar->distrito)
-                                            ->where('seccion', $this->modelo_editar->seccion)
-                                            ->first();
+            if($transicion){
 
-                if($transicion){
-
-                    throw new GeneralException("La propiedad se encuentra en transición.");
-
-                }
+                throw new GeneralException("La propiedad se encuentra en transición.");
 
             }
-
-        } catch (GeneralException $ex) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar folio real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
 
         }
 
@@ -398,57 +370,29 @@ trait ComunTrait
 
     public function consultarFolioRealPersonaMoral(){
 
-        try {
+        $data = (new SistemaRppService)->consultarFolioRealPersonaMoral($this->modelo_editar);
 
-            $data = (new SistemaRppService)->consultarFolioRealPersonaMoral($this->modelo_editar);
+        if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
 
-            if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
-
-                throw new GeneralException('EL folio no es del distrito 2');
-
-            }
-
-            $this->modelo_editar->folio_real_persona_moral = $data['data']['folio'];
-            $this->modelo_editar->distrito = $data['data']['distrito'];
-
-        } catch (GeneralException $ex) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar folio real  de persona moral trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
+            throw new GeneralException('EL folio no es del distrito 2');
 
         }
+
+        $this->modelo_editar->folio_real_persona_moral = $data['data']['folio'];
+        $this->modelo_editar->distrito = $data['data']['distrito'];
 
     }
 
     public function consultarFolioMovimiento(){
 
-        try {
+        $data = (new SistemaRppService)->consultarFolioMovimiento($this->modelo_editar);
 
-            $data = (new SistemaRppService)->consultarFolioMovimiento($this->modelo_editar);
-
-            $this->modelo_editar->folio_real = $data['data']['folio'];
-            $this->modelo_editar->tomo = $data['data']['tomo'];
-            $this->modelo_editar->registro = $data['data']['registro'];
-            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
-            $this->modelo_editar->distrito = $data['data']['distrito'];
-            $this->modelo_editar->seccion = $data['data']['seccion'];
-
-        } catch (GeneralException $ex) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar folio de movimiento registral real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-
-        }
+        $this->modelo_editar->folio_real = $data['data']['folio'];
+        $this->modelo_editar->tomo = $data['data']['tomo'];
+        $this->modelo_editar->registro = $data['data']['registro'];
+        $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+        $this->modelo_editar->distrito = $data['data']['distrito'];
+        $this->modelo_editar->seccion = $data['data']['seccion'];
 
     }
 
@@ -464,23 +408,9 @@ trait ComunTrait
 
         $this->flags['numero_propiedad'] = false;
 
-        try {
+        $data = (new SistemaRppService)->consultarAntecedentes($this->modelo_editar);
 
-            $data = (new SistemaRppService)->consultarAntecedentes($this->modelo_editar);
-
-            $this->antecedentes = $data['antecedentes'];
-
-        } catch (GeneralException $ex) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar antecedentes trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-
-        }
+        $this->antecedentes = $data['antecedentes'];
 
     }
 
@@ -492,41 +422,13 @@ trait ComunTrait
 
     public function consultarPrimerAviso(){
 
-        try {
-
-            (new SistemaRppService)->consultarPrimerAvisoPreventivo($this->modelo_editar);
-
-        } catch (GeneralException $ex) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar primer aviso preventivo real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-
-        }
+        (new SistemaRppService)->consultarPrimerAvisoPreventivo($this->modelo_editar);
 
     }
 
     public function consultarSegundoAviso(){
 
-        try {
-
-            (new SistemaRppService)->consultarSegundoAvisoPreventivo($this->modelo_editar);
-
-        } catch (GeneralException $ex) {
-
-            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
-
-        } catch (\Throwable $th) {
-
-            Log::error("Error al consultar segundo aviso preventivo real trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
-
-        }
+        (new SistemaRppService)->consultarSegundoAvisoPreventivo($this->modelo_editar);
 
     }
 

@@ -6,7 +6,7 @@ use App\Models\Tramite;
 use Livewire\Component;
 use App\Constantes\Constantes;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\TramiteServiceException;
+use App\Exceptions\GeneralException;
 use App\Http\Services\Tramites\TramiteService;
 
 class Complemento extends Component
@@ -96,11 +96,9 @@ class Complemento extends Component
 
             $this->reset(['tramite', 'monto', 'tipo_servicio', 'numero_control', 'usuario']);
 
-        } catch (TramiteServiceException $th) {
+        } catch (GeneralException $ex) {
 
-            Log::error("Error al crear tramite complemento por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
 
         }  catch (\Throwable $th) {
 

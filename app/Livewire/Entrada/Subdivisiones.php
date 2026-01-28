@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Entrada;
 
-use Exception;
 use App\Models\Notaria;
 use App\Models\Tramite;
 use Livewire\Component;
@@ -11,8 +10,8 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\GeneralException;
 use App\Traits\Ventanilla\ComunTrait;
-use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 
 class Subdivisiones extends Component
@@ -360,7 +359,7 @@ class Subdivisiones extends Component
 
             if(!$this->matriz && $this->modelo_editar->folio_real && $this->servicio['nombre'] != 'Subdivisiones por cada inmueble'){
 
-                throw new Exception("El folio real no es matriz.");
+                throw new GeneralException("El folio real no es matriz.");
 
             }
 
@@ -392,13 +391,9 @@ class Subdivisiones extends Component
 
         });
 
-        }catch (TramiteServiceException $th) {
+        } catch (GeneralException $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
-
-        } catch (Exception $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
 
         }catch (\Throwable $th) {
 

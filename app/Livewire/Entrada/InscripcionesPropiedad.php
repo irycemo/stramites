@@ -10,10 +10,9 @@ use App\Constantes\Constantes;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\TramiteServiceException;
-use App\Http\Services\Tramites\TramiteService;
+use App\Exceptions\GeneralException;
 use App\Traits\Ventanilla\ComunTrait;
-use Exception;
+use App\Http\Services\Tramites\TramiteService;
 
 class InscripcionesPropiedad extends Component
 {
@@ -513,13 +512,9 @@ class InscripcionesPropiedad extends Component
 
         });
 
-        }catch (Exception $th) {
-            Log::error($th);
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+        } catch (GeneralException $ex) {
 
-        }catch (TramiteServiceException $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
 
         }catch (\Throwable $th) {
 

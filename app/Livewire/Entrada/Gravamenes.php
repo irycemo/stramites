@@ -2,16 +2,15 @@
 
 namespace App\Livewire\Entrada;
 
-use Exception;
 use App\Models\Notaria;
 use App\Models\Tramite;
 use Livewire\Component;
 use App\Models\Dependencia;
 use App\Constantes\Constantes;
+use App\Exceptions\GeneralException;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Traits\Ventanilla\ComunTrait;
 
@@ -184,6 +183,7 @@ class Gravamenes extends Component
 
 
     }
+
     public function updatedModeloEditarTipoServicio(){
 
         if($this->modelo_editar->id_servicio == ""){
@@ -323,15 +323,11 @@ class Gravamenes extends Component
 
         });
 
-        }catch (TramiteServiceException $th) {
+        } catch (GeneralException $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
 
-        } catch (Exception $th) {
-
-            $this->dispatch('mostrarMensaje', ['error', $th->getMessage()]);
-
-        }catch (\Throwable $th) {
+        } catch (\Throwable $th) {
 
             Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
 
