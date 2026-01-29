@@ -341,7 +341,7 @@ class Cancelaciones extends Component
 
         } catch (GeneralException $ex) {
 
-            $this->dispatch('mostrarMensaje', ['error', $ex->getMessage()]);
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
 
         }catch (\Throwable $th) {
 

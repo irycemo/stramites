@@ -14,6 +14,8 @@ use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\Tramites\TramiteService;
 
+use function PHPUnit\Framework\isEmpty;
+
 trait ComunTrait
 {
 
@@ -341,6 +343,9 @@ trait ComunTrait
 
         }
 
+        /* Response 204 Folio real no existe */
+        if(isEmpty($data)) return;
+
         $this->modelo_editar->folio_real = $data['data']['folio'];
         $this->modelo_editar->tomo = $data['data']['tomo'];
         $this->modelo_editar->registro = $data['data']['registro'];
@@ -398,19 +403,33 @@ trait ComunTrait
 
     public function consultarAntecedentes(){
 
-        $this->validate([
-            'modelo_editar.distrito' => 'required',
-            'modelo_editar.tomo' => 'required',
-            'modelo_editar.registro' => 'required',
-        ]);
+        try {
 
-        $this->reset('antecedentes');
+            $this->validate([
+                'modelo_editar.distrito' => 'required',
+                'modelo_editar.tomo' => 'required',
+                'modelo_editar.registro' => 'required',
+            ]);
 
-        $this->flags['numero_propiedad'] = false;
+            $this->reset('antecedentes');
 
-        $data = (new SistemaRppService)->consultarAntecedentes($this->modelo_editar);
+            $this->flags['numero_propiedad'] = false;
 
-        $this->antecedentes = $data['antecedentes'];
+            $data = (new SistemaRppService)->consultarAntecedentes($this->modelo_editar);
+
+            $this->antecedentes = $data['antecedentes'];
+
+        } catch (GeneralException $ex) {
+
+            $this->dispatch('mostrarMensaje', ['warning', $ex->getMessage()]);
+
+        }  catch (\Throwable $th) {
+
+            Log::error("Error al crear el trámite: " . $this->modelo_editar->año . '-' . $this->modelo_editar->numero_control . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th);
+
+            $this->dispatch('mostrarMensaje', ['error', 'Hubo un error.']);
+
+        }
 
     }
 

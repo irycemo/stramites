@@ -275,7 +275,9 @@ class SistemaRppService{
                                 ]
                             );
 
-        if($response->status() !== 200){
+                            /* dd($response); */
+
+        if(!in_array($response->status(), [200, 204])){
 
             Log::error("Error al consultar folio real en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
 
