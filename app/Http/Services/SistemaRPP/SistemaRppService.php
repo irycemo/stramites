@@ -289,7 +289,7 @@ class SistemaRppService{
 
             }
 
-            throw new GeneralException("Error al consultar folio real trámite en Sistema RPP.");
+            throw new GeneralException("Error al consultar folio real en Sistema RPP.");
 
         }else{
 

@@ -309,7 +309,7 @@ class Cancelaciones extends Component
 
             $this->consultarFolioReal();
 
-            $this->consultarGravamen();
+            if(isset($this->modelo_editar->folio_real)) $this->consultarGravamen();
 
             DB::transaction(function (){
 
