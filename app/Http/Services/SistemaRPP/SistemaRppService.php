@@ -145,7 +145,7 @@ class SistemaRppService{
 
             }
 
-            throw new GeneralException("Error al actualizar trámite en Sistema RPP.");
+            throw new GeneralException("Error al actualizarss trámite en Sistema RPP.");
 
         }
 
