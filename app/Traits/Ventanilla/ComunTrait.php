@@ -3,18 +3,12 @@
 namespace App\Traits\Ventanilla;
 
 use App\Exceptions\GeneralException;
-use Exception;
 use App\Models\Tramite;
 use App\Models\Transicion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use App\Exceptions\TramiteServiceException;
-use App\Exceptions\SistemaRppServiceException;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\Tramites\TramiteService;
-
-use function PHPUnit\Framework\isEmpty;
 
 trait ComunTrait
 {
