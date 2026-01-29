@@ -261,9 +261,13 @@ trait ComunTrait
 
             }
 
-            (new TramiteService($this->modelo_editar))->actualizar();
+            DB::transaction(function (){
 
-            $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Actualizó trámite']);
+                (new TramiteService($this->modelo_editar))->actualizar();
+
+                $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Actualizó trámite']);
+
+            });
 
             $this->resetearTodo($borrado = true);
 
