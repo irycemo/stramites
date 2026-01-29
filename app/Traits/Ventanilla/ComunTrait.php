@@ -338,7 +338,7 @@ trait ComunTrait
         $data = (new SistemaRppService)->consultarFolioReal($this->modelo_editar);
 
         /* Response 204 Folio real no existe */
-        if(! $data['data']['distrito']) return;
+        if(! isset($data['data']['distrito'])) return;
 
         if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
 
