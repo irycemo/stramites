@@ -4,7 +4,7 @@
 
         <x-header>Auditoria</x-header>
 
-        <div class="flex justify-between gap-3 overflow-auto p-1">
+        <div class="flex gap-3 overflow-auto p-1">
 
             <select class="bg-white rounded-full text-sm" wire:model.live="usuario">
 

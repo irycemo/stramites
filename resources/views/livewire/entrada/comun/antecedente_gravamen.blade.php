@@ -6,7 +6,7 @@
 
         <x-input-group for="modelo_editar.asiento_registral" label="Movimiento registral" :error="$errors->first('modelo_editar.asiento_registral')" class="">
 
-            <x-input-text type="number" id="modelo_editar.asiento_registral" wire:model.lazy="modelo_editar.asiento_registral" />
+            <x-input-text type="number" id="modelo_editar.asiento_registral" wire:model.lazy="modelo_editar.asiento_registral" :readonly="$modelo_editar->folio_real == null"/>
 
         </x-input-group>
 

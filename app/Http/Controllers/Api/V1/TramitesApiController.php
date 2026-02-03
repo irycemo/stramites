@@ -13,6 +13,7 @@ use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
 use App\Http\Services\Tramites\TramiteService;
 use App\Exceptions\ErrorAlValidarLineaDeCaptura;
+use App\Exceptions\GeneralException;
 
 class TramitesApiController extends Controller
 {
@@ -94,9 +95,17 @@ class TramitesApiController extends Controller
 
             return (new TramiteResource($nuevo_tramite))->response()->setStatusCode(200);
 
+        } catch (GeneralException $ex) {
+
+            Log::error("Error al crear trámite mediante api " . $ex);
+
+            return response()->json([
+                'error' => $ex->getMessage(),
+            ], 500);
+
         } catch (\Throwable $th) {
 
-            Log::error("Error al crear trámite por el Sistema de trámties en linea" . $th);
+            Log::error("Error al crear trámite mediante api " . $th);
 
             return response()->json([
                 'error' => "No se pudo crear el trámite.",
@@ -122,23 +131,25 @@ class TramitesApiController extends Controller
 
         try {
 
-            (new TramiteService($tramite))->procesarPago();
+            DB::transaction(function () use($tramite){
+
+                (new TramiteService($tramite))->procesarPago();
+
+            });
 
             return (new TramiteResource($tramite))->response()->setStatusCode(200);
 
-        } catch (ErrorAlValidarLineaDeCaptura $th) {
+        } catch (GeneralException $ex) {
 
-            if(!$tramite){
+            Log::error("Error al crear trámite mediante api " . $ex);
 
-                return response()->json([
-                    'error' => $th->getMessage(),
-                ], 500);
-
-            }
+            return response()->json([
+                'error' => $ex->getMessage(),
+            ], 500);
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al acreditar pago api. " . $th);
+            Log::error("Error al acreditar pago mediante api. " . $th);
 
             return response()->json([
                 'error' => 'Error al acreditar pago.',
@@ -167,11 +178,16 @@ class TramitesApiController extends Controller
                 'data' => []
             ], 200);
 
+        } catch (GeneralException $ex) {
+
+            return response()->json([
+                'error' => $ex->getMessage(),
+            ], 500);
+
         } catch (\Throwable $th) {
 
             return response()->json([
-                'result' => 'error',
-                'data' => $th->getMessage(),
+                'error' => 'No fue posible finalizar el trámite.',
             ], 500);
 
         }
@@ -203,7 +219,6 @@ class TramitesApiController extends Controller
             (new TramiteService($tramite))->cambiarEstado('rechazado');
 
             return response()->json([
-                'result' => 'success',
                 'data' => []
             ], 200);
 
@@ -212,8 +227,7 @@ class TramitesApiController extends Controller
             Log::error('Error al rechazar tramite desde sistema RPP.' . $th);
 
             return response()->json([
-                'result' => 'error',
-                'data' => $th->getMessage(),
+                'error' => 'Error al rechazar tramite.',
             ], 500);
 
         }
