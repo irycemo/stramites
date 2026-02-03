@@ -67,10 +67,16 @@ class Cancelaciones extends Component
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.numero_inmuebles' => 'nullable',
-            'modelo_editar.asiento_registral' => 'nullable',
+            'modelo_editar.asiento_registral' => Rule::requiredIf($this->modelo_editar->folio_real != null),
             'modelo_editar.foraneo' => 'required',
-            'modelo_editar.tomo_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
-            'modelo_editar.registro_gravamen' => Rule::requiredIf($this->modelo_editar->asiento_registral == null),
+            'modelo_editar.tomo_gravamen' => Rule::requiredIf(
+                $this->servicio['nombre'] != 'Cancelación de reserva de dominio' && $this->modelo_editar->asiento_registral == null ||
+                $this->servicio['nombre'] == 'Cancelación de reserva de dominio' && $this->modelo_editar->folio_real
+            ),
+            'modelo_editar.registro_gravamen' => Rule::requiredIf(
+                $this->servicio['nombre'] != 'Cancelación de reserva de dominio' && $this->modelo_editar->asiento_registral == null ||
+                $this->servicio['nombre'] == 'Cancelación de reserva de dominio' && $this->modelo_editar->folio_real
+            ),
             'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
@@ -286,6 +292,15 @@ class Cancelaciones extends Component
 
     }
 
+    public function updatedModeloEditarFolioReal()
+    {
+
+        $this->modelo_editar->asiento_registral = null;
+        $this->modelo_editar->tomo_gravamen = null;
+        $this->modelo_editar->registro_gravamen = null;
+
+    }
+
     public function updatedModeloEditarAsientoRegistral(){
 
         if($this->modelo_editar->asiento_registral == ''){
@@ -309,7 +324,19 @@ class Cancelaciones extends Component
 
             $this->consultarFolioReal();
 
-            if(isset($this->modelo_editar->folio_real)) $this->consultarGravamen();
+            if(
+                $this->modelo_editar->folio_real &&
+                $this->modelo_editar->asiento_registral == null &&
+                $this->modelo_editar->tomo_gravamen == null &&
+                $this->modelo_editar->registro_gravamen == null
+            )
+            {
+
+                throw new GeneralException("Es necesario ingresar los datos del gravamen");
+
+            }
+
+            if(!empty($this->modelo_editar->folio_real)) $this->consultarGravamen();
 
             DB::transaction(function (){
 

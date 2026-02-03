@@ -13,7 +13,15 @@
 
                     @include('livewire.entrada.comun.antecedente')
 
-                    @include('livewire.entrada.comun.antecedente_gravamen')
+                    @if($servicio['nombre'] != 'Cancelación de reserva de dominio')
+
+                        @include('livewire.entrada.comun.antecedente_gravamen')
+
+                    @elseif($servicio['nombre'] == 'Cancelación de reserva de dominio' && $modelo_editar->folio_real)
+
+                        @include('livewire.entrada.comun.antecedente_gravamen')
+
+                    @endif
 
                     @include('livewire.entrada.comun.documento_entrada')
 
