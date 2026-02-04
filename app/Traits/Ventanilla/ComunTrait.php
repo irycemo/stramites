@@ -120,6 +120,227 @@ trait ComunTrait
 
     }
 
+    public function updatedModeloEditarSolicitante(){
+
+        $this->modelo_editar->nombre_solicitante = null;
+        $this->modelo_editar->nombre_notario = null;
+        $this->modelo_editar->numero_notaria = null;
+        $this->modelo_editar->tipo_tramite = 'normal';
+        $this->notaria = null;
+
+        $this->flags['nombre_solicitante'] = false;
+        $this->flags['dependencias'] = false;
+        $this->flags['notarias'] = false;
+        $this->flags['numero_oficio'] = false;
+
+        if(in_array($this->modelo_editar->solicitante , ['Usuario', 'Vivienda Bienestar'])){
+
+            $this->flags['nombre_solicitante'] = true;
+
+        }elseif($this->modelo_editar->solicitante == 'Notaría'){
+
+            $this->flags['notarias'] = true;
+
+        }elseif($this->modelo_editar->solicitante == 'Oficialia de partes'){
+
+            if(!auth()->user()->hasRole(['Oficialia de partes', 'Administrador'])){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No tienes permisos para esta opción."]);
+
+                $this->modelo_editar->solicitante = null;
+
+                return;
+
+            }
+
+            $this->flags['dependencias'] = true;
+            $this->flags['numero_oficio'] = true;
+
+            $this->modelo_editar->monto = 0;
+            $this->modelo_editar->tipo_tramite = 'exento';
+
+        }elseif($this->modelo_editar->solicitante == 'SAT'){
+
+            if(!auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No tienes permisos para esta opción."]);
+
+                $this->modelo_editar->solicitante = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
+
+            $this->flags['numero_oficio'] = true;
+
+        }elseif($this->modelo_editar->solicitante == "S.T.A.S.P.E."){
+
+            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
+            $this->modelo_editar->tipo_servicio = "extra_urgente";
+
+        }else{
+
+            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
+
+        }
+
+        $this->updatedModeloEditarTipoServicio();
+
+    }
+
+    public function updatedModeloEditarTipoTramite(){
+
+        if(!$this->modelo_editar->tipo_servicio){
+
+            $this->dispatch('mostrarMensaje', ['warning', "Es necesario indique el tipo de servicio."]);
+
+            return;
+
+        }
+
+        if($this->modelo_editar->tipo_tramite == 'exento'){
+
+            /* if(!auth()->user()->can('Trámite exento')){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No tiene permiso para elaborar trámites exentos."]);
+
+                $this->modelo_editar->tipo_tramite = 'normal';
+
+                return;
+
+            } */
+
+            $this->modelo_editar->monto = 0;
+
+        }elseif($this->modelo_editar->tipo_tramite == 'complemento'){
+
+            if($this->tramiteAdicionado){
+
+                $this->modelo_editar->monto = $this->servicio[$this->modelo_editar->tipo_servicio] * $this->tramiteAdicionado->cantidad - $this->servicio[$this->tramiteAdicionado->tipo_servicio] * $this->tramiteAdicionado->cantidad ;
+
+                $this->modelo_editar->monto < 0 ? $this->modelo_editar->monto = 0 : $this->modelo_editar->monto = $this->modelo_editar->monto;
+
+                $this->modelo_editar->cantidad = $this->tramiteAdicionado->cantidad;
+
+                $this->flags['cantidad'] = false;
+                $this->flags['tipo_servicio'] = true;
+
+            }else{
+
+                $this->dispatch('mostrarMensaje', ['warning', "Para el complemento es necesario seleccione el tramite al que adiciona."]);
+
+                $this->modelo_editar->tipo_tramite = 'normal';
+
+                $this->updatedModeloEditarTipoTramite();
+
+            }
+
+        }elseif($this->modelo_editar->tipo_tramite == 'normal'){
+
+            $this->modelo_editar->monto = (int)$this->servicio[$this->modelo_editar->tipo_servicio] * (int)$this->modelo_editar->cantidad;
+
+            /* $this->flags['cantidad'] = true; */
+
+        }
+
+        if($this->modelo_editar->tipo_tramite == 'normal' && $this->tramiteAdicionado && in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
+
+            $this->flags['tipo_servicio'] = false;
+            $this->flags['cantidad'] = true;
+
+        }
+
+    }
+
+    public function updatedModeloEditarTipoServicio(){
+
+        if($this->modelo_editar->id_servicio == ""){
+
+            $this->dispatch('mostrarMensaje', ['warning', "Debe seleccionar un servicio."]);
+
+            $this->modelo_editar->tipo_servicio = null;
+
+            $this->modelo_editar->solicitante = null;
+
+            return;
+        }
+
+        if($this->modelo_editar->tipo_servicio == 'ordinario'){
+
+            if($this->servicio['ordinario'] == 0){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No hay servicio ordinario para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = (int)$this->servicio['ordinario'] * (int)$this->modelo_editar->cantidad;
+
+        }elseif($this->modelo_editar->tipo_servicio == 'urgente'){
+
+            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+            }
+
+            if($this->servicio['urgente'] == 0){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No hay servicio urgente para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = (int)$this->servicio['urgente'] * (int)$this->modelo_editar->cantidad;
+
+            if($this->modelo_editar->tipo_tramite == 'complemento' && $this->tramiteAdicionado->tipo_servicio == 'urgente'){
+
+                $this->modelo_editar->tipo_servicio = null;
+            }
+
+        }
+        elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
+
+            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No se pueden hacer trámites extra urgentes despues de las 12:00 hrs."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+            }
+
+            if($this->servicio['extra_urgente']  == 0){
+
+                $this->dispatch('mostrarMensaje', ['warning', "No hay servicio extra urgente para el servicio seleccionado."]);
+
+                $this->modelo_editar->tipo_servicio = null;
+
+                return;
+
+            }
+
+            $this->modelo_editar->monto = (int)$this->servicio['extra_urgente'] * (int)$this->modelo_editar->cantidad;
+
+        }
+
+        if($this->modelo_editar->solicitante == 'Oficialia de partes'){
+
+            $this->modelo_editar->monto = 0;
+
+        }
+
+        $this->updatedModeloEditarTipoTramite();
+
+    }
+
     public function updatedModeloEditarTomo(){
 
         $this->reset('antecedentes');
