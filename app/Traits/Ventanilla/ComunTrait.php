@@ -224,7 +224,12 @@ trait ComunTrait
 
                 $this->modelo_editar->cantidad = $this->tramiteAdicionado->cantidad;
 
-                $this->flags['cantidad'] = false;
+                if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
+
+                    $this->flags['cantidad'] = false;
+
+                }
+
                 $this->flags['tipo_servicio'] = true;
 
             }else{
