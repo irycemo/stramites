@@ -51,6 +51,16 @@ class DashboardController extends Controller
 
             return view('dashboard', compact('data', 'tramtiesEstado', 'tramtiesUruapan'));
 
+        }elseif(auth()->user()->ubicacion == 'Regional 4'){
+
+            $tramtiesUruapan = Tramite::selectRaw('estado, count(estado) count')
+            ->where('distrito', 2)
+            ->whereMonth('created_at', now()->month)
+            ->groupBy('estado')
+            ->get();
+
+            return view('dashboard', compact('tramtiesUruapan'));
+
         }
 
         return view('dashboard');
