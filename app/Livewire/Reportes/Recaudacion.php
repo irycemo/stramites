@@ -78,15 +78,16 @@ class Recaudacion extends Component
 
     public function tramites($ubicacion){
 
-        $tramites = Tramite::with('servicio:id,nombre,categoria_servicio_id', 'adicionadoPor:id,adiciona,id_servicio')
-                            ->select('id', 'id_servicio', 'adiciona', 'fecha_pago', 'tipo_servicio', 'monto', 'creado_por')
+        $tramites = Tramite::with('servicio:id,nombre')
+                            ->select('id', 'id_servicio',  'fecha_pago', 'tipo_servicio', 'monto', 'creado_por')
                             ->whereNotNull('fecha_pago')
                             ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                 return $q->where('id_servicio', $this->servicio_id);
                             })
                             ->when(isset($this->categoria) && $this->categoria != "", function($q){
                                 return $q->whereHas('servicio', function($q){
-                                    $q->select('id', 'nombre', 'categoria_servicio_id')->where('categoria_servicio_id', $this->categoria);
+                                    $q->select('id', 'categoria_servicio_id')
+                                        ->where('categoria_servicio_id', $this->categoria);
                                 });
                             })
                             ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
@@ -100,33 +101,6 @@ class Recaudacion extends Component
 
         $array2 = [];
 
-        $this->cantidadCopiasCertificadas = Tramite::whereHas('adicionadoPor', function ($q){
-                                                    $q->where('id_servicio', 2);
-                                                })
-                                                ->where('id_servicio', 1)
-                                                ->whereHas('creadoPor', function($q) use ($ubicacion){
-                                                    $q->where('ubicacion', $ubicacion);
-                                                })
-                                                ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
-                                                    return $q->where('tipo_servicio', $this->tipo_servicio);
-                                                })
-                                                ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
-                                                ->count();
-
-        $this->cantidadCopiasSimples = Tramite::whereHas('adicionadoPor', function ($q){
-                                                    $q->where('id_servicio', 6);
-                                                })
-                                                ->where('id_servicio', 1)
-                                                ->whereHas('creadoPor', function($q) use ($ubicacion){
-                                                    $q->where('ubicacion', $ubicacion);
-                                                })
-                                                ->when(isset($this->tipo_servicio) && $this->tipo_servicio != "", function($q){
-                                                    return $q->where('tipo_servicio', $this->tipo_servicio);
-                                                })
-                                                ->whereBetween('fecha_pago', [$this->fecha1, $this->fecha2])
-                                                ->count();
-
-
         foreach ($tramites as $tramite) {
 
             if(isset($array2[$tramite->servicio->nombre])) continue;
@@ -134,20 +108,6 @@ class Recaudacion extends Component
             $array2[$tramite->servicio->nombre]['monto'] = $tramites->where('servicio', $tramite->servicio)->sum('monto');
 
             $array2[$tramite->servicio->nombre]['cantidad'] = $tramites->where('servicio', $tramite->servicio)->count();
-
-        }
-
-        if($this->servicio_id != 1){
-
-            foreach ($array2 as $key => $item) {
-
-                if(str_contains($key, 'Copias simples'))
-                    $array2[$key]['monto'] = (float)$array2[$key]['monto'] - ($this->cantidadCopiasSimples * (float)Servicio::find(1)->ordinario);
-
-                if(str_contains($key, 'Copias certificadas'))
-                    $array2[$key]['monto'] = (float)$array2[$key]['monto'] - ($this->cantidadCopiasCertificadas * (float)Servicio::find(1)->ordinario);
-
-            }
 
         }
 
