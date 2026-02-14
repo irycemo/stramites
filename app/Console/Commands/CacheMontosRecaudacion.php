@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use App\Models\Tramite;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -32,7 +31,7 @@ class CacheMontosRecaudacion extends Command
         Cache::forget('graficaRecaudacion');
 
         $tramites = Tramite::selectRaw('year(created_at) year, monthname(created_at) month, count(*) data, sum(monto) sum')
-                                ->whereNotNull('fecha_pago')
+                                ->whereNotNull('documento_de_pago')
                                 ->groupBy('year', 'month')
                                 ->orderBy('year', 'asc')
                                 ->get();

@@ -248,8 +248,11 @@ class TramiteService{
 
         }else{
 
-            if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && !in_array($this->tramite->servicio->clave_ingreso, ['DL12', 'D110', 'DM67', 'D111']))
+            if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && !in_array($this->tramite->servicio->clave_ingreso, ['DL12', 'D110', 'DM67', 'D111'])){
+
                 (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+
+            }
 
         }
 

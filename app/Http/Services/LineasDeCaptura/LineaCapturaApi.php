@@ -50,7 +50,7 @@ class LineaCapturaApi
         if($this->tramite->numero_documento)
             $observaciones = $observaciones . " Número de documento: " . $this->tramite->numero_documento;
 
-        $observaciones = $observaciones . " Calificó: " . auth()->user()->name;
+        $observaciones = $observaciones . " Calificó: " . auth()->user()?->name;
 
         if($this->tramite->tipo_tramite == 'normal'){
 

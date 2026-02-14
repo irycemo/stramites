@@ -41,9 +41,9 @@ class Complemento extends Component
 
         }
 
-        if($this->tramite->estado != 'pagado'){
+        if(in_array($this->tramite->servicio->clave_ingreso, ['DL14', 'DL13'])){
 
-            $this->dispatch('mostrarMensaje', ['warning', "El trámite no esta pagado."]);
+            $this->dispatch('mostrarMensaje', ['warning', "Los complementos para copias se registran en el área de entrada."]);
 
             $this->tramite = null;
 
@@ -51,9 +51,9 @@ class Complemento extends Component
 
         }
 
-        if(in_array($this->tramite->servicio->clave_ingreso, ['DL14', 'DL13'])){
+        if(! $this->tramite->documento_de_pago){
 
-            $this->dispatch('mostrarMensaje', ['warning', "Los complementos para copias se registran en el área de entrada."]);
+            $this->dispatch('mostrarMensaje', ['warning', "El trámite no esta pagado."]);
 
             $this->tramite = null;
 
