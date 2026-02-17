@@ -157,7 +157,7 @@ class SistemaRppService{
                             ->accept('application/json')
                             ->asForm()
                             ->post(
-                                config('services.sistema_rpp.actualizar_movimiento_registral'),
+                                config('services.sistema_rpp.cambiar_tipo_servicio'),
                                 [
                                     'categoria_servicio' => $tramite->servicio->categoria->nombre,
                                     'tipo_servicio' => $tramite->tipo_servicio,
