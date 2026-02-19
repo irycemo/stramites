@@ -227,12 +227,16 @@ class Recepcion extends Component
 
         $data = (new SistemaRppService())->consultarFolioReal($this->tramite);
 
-        $this->tramite->folio_real = $data['data']['folio'];
-        $this->tramite->tomo = $data['data']['tomo'];
-        $this->tramite->registro = $data['data']['registro'];
-        $this->tramite->numero_propiedad = $data['data']['numero_propiedad'];
-        $this->tramite->distrito = $data['data']['distrito'];
-        $this->tramite->seccion = $data['data']['seccion'];
+        if(isset($data['data']['folio'])){
+
+            $this->tramite->folio_real = $data['data']['folio'];
+            $this->tramite->tomo = $data['data']['tomo'];
+            $this->tramite->registro = $data['data']['registro'];
+            $this->tramite->numero_propiedad = $data['data']['numero_propiedad'];
+            $this->tramite->distrito = $data['data']['distrito'];
+            $this->tramite->seccion = $data['data']['seccion'];
+
+        }
 
     }
 

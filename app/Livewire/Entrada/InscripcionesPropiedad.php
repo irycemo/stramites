@@ -256,12 +256,12 @@ class InscripcionesPropiedad extends Component
             if(
                 !in_array($this->servicio['clave_ingreso'], ['D157']) &&
                 (
-                    $this->modelo_editar->tomo &&
-                    $this->modelo_editar->registro &&
-                    $this->modelo_editar->numero_propiedad &&
-                    $this->modelo_editar->distrito &&
-                    $this->modelo_editar->seccion ||
-                    $this->modelo_editar->folio_real
+                    $this->modelo_editar->folio_real ||
+                    (
+                        $this->modelo_editar->tomo &&
+                        $this->modelo_editar->registro &&
+                        $this->modelo_editar->numero_propiedad
+                    )
                 )
 
             ){

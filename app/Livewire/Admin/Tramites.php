@@ -370,12 +370,16 @@ class Tramites extends Component
 
         $data = (new SistemaRppService())->consultarFolioReal($this->modelo_editar);
 
-        $this->modelo_editar->folio_real = $data['data']['folio'];
-        $this->modelo_editar->tomo = $data['data']['tomo'];
-        $this->modelo_editar->registro = $data['data']['registro'];
-        $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
-        $this->modelo_editar->distrito = $data['data']['distrito'];
-        $this->modelo_editar->seccion = $data['data']['seccion'];
+        if(isset($data['data']['folio'])){
+
+            $this->modelo_editar->folio_real = $data['data']['folio'];
+            $this->modelo_editar->tomo = $data['data']['tomo'];
+            $this->modelo_editar->registro = $data['data']['registro'];
+            $this->modelo_editar->numero_propiedad = $data['data']['numero_propiedad'];
+            $this->modelo_editar->distrito = $data['data']['distrito'];
+            $this->modelo_editar->seccion = $data['data']['seccion'];
+
+        }
 
     }
 
