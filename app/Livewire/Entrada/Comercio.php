@@ -24,6 +24,7 @@ class Comercio extends Component
         'dependencias' => false,
         'notarias' => false,
         'observaciones' => true,
+        'cantidad' => false,
     ];
 
     protected function rules(){
@@ -74,185 +75,13 @@ class Comercio extends Component
 
         $this->modelo_editar->monto = $this->servicio['ordinario'];
 
+        if($this->servicio['clave_ingreso'] == 'D147') $this->flags['cantidad'] = true;
+
     }
 
-    public function updatedModeloEditarSolicitante(){
-
-        $this->modelo_editar->nombre_solicitante = null;
-        $this->modelo_editar->nombre_notario = null;
-        $this->modelo_editar->numero_notaria = null;
-        $this->modelo_editar->tipo_tramite = 'normal';
-        $this->notaria = null;
-
-        $this->modelo_editar->tipo_tramite = 'normal';
+    public function updatedModeloEditarCantidad(){
 
         $this->updatedModeloEditarTipoServicio();
-
-        $this->flags['nombre_solicitante'] = false;
-        $this->flags['dependencias'] = false;
-        $this->flags['notarias'] = false;
-        $this->flags['numero_oficio'] = false;
-
-        if($this->modelo_editar->solicitante == 'Usuario'){
-
-            $this->flags['nombre_solicitante'] = true;
-
-        }elseif($this->modelo_editar->solicitante == 'Notaría'){
-
-            $this->flags['notarias'] = true;
-
-        }elseif($this->modelo_editar->solicitante == 'Oficialia de partes'){
-
-            if(!auth()->user()->hasRole(['Oficialia de partes', 'Administrador'])){
-
-                $this->dispatch('mostrarMensaje', ['error', "No tienes permisos para esta opción."]);
-
-                $this->modelo_editar->solicitante = null;
-
-                return;
-
-            }
-
-            $this->flags['dependencias'] = true;
-            $this->flags['numero_oficio'] = true;
-
-            $this->modelo_editar->monto = 0;
-            $this->modelo_editar->tipo_tramite = 'exento';
-
-        }elseif($this->modelo_editar->solicitante == "S.T.A.S.P.E."){
-
-            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
-            $this->modelo_editar->tipo_servicio = "extra_urgente";
-
-            $this->updatedModeloEditarTipoServicio();
-
-        }elseif($this->modelo_editar->solicitante == 'SAT'){
-
-            if(!auth()->user()->hasRole('Administrador')){
-
-                $this->dispatch('mostrarMensaje', ['error', "No tienes permisos para esta opción."]);
-
-                $this->modelo_editar->solicitante = null;
-
-                return;
-
-            }
-
-            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
-
-            $this->flags['numero_oficio'] = true;
-
-        }else{
-
-            $this->modelo_editar->nombre_solicitante = $this->modelo_editar->solicitante;
-
-        }
-
-
-    }
-
-    public function updatedModeloEditarTipoServicio(){
-
-        if($this->modelo_editar->id_servicio == ""){
-
-            $this->dispatch('mostrarMensaje', ['error', "Debe seleccionar un servicio."]);
-
-            $this->modelo_editar->tipo_servicio = null;
-
-            $this->modelo_editar->solicitante = null;
-
-            return;
-        }
-
-        if($this->modelo_editar->tipo_servicio == 'ordinario'){
-
-            if($this->servicio['ordinario'] == 0){
-
-                $this->dispatch('mostrarMensaje', ['error', "No hay servicio ordinario para el servicio seleccionado."]);
-
-                $this->modelo_editar->tipo_servicio = null;
-
-                return;
-
-            }
-
-            $this->modelo_editar->monto = $this->servicio['ordinario'] * $this->modelo_editar->cantidad;
-
-            if($this->modelo_editar->tipo_tramite == 'complemento'){
-
-                $this->modelo_editar->tipo_servicio = null;
-            }
-
-        }
-        elseif($this->modelo_editar->tipo_servicio == 'urgente'){
-
-            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
-
-                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites urgentes despues de las 13:00 hrs."]);
-
-                $this->modelo_editar->tipo_servicio = null;
-            }
-
-            if($this->servicio['urgente'] == 0){
-
-                $this->dispatch('mostrarMensaje', ['error', "No hay servicio urgente para el servicio seleccionado."]);
-
-                $this->modelo_editar->tipo_servicio = 'ordinario';
-
-                $this->modelo_editar->monto = $this->servicio['ordinario'];
-
-                return;
-
-            }
-
-            $this->modelo_editar->monto = $this->servicio['urgente'] * $this->modelo_editar->cantidad;
-
-            if($this->modelo_editar->tipo_tramite == 'complemento' && $this->tramiteAdicionado->tipo_servicio == 'urgente'){
-
-                $this->modelo_editar->tipo_servicio = null;
-            }
-
-        }
-        elseif($this->modelo_editar->tipo_servicio == 'extra_urgente'){
-
-            if(now() > now()->startOfDay()->addHour(17) && !auth()->user()->hasRole('Administrador')){
-
-                $this->dispatch('mostrarMensaje', ['error', "No se pueden hacer trámites extra urgentes despues de las 12:00 hrs."]);
-
-                $this->modelo_editar->tipo_servicio = null;
-            }
-
-            /* if(!$this->modelo_editar->folio_real){
-
-                $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente sin folio real."]);
-
-                $this->modelo_editar->tipo_servicio = null;
-
-                return;
-
-            } */
-
-            if($this->servicio['extra_urgente']  == 0){
-
-                $this->dispatch('mostrarMensaje', ['error', "No hay servicio extra urgente para el servicio seleccionado."]);
-
-                $this->modelo_editar->tipo_servicio = 'ordinario';
-
-                $this->modelo_editar->monto = $this->servicio['ordinario'];
-
-                return;
-
-            }
-
-            $this->modelo_editar->monto = $this->servicio['extra_urgente'] * $this->modelo_editar->cantidad;
-
-        }
-
-        if($this->modelo_editar->solicitante == 'Oficialia de partes'){
-
-            $this->modelo_editar->monto = 0;
-
-        }
 
     }
 

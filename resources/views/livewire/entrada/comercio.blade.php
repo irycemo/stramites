@@ -11,6 +11,8 @@
 
                     @include('livewire.entrada.comun.solicitante')
 
+                    @include('livewire.entrada.comun.cantidad')
+
                     @include('livewire.entrada.comun.observaciones')
 
                 </div>
