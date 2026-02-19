@@ -328,7 +328,11 @@ class Tramites extends Component
 
         try{
 
-            $this->consultarFolioReal();
+            if($this->modelo_editar->folio_real || ($this->modelo_editar->tomo && $this->modelo_editar->registro && $this->modelo_editar->numero_propiedad)){
+
+                $this->consultarFolioReal();
+
+            }
 
             if($this->modelo_editar->movimiento_registral)
 

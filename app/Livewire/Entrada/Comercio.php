@@ -48,7 +48,7 @@ class Comercio extends Component
             'tipo_tramite' => 'normal',
             'tipo_servicio' => 'ordinario',
             'foraneo' => false,
-            'seccion' => 'Comercio Inscripciones'
+            'seccion' => 'Comercio'
         ]);
 
     }
