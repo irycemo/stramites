@@ -190,7 +190,14 @@ class Recepcion extends Component
 
             DB::transaction(function (){
 
-                $this->tramite->update(['fecha_prelacion' => now()->toDateString()]);
+                if($this->tramite->folio_real || ($this->tramite->tomo && $this->tramite->registro && $this->tramite->numero_propiedad)){
+
+                    $this->consultarFolioReal();
+
+                }
+
+                $this->tramite->fecha_prelacion = now()->toDateString();
+                $this->tramite->save();
 
                 $this->tramite->audits()->latest()->first()->update(['tags' => 'Recibió documentación']);
 
@@ -213,6 +220,19 @@ class Recepcion extends Component
             $this->resetearTodo();
 
         }
+
+    }
+
+    public function consultarFolioReal(){
+
+        $data = (new SistemaRppService())->consultarFolioReal($this->tramite);
+
+        $this->tramite->folio_real = $data['data']['folio'];
+        $this->tramite->tomo = $data['data']['tomo'];
+        $this->tramite->registro = $data['data']['registro'];
+        $this->tramite->numero_propiedad = $data['data']['numero_propiedad'];
+        $this->tramite->distrito = $data['data']['distrito'];
+        $this->tramite->seccion = $data['data']['seccion'];
 
     }
 
