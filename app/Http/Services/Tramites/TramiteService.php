@@ -43,7 +43,9 @@ class TramiteService{
             $this->tramite->update([
                 'estado' => 'pagado',
                 'fecha_pago' => now(),
+                'fecha_entrega' => now(),
                 'fecha_prelacion' => now()->toDateString(),
+                'tipo_servicio' => 'extra_urgente'
             ]);
 
             if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && in_array($this->tramite->servicio->clave_ingreso, ['DL13', 'DL14', 'DL07', 'DL10'])){
