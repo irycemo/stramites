@@ -60,69 +60,47 @@
 
                     <x-table.row wire:loading.class.delaylongest="opacity-50" wire:key="row-{{ $notario->id }}">
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Número</span>
+                        <x-table.cell title="Número">
 
                             {{ $notario->numero }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Notario">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Notario</span>
-
-                            <p class="mt-2">{{ $notario->notario }}</p>
+                            {{ $notario->notario }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Emial">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Emial</span>
-
-                            <p class="mt-2">{{ $notario->email }}</p>
+                            {{ $notario->email }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">RFC</span>
+                        <x-table.cell title="RFC">
 
                             {{ $notario->rfc }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Registrado">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Registrado</span>
+                            <span class="font-semibold">@if($notario->creadoPor != null)Registrado por: {{$notario->creadoPor->name}} @else Registro: @endif</span> <br>
 
-                            <p class="mt-2">
-
-                                <span class="font-semibold">@if($notario->creadoPor != null)Registrado por: {{$notario->creadoPor->name}} @else Registro: @endif</span> <br>
-
-                                {{ $notario->created_at }}
-
-                            </p>
+                            {{ $notario->created_at }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Actualizado">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Actualizado</span>
+                            <span class="font-semibold">@if($notario->actualizadoPor != null)Actualizado por: {{$notario->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
 
-                            <p class="mt-2">
-
-                                <span class="font-semibold">@if($notario->actualizadoPor != null)Actualizado por: {{$notario->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
-
-                                {{ $notario->updated_at }}
-
-                            </p>
+                            {{ $notario->updated_at }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Acciones</span>
+                        <x-table.cell title="Acciones">
 
                             <div class="ml-3 relative" x-data="{ open_drop_down:false }">
 

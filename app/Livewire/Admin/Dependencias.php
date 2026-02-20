@@ -110,7 +110,8 @@ class Dependencias extends Component
     public function render()
     {
 
-        $dependencias = Dependencia::with('creadoPor', 'actualizadoPor')
+        $dependencias = Dependencia::select('id', 'nombre', 'creado_por', 'actualizado_por', 'created_at', 'updated_at')
+                                        ->with('creadoPor:id,name', 'actualizadoPor:id,name')
                                         ->where('nombre', 'like', '%'. $this->search . '%')
                                         ->orderBy($this->sort, $this->direction)
                                         ->paginate($this->pagination);

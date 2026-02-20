@@ -113,7 +113,8 @@ class Notarias extends Component
     public function render()
     {
 
-        $notarias = Notaria::with('creadoPor', 'actualizadoPor')
+        $notarias = Notaria::select('id', 'numero', 'notario', 'email', 'rfc', 'creado_por', 'actualizado_por', 'created_at', 'updated_at')
+                                ->with('creadoPor:id,name', 'actualizadoPor:id,name')
                                 ->where('numero', 'like', '%' . $this->search . '%')
                                 ->orWhere('notario', 'like', '%' . $this->search . '%')
                                 ->orWhere('email', 'like', '%' . $this->search . '%')

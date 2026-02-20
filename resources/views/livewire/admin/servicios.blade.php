@@ -82,25 +82,19 @@
 
                     <x-table.row wire:loading.class.delaylongest="opacity-50" wire:key="row-{{ $servicio->id }}">
 
-                        <x-table.cell>
+                        <x-table.cell title="Categoría">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Categoría</span>
-
-                            <p class="mt-2">{{ $servicio->categoria->nombre  }}</p>
+                            {{ $servicio->categoria->nombre  }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Nombre">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Nombre</span>
-
-                            <p class="mt-2">{{ $servicio->nombre }}</p>
+                            {{ $servicio->nombre }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Estado</span>
+                        <x-table.cell title="Estado">
 
                             @if($servicio->estado == 'activo')
 
@@ -114,75 +108,53 @@
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Tipo</span>
+                        <x-table.cell title="Tipo">
 
                             {{ $servicio->tipo }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden  absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Clave de ingreso</span>
+                        <x-table.cell title="Clave de ingreso">
 
                             {{ $servicio->clave_ingreso }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Ordinario</span>
+                        <x-table.cell title="Ordinario">
 
                             ${{ $servicio->ordinario }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Urgente</span>
+                        <x-table.cell title="Urgente">
 
                             {{ $servicio->urgente > 0 ? '$' . $servicio->urgente : 'N/A'}}
 
                         </x-table.cell>
 
-                        <x-table.cell>
-
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Extra urgente</span>
+                        <x-table.cell title="Extra urgente">
 
                             {{ $servicio->extra_urgente > 0 ? '$' . $servicio->extra_urgente : 'N/A'}}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Registrado">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Registrado</span>
+                            <span class="font-semibold">@if($servicio->creadoPor != null)Registrado por: {{$servicio->creadoPor->name}} @else Registro: @endif</span> <br>
 
-                            <p class="mt-2">
-
-                                <span class="font-semibold">@if($servicio->creadoPor != null)Registrado por: {{$servicio->creadoPor->name}} @else Registro: @endif</span> <br>
-
-                                {{ $servicio->created_at }}
-
-                            </p>
+                            {{ $servicio->created_at }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Actualizado">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Actualizado</span>
+                            <span class="font-semibold">@if($servicio->actualizadoPor != null)Actualizado por: {{$servicio->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
 
-                            <p class="mt-2">
-
-                                <span class="font-semibold">@if($servicio->actualizadoPor != null)Actualizado por: {{$servicio->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
-
-                                {{ $servicio->updated_at }}
-
-                            </p>
+                            {{ $servicio->updated_at }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Acciones">
 
                             <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Acciones</span>
 

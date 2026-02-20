@@ -57,39 +57,25 @@
 
                     <x-table.row wire:loading.class.delaylongest="opacity-50" wire:key="row-{{ $dependencia->id }}">
 
-                        <x-table.cell>
+                        <x-table.cell title="Nombre">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Nombre</span>
-
-                            <p class="mt-2">{{ $dependencia->nombre }}</p>
+                            {{ $dependencia->nombre }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Registrado">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Registrado</span>
+                            <span class="font-semibold">@if($dependencia->creadoPor != null)Registrado por: {{$dependencia->creadoPor->name}} @else Registro: @endif</span> <br>
 
-                            <p class="mt-2">
-
-                                <span class="font-semibold">@if($dependencia->creadoPor != null)Registrado por: {{$dependencia->creadoPor->name}} @else Registro: @endif</span> <br>
-
-                                {{ $dependencia->created_at }}
-
-                            </p>
+                            {{ $dependencia->created_at }}
 
                         </x-table.cell>
 
-                        <x-table.cell>
+                        <x-table.cell title="Actualizado">
 
-                            <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 text-[10px] text-white font-bold uppercase rounded-br-xl">Actualizado</span>
+                            <span class="font-semibold">@if($dependencia->actualizadoPor != null)Actualizado por: {{$dependencia->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
 
-                            <p class="mt-2">
-
-                                <span class="font-semibold">@if($dependencia->actualizadoPor != null)Actualizado por: {{$dependencia->actualizadoPor->name}} @else Actualizado: @endif</span> <br>
-
-                                {{ $dependencia->updated_at }}
-
-                            </p>
+                            {{ $dependencia->updated_at }}
 
                         </x-table.cell>
 
