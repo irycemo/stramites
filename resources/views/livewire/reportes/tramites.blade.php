@@ -240,9 +240,9 @@
 
     @if(count($tramites))
 
-        <div class="rounded-lg shadow-xl mb-5 p-4 font-thin md:flex items-center justify-between bg-white">
+        <div class="rounded-lg shadow-xl mb-5 p-4 font-thin md:flex md:items-center md:justify-between bg-white space-y-2 md:space-y-0">
 
-            <p class="text-xl font-extralight">Se encontraron: {{ number_format($tramites->total()) }} registros con los filtros seleccionados.</p>
+            <p class="font-extralight">Se encontraron: {{ number_format($tramites->total()) }} registros con los filtros seleccionados.</p>
 
             @livewire('reportes.descarga')
 
@@ -289,33 +289,25 @@
 
                         <x-table.row wire:key="row-{{ $usuario->id }}">
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de control</span>
+                            <x-table.cell title="Número de control">
 
                                 {{ $tramite->año }}-{{ $tramite->numero_control }}-{{ $tramite->usuario }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Estado</span>
+                            <x-table.cell title="Estado">
 
                                 <span class="bg-{{ $tramite->estado_color }} py-1 px-2 rounded-full text-white text-xs">{{ ucfirst($tramite->estado) }}</span>
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Servicio</span>
+                            <x-table.cell title="Servicio">
 
                                 {{ $tramite->servicio->nombre }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Solicitante</span>
+                            <x-table.cell title="Solicitante">
 
                                 {{ $tramite->solicitante }}
 
@@ -323,169 +315,127 @@
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Folio Real</span>
+                            <x-table.cell title="Folio Real">
 
                                 {{ $tramite->folio_real ? $tramite->folio_real : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Tomo / Bis</span>
+                            <x-table.cell title="Tomo">
 
                                 {{ $tramite->tomo ? $tramite->tomo : 'N/A' }} {{ $tramite->tomo_bis ? '/ Bis' : ''}}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registro / Bis</span>
+                            <x-table.cell title="Registro">
 
                                 {{ $tramite->registro ? $tramite->registro : 'N/A' }} {{ $tramite->registro_bis ? '/ Bis' : ''}}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Monto</span>
+                            <x-table.cell title="Monto">
 
                                 ${{ number_format($tramite->monto, 2) }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Tipo de servicio</span>
+                            <x-table.cell title="Tipo de servicio">
 
                                 {{ $tramite->tipo_servicio }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de oficio</span>
+                            <x-table.cell title="Número de oficio">
 
                                 {{ $tramite->numero_oficio ? $tramite->numero_oficio : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Tomo gravamen</span>
+                            <x-table.cell title="Tomo gravamen">
 
                                 {{ $tramite->tomo_gravamen ? $tramite->tomo_gravamen : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registro gravamen</span>
+                            <x-table.cell title="Registro gravamen">
 
                                 {{ $tramite->registro_gravamen ? $tramite->registro_gravamen : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Distrito</span>
+                            <x-table.cell title="Distrito">
 
                                 {{ $tramite->distrito }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Sección</span>
+                            <x-table.cell title="Sección">
 
                                 {{ $tramite->seccion }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Cantidad</span>
+                            <x-table.cell title="Cantidad">
 
                                 {{ $tramite->cantidad ?? 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de inmuebles</span>
+                            <x-table.cell title="Número de inmuebles">
 
                                 {{ $tramite->numero_inmuebles ? $tramite->numero_inmuebles : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Número de escritura</span>
+                            <x-table.cell title="Número de escritura">
 
                                 {{ $tramite->numero_escritura ? $tramite->numero_escritura : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Notaria</span>
+                            <x-table.cell title="Notaria">
 
                                 {{ $tramite->numero_notaria ? $tramite->numero_notaria . ' - ' . $tramite->nombre_notario : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Valor de la propiedad</span>
+                            <x-table.cell title="Valor de la propiedad">
 
                                 {{ $tramite->valor_propiedad ? $tramite->valor_propiedad : 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Fecha de entrega</span>
+                            <x-table.cell title="Fecha de entrega">
 
                                 {{ $tramite->fecha_entrega?->format('d-m-Y') }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Fecha de pago</span>
+                            <x-table.cell  title="Fecha de pago">
 
                                 {{ $tramite->fecha_pago?->format('d-m-Y') }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Documento de pago</span>
+                            <x-table.cell title="Documento de pago">
 
                                 {{ $tramite->documento_de_pago ?? 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Línea de captura</span>
+                            <x-table.cell title="Línea de captura">
 
                                 {{ $tramite->linea_de_captura ?? 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Movimeinto registral</span>
+                            <x-table.cell title="Movimeinto registral">
 
                                 {{ $tramite->movimiento_registral ?? 'N/A' }}
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Registrado</span>
+                            <x-table.cell title="Registrado">
 
                                 @if($tramite->creadoPor != null)
 
@@ -497,9 +447,7 @@
 
                             </x-table.cell>
 
-                            <x-table.cell>
-
-                                <span class="lg:hidden absolute top-0 left-0 bg-blue-300 px-2 py-1 text-xs text-white font-bold uppercase rounded-br-xl">Actualizado</span>
+                            <x-table.cell title="Actualizado">
 
                                 @if($tramite->actualizadoPor != null)
 
