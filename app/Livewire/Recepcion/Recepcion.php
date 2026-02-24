@@ -148,7 +148,7 @@ class Recepcion extends Component
 
                     }else{
 
-                        $pdf = $this->documento->store('/', 'documento_entrada');
+                        $pdf = $this->documento->store('/', 'tramites');
 
                     }
 
