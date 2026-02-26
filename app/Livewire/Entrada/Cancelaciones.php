@@ -162,7 +162,7 @@ class Cancelaciones extends Component
 
             }
 
-            if(!empty($this->modelo_editar->folio_real)) $this->consultarGravamen();
+            if(! empty($this->modelo_editar->folio_real)) $this->consultarGravamen();
 
             DB::transaction(function (){
 

@@ -70,6 +70,10 @@ class TramiteService{
 
             (new SistemaRppService())->actualizarSistemaRpp($this->tramite);
 
+        }else{
+
+            (new SistemaRppService())->insertarSistemaRpp($this->tramite);
+
         }
 
     }
