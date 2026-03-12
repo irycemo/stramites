@@ -75,7 +75,6 @@ class InscripcionesPropiedad extends Component
             'modelo_editar.numero_inmuebles' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], $this->numero_inmuebles)),
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.folio_real' => 'nullable',
-            'modelo_editar.numero_inmuebles' => 'nullable',
             'modelo_editar.foraneo' => 'required',
             'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
@@ -159,7 +158,6 @@ class InscripcionesPropiedad extends Component
         }else{
 
             $this->reset('flags');
-            $this->flags['cantidad'] = false;
             $this->flags['solicitante'] = false;
             $this->flags['distrito'] = false;
             $this->flags['seccion'] = false;

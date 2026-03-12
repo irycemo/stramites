@@ -24,6 +24,12 @@
 
         <div class="rounded-lg bg-gray-100 py-1 px-2">
 
+            <p><strong>Tipo de trámite:</strong> {{ Str::ucfirst($modelo_editar->tipo_tramite) }}</p>
+
+        </div>
+
+        <div class="rounded-lg bg-gray-100 py-1 px-2">
+
             <p><strong>Solicitante:</strong>{{ $modelo_editar->solicitante }} / {{ $modelo_editar->nombre_solicitante }}</p>
 
         </div>
