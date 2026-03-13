@@ -12,7 +12,6 @@ use App\Http\Resources\TramiteResource;
 use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
 use App\Http\Services\Tramites\TramiteService;
-use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 use App\Exceptions\GeneralException;
 
 class TramitesApiController extends Controller
@@ -26,7 +25,7 @@ class TramitesApiController extends Controller
                                 ->where('usuario', 67)
                                 ->where('usuario_tramites_linea_id', $validated['entidad'])
                                 ->when(isset($validated['año']), fn($q) => $q->where('año', $validated['año']))
-                                ->when(isset($validated['folio']), fn($q) => $q->where('folio', $validated['folio']))
+                                ->when(isset($validated['folio']), fn($q) => $q->where('numero_control', $validated['folio']))
                                 ->when(isset($validated['estado']), fn($q) => $q->where('estado', $validated['estado']))
                                 ->when(isset($validated['tipo_servicio']), fn($q) => $q->where('tipo_servicio', $validated['tipo_servicio']))
                                 ->when(isset($validated['servicio']), fn($q) => $q->where('id_servicio', $validated['servicio']))
