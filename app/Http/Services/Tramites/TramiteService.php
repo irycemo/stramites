@@ -140,11 +140,11 @@ class TramiteService{
 
         if($this->tramite->servicio->categoria->nombre == 'Certificaciones'){
 
-            $dias = 5;
+            $dias = 10;
 
         }else{
 
-            $dias = 10;
+            $dias = 15;
 
         }
 
