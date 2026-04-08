@@ -452,7 +452,7 @@ class SistemaRppService{
                             ->accept('application/json')
                             ->asForm()
                             ->post(
-                                config('services.sistema_rpp.consultar_primer_aviso_preventivo'),
+                                config('services.sistema_rpp.consultar_segundo_aviso_preventivo'),
                                 [
                                     'folio_real' => $tramite->folio_real,
                                     'folio' => $tramite->asiento_registral

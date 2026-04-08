@@ -44,6 +44,7 @@ return [
         'consultar_folio_movimiento' => env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_MOVIMIENTO'),
         'consultar_antecedentes' => env('SISTEMA_RPP_SERVICE_CONSULTAR_ANTECEDENTES'),
         'consultar_primer_aviso_preventivo' => env('SISTEMA_RPP_SERVICE_CONSULTAR_PRIMER_AVISO'),
+        'consultar_segundo_aviso_preventivo' => env('SISTEMA_RPP_SERVICE_CONSULTAR_SEGUNDO_AVISO'),
     ]
 
 ];
