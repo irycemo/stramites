@@ -494,6 +494,8 @@ class Certificaciones extends Component
             if(in_array($this->tramiteAdicionado->servicio->clave_ingreso, ['DL13', 'DL14'])){
 
                 $this->modelo_editar->movimiento_registral = $this->tramiteAdicionado->movimiento_registral;
+                $this->modelo_editar->folio_real = $this->tramiteAdicionado->folio_real;
+                $this->modelo_editar->asiento_registral = $this->tramiteAdicionado->asiento_registral;
 
             }
 
