@@ -509,6 +509,8 @@ class Certificaciones extends Component
 
         $this->flags['tipo_servicio'] = true;
 
+        $this->flags['cantidad'] = false;
+
         $this->modelo_editar->adiciona = $this->tramiteAdicionado->id;
 
         /* $this->updatedModeloEditarTipoServicio(); */
