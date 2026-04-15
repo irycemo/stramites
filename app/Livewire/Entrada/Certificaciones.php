@@ -501,15 +501,13 @@ class Certificaciones extends Component
 
             if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
 
+            $this->flags['tipo_servicio'] = true;
+
+            $this->flags['cantidad'] = false;
+
         }
 
-        $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
-
         $this->modelo_editar->tipo_tramite = 'complemento';
-
-        $this->flags['tipo_servicio'] = true;
-
-        $this->flags['cantidad'] = false;
 
         $this->modelo_editar->adiciona = $this->tramiteAdicionado->id;
 
