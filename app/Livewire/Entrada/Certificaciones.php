@@ -503,6 +503,8 @@ class Certificaciones extends Component
 
         }
 
+        $this->modelo_editar->tipo_servicio = $this->tramiteAdicionado->tipo_servicio;
+
         $this->modelo_editar->tipo_tramite = 'complemento';
 
         $this->modelo_editar->adiciona = $this->tramiteAdicionado->id;
