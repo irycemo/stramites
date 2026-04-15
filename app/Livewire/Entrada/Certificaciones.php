@@ -509,7 +509,7 @@ class Certificaciones extends Component
 
         $this->modelo_editar->adiciona = $this->tramiteAdicionado->id;
 
-        $this->updatedModeloEditarTipoServicio();
+        /* $this->updatedModeloEditarTipoServicio(); */
     }
 
     public function mount(){
