@@ -396,6 +396,7 @@ class Certificaciones extends Component
         $this->flags['tomo'] = true;
         $this->flags['registro'] = true;
         $this->flags['distrito'] = true;
+        $this->flags['seccion'] = true;
         $this->flags['observaciones'] = true;
 
         if($this->modelo_editar->solicitante == 'Oficialia de partes') $this->flags['numero_oficio'] = true;
