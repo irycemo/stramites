@@ -10,6 +10,16 @@ class SistemaRppService{
 
     public function insertarSistemaRpp($tramite){
 
+        if($tramite->servicio->nombre == 'Inscripción de fideicomiso'){
+
+            $categoria = 'Fideicomisos';
+
+        }else{
+
+            $categoria = $tramite->servicio->categoria->nombre;
+
+        }
+
         $response = Http::withToken(config('services.sistema_rpp.token'))
                             ->accept('application/json')
                             ->asForm()
@@ -29,7 +39,7 @@ class SistemaRppService{
                                     'distrito' => $tramite->distrito,
                                     'fecha_entrega' => $tramite->fecha_entrega->toDateString(),
                                     'fecha_pago' => $tramite->fecha_pago?->toDateString(),
-                                    'categoria_servicio' => $tramite->servicio->categoria->nombre,
+                                    'categoria_servicio' => $categoria,
                                     'servicio' => $tramite->servicio->clave_ingreso,
                                     'servicio_nombre' => $tramite->servicio->nombre,
                                     'numero_oficio' => $tramite->numero_oficio,
