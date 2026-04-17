@@ -26,7 +26,11 @@ class TramiteRequest extends FormRequest
             'tramite' => 'required',
             'usuario' => 'required',
             'observaciones' => 'nullable',
-            'estado' => 'required'
+            'estado' => 'required',
+            'folio_real' => 'nullable',
+            'tomo' => 'nullable',
+            'registro' => 'nullable',
+            'numero_propiedad' => 'nullable',
         ];
     }
 }
