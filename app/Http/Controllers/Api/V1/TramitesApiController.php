@@ -213,7 +213,7 @@ class TramitesApiController extends Controller
             }
 
             $tramite->update([
-                        'folio_real' => $data['folio_real'],
+                        'folio_real' => $data['folio_real'] ?? null,
                         'tomo' => $data['tomo'] ?? null,
                         'registro' => $data['registro'] ?? null,
                         'numero_propiedad' => $data['numero_propiedad'] ?? null,
