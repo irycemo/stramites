@@ -1094,19 +1094,15 @@
 
                 @endif
 
-                @if($modelo_editar->estado == 'nuevo')
+                <x-button-gray
+                    wire:click="reimprimir"
+                    wire:loading.attr="disabled"
+                    wire:target="reimprimir">
 
-                    <x-button-gray
-                        wire:click="reimprimir"
-                        wire:loading.attr="disabled"
-                        wire:target="reimprimir">
+                    <img wire:loading wire:target="reimprimir" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
 
-                        <img wire:loading wire:target="reimprimir" class="mx-auto h-4 mr-1" src="{{ asset('storage/img/loading3.svg') }}" alt="Loading">
-
-                        <span>Imprimir recibo</span>
-                    </x-button-gray>
-
-                @endif
+                    <span>Imprimir recibo</span>
+                </x-button-gray>
 
                 <x-button-red
                     wire:click="resetearTodo"
