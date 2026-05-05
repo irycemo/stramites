@@ -29,7 +29,8 @@ class Constantes{
         'OFICIO',
         'TÍTULO DE PROPIEDAD',
         'RESOLUCIÓN JUDICIAL',
-        'CONTRATO'
+        'CONTRATO',
+        'DECRETO'
     ];
 
     const AREAS_ADSCRIPCION = [
