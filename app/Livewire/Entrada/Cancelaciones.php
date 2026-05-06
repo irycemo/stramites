@@ -71,11 +71,11 @@ class Cancelaciones extends Component
             'modelo_editar.foraneo' => 'required',
             'modelo_editar.tomo_gravamen' => Rule::requiredIf(
                 $this->servicio['nombre'] != 'Cancelación de reserva de dominio' && $this->modelo_editar->asiento_registral == null ||
-                $this->servicio['nombre'] == 'Cancelación de reserva de dominio' && $this->modelo_editar->folio_real
+                $this->servicio['nombre'] == 'Cancelación de reserva de dominio' && !$this->modelo_editar->folio_real
             ),
             'modelo_editar.registro_gravamen' => Rule::requiredIf(
                 $this->servicio['nombre'] != 'Cancelación de reserva de dominio' && $this->modelo_editar->asiento_registral == null ||
-                $this->servicio['nombre'] == 'Cancelación de reserva de dominio' && $this->modelo_editar->folio_real
+                $this->servicio['nombre'] == 'Cancelación de reserva de dominio' && !$this->modelo_editar->folio_real
             ),
             'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
