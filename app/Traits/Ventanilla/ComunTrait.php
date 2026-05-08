@@ -601,6 +601,9 @@ trait ComunTrait
 
         $data = (new SistemaRppService)->consultarFolioRealPersonaMoral($this->modelo_editar);
 
+        /* Response 204 Folio real no existe */
+        if(! isset($data['data']['distrito'])) return;
+
         if(auth()->user()->ubicacion == 'Regional 4' && $data['data']['distrito'] != 2){
 
             throw new GeneralException('EL folio no es del distrito 2');
