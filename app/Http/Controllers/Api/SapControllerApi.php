@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Tramite;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -15,13 +14,15 @@ class SapControllerApi extends Controller
 
     public function __invoke(SapActualizarPagoRequest $request){
 
+        $validated = $request->validated();
+
         try {
 
-            DB::transaction(function () use($request){
+            DB::transaction(function () use($validated){
 
-                $tramite = Tramite::where('linea_de_captura', $request->linea_de_captura)->firstOrFail();
+                $tramite = Tramite::where('linea_de_captura', $validated['linea_de_captura'])->firstOrFail();
 
-                (new TramiteService($tramite))->procesarPago($request->fecha, $request->documento_pago);
+                (new TramiteService($tramite))->procesarPago($validated['fecha'], $validated['documento_pago']);
 
                 return response()->json([
                     'result' => 'success',

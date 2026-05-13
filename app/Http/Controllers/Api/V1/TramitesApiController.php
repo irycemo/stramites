@@ -140,10 +140,10 @@ class TramitesApiController extends Controller
 
         } catch (GeneralException $ex) {
 
-            Log::error("Error al crear trámite mediante api " . $ex);
+            Log::info("Error al crear trámite mediante api " . $ex);
 
             return response()->json([
-                'error' => $ex->getMessage(),
+                'result' => 'error',
             ], 500);
 
         } catch (\Throwable $th) {
