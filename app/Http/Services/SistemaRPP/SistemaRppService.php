@@ -268,6 +268,43 @@ class SistemaRppService{
 
     }
 
+    public function consultarGravamenReestructura(int $folio_real, int $movimiento_registral, $tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_gravamen_reestructura'),
+                                [
+                                    'folio_real' => $folio_real,
+                                    'movimiento_registral' => $movimiento_registral,
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al consultar gravamen en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al consultar gravamen trámite en Sistema RPP.");
+
+        }else{
+
+            $data = json_decode($response, true);
+
+            return $data;
+
+        }
+
+    }
+
     public function consultarFolioReal($tramite){
 
         $response = Http::withToken(config('services.sistema_rpp.token'))

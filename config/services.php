@@ -39,6 +39,7 @@ return [
         'cambiar_tipo_servicio' => env('SISTEMA_RPP_SERVICE_UPDATE_SERVICE'),
         'actualizar_paginas' => env('SISTEMA_RPP_SERVICE_UPDATE_PAGES'),
         'consultar_gravamen' => env('SISTEMA_RPP_SERVICE_CONSULTAR_GRAVAMEN'),
+        'consultar_gravamen_reestructura' => env('SISTEMA_RPP_SERVICE_CONSULTAR_GRAVAMEN_REESTRUCTURA'),
         'consultar_folio_real' => env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL'),
         'consultar_folio_real_peresona_moral' => env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_REAL_PERSONA_MORAL'),
         'consultar_folio_movimiento' => env('SISTEMA_RPP_SERVICE_CONSULTAR_FOLIO_MOVIMIENTO'),

@@ -199,8 +199,6 @@ class TramitesApiController extends Controller
 
             $data = $request->validated();
 
-            info($data);
-
             $tramite = Tramite::where('año', $data['año'])->where('numero_control', $data['tramite'])->where('usuario', $data['usuario'])->first();
 
             if(!$tramite){

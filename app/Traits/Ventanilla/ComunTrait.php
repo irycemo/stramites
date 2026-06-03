@@ -52,6 +52,9 @@ trait ComunTrait
 
     public $matriz;
 
+    public $folio_real_extra;
+    public $asiento_registral_extra;
+
     protected $messages = [
         'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
         'modelo_editar.nombre_solicitante' => 'El nombre del solicitante es obligatorio',

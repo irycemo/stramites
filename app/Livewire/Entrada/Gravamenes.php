@@ -2,17 +2,18 @@
 
 namespace App\Livewire\Entrada;
 
-use App\Models\Notaria;
-use App\Models\Tramite;
-use Livewire\Component;
-use App\Models\Dependencia;
 use App\Constantes\Constantes;
 use App\Exceptions\GeneralException;
-use Illuminate\Validation\Rule;
+use App\Http\Services\SistemaRPP\SistemaRppService;
+use App\Http\Services\Tramites\TramiteService;
+use App\Models\Dependencia;
+use App\Models\Notaria;
+use App\Models\Tramite;
+use App\Traits\Ventanilla\ComunTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Services\Tramites\TramiteService;
-use App\Traits\Ventanilla\ComunTrait;
+use Illuminate\Validation\Rule;
+use Livewire\Component;
 
 class Gravamenes extends Component
 {
@@ -35,7 +36,9 @@ class Gravamenes extends Component
         'numero_inmuebles' => false,
         'numero_oficio' => false,
         'antecedente_gravamen' => false,
-        'tramite_foraneo' => false
+        'tramite_foraneo' => false,
+        'folio_real' => false,
+        'movimiento_registral' => false
     ];
 
     protected function rules(){
@@ -69,6 +72,8 @@ class Gravamenes extends Component
             'modelo_editar.numero_inmuebles' => 'nullable',
             'modelo_editar.asiento_registral' => 'nullable',
             'modelo_editar.foraneo' => 'required',
+            'folio_real_extra' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'D153'),
+            'asiento_registral_extra' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'D153'),
             'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
@@ -109,6 +114,13 @@ class Gravamenes extends Component
 
         $this->modelo_editar->monto = $this->servicio['ordinario'];
 
+        if($this->servicio['clave_ingreso'] == 'D153'){
+
+            $this->flags['folio_real'] = true;
+            $this->flags['movimiento_registral'] = true;
+
+        }
+
     }
 
     public function crear(){
@@ -120,6 +132,14 @@ class Gravamenes extends Component
             if($this->flags['tramite_foraneo']) $this->buscarforaneo();
 
             $this->consultarFolioReal();
+
+            if($this->servicio['clave_ingreso'] == 'D153'){
+
+                $data = (new SistemaRppService)->consultarGravamenReestructura($this->folio_real_extra, $this->asiento_registral_extra, $this->modelo_editar);
+
+                $this->modelo_editar->asiento_registral = $data['data']['movimiento_registral_id'];
+
+            }
 
             DB::transaction(function (){
 
@@ -253,4 +273,5 @@ class Gravamenes extends Component
     {
         return view('livewire.entrada.gravamenes');
     }
+
 }
