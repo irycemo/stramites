@@ -443,7 +443,7 @@ trait ComunTrait
         if($this->tramite_foraneo->servicio->clave_ingreso != 'DL28')
             throw new GeneralException('El trámite foraneo no valido.');
 
-        if($this->tramite_foraneo->adicionadoPor->count() >= 5)
+        if($this->tramite_foraneo->adicionadoPor->count() >= 99)
             throw new GeneralException("El trámite de notario foraneo tiene 5 tramites adicionados.");
 
         $this->modelo_editar->adiciona = $this->tramite_foraneo->id;
