@@ -122,6 +122,7 @@ class Cancelaciones extends Component
         $this->modelo_editar->asiento_registral = null;
         $this->modelo_editar->tomo_gravamen = null;
         $this->modelo_editar->registro_gravamen = null;
+        $this->modelo_editar->numero_propiedad = null;
 
     }
 
