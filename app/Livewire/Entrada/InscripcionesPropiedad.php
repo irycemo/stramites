@@ -226,13 +226,13 @@ class InscripcionesPropiedad extends Component
 
     public function updatedModeloEditarValorPropiedad(){
 
-        if($this->servicio['clave_ingreso'] == 'D115' && $this->modelo_editar->valor_propiedad > 1031838){
+        if($this->servicio['clave_ingreso'] == 'D115' && $this->modelo_editar->valor_propiedad > 1069866){
 
             $this->modelo_editar->valor_propiedad = 0;
 
             $this->dispatch('mostrarMensaje', ['error', 'Verificar el valor de propiedad.']);
 
-        }elseif($this->servicio['clave_ingreso'] == 'D116' && $this->modelo_editar->valor_propiedad < 1031838){
+        }elseif($this->servicio['clave_ingreso'] == 'D116' && $this->modelo_editar->valor_propiedad < 1069866){
 
             $this->modelo_editar->valor_propiedad = 0;
 
