@@ -36,9 +36,9 @@
 
         @if($modelo_editar->autoridad_cargo == 'NOTARIO')
 
-            <x-input-group for="modelo_editar.nombre_autoridad" label="Nombre de la autoridad" :error="$errors->first('modelo_editar.nombre_autoridad')" class="w-full">
+            <x-input-group for="notaria_2" label="Nombre de la autoridad" :error="$errors->first('notaria_2')" class="w-full">
 
-                <x-input-select id="modelo_editar.nombre_autoridad" wire:model="modelo_editar.nombre_autoridad" class="w-full">
+                <x-input-select id="notaria_2" wire:model.lazy="notaria_2" class="w-full">
 
                     <option value="">Seleccione una opción</option>
                     @foreach ($notarias as $item_notaria)

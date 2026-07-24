@@ -44,7 +44,6 @@ class PersonaMoral extends Component
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
             'modelo_editar.tipo_servicio' => 'required',
-            'modelo_editar.distrito' => Rule::requiredIf($this->servicio['nombre'] == 'Acta constitutiva'),
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',

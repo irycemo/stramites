@@ -40,6 +40,7 @@ trait ComunTrait
     public $dependencias;
     public $notarias;
     public $notaria;
+    public $notaria_2;
     public $documentos_entrada;
     public $cargos_autoridad;
 
@@ -472,9 +473,9 @@ trait ComunTrait
 
     }
 
-    public function updatedModeloEditarNombreAutoridad(){
+    public function updatedNotaria2(){
 
-        if($this->notaria == ""){
+        if($this->notaria_2 == ""){
 
             $this->reset(['notaria']);
 
@@ -485,7 +486,7 @@ trait ComunTrait
 
         }
 
-        $notaria = json_decode($this->notaria);
+        $notaria = json_decode($this->notaria_2);
 
         $this->modelo_editar->numero_autoridad = $notaria->numero;
         $this->modelo_editar->nombre_autoridad = $notaria->notario;
