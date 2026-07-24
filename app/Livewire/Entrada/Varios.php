@@ -60,12 +60,14 @@ class Varios extends Component
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
             'modelo_editar.tipo_tramite' => 'required',
+            'modelo_editar.numero_notaria' => 'nullable',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.asiento_registral' => ['nullable', Rule::requiredIf(in_array($this->servicio['nombre'], ['Cancelación de primer aviso preventivo', 'Cancelación de segundo aviso preventivo']))],
             'modelo_editar.folio_real' => ['nullable', Rule::requiredIf(in_array($this->servicio['nombre'], ['Cancelación de primer aviso preventivo']))],
             'modelo_editar.numero_propiedad' => ['nullable', Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['D157', 'DL28'])), 'min:1'],
             'modelo_editar.procedencia' => 'nullable',
+            'modelo_editar.numero_autoridad' => 'nullable',
             'modelo_editar.fecha_emision' => [
                                                 Rule::requiredIf(!in_array($this->servicio['clave_ingreso'], ['DL19', 'D112', 'DL28'])),
                                                 'nullable',
@@ -137,6 +139,13 @@ class Varios extends Component
         }
 
         if($borrado) $this->crearModeloVacio();
+
+        if(in_array($this->servicio['nombre'], ['Inscripciones varios sin afectación de propiedad'])){
+
+            $this->modelo_editar->distrito = 1;
+            $this->modelo_editar->seccion = 'Varios';
+
+        }
 
         $this->modelo_editar->id_servicio = $this->servicio['id'];
 
@@ -329,4 +338,5 @@ class Varios extends Component
     {
         return view('livewire.entrada.varios');
     }
+
 }

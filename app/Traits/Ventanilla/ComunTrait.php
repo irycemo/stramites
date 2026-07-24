@@ -472,6 +472,26 @@ trait ComunTrait
 
     }
 
+    public function updatedModeloEditarNombreAutoridad(){
+
+        if($this->notaria == ""){
+
+            $this->reset(['notaria']);
+
+            $this->modelo_editar->nombre_autoridad = null;
+            $this->modelo_editar->numero_autoridad = null;
+
+            return;
+
+        }
+
+        $notaria = json_decode($this->notaria);
+
+        $this->modelo_editar->numero_autoridad = $notaria->numero;
+        $this->modelo_editar->nombre_autoridad = $notaria->notario;
+
+    }
+
     public function actualizar(){
 
         $this->validate();

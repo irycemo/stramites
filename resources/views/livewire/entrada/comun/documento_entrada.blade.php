@@ -41,9 +41,9 @@
                 <x-input-select id="modelo_editar.nombre_autoridad" wire:model="modelo_editar.nombre_autoridad" class="w-full">
 
                     <option value="">Seleccione una opción</option>
-                    @foreach ($notarias as $notario)
+                    @foreach ($notarias as $item_notaria)
 
-                        <option value="{{ $notario->numero . '-' . $notario->notario }}">{{ $notario->numero . '-' . $notario->notario }}</option>
+                        <option value="{{ $item_notaria }}">{{ $item_notaria->numero }} - {{ $item_notaria->notario }}</option>
 
                     @endforeach
 

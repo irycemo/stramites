@@ -46,6 +46,8 @@ class Subdivisiones extends Component
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.observaciones' => 'nullable',
+            'modelo_editar.numero_notaria' => 'nullable',
+            'modelo_editar.numero_autoridad' => 'nullable',
             'modelo_editar.folio_real' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
             'modelo_editar.monto' => 'nullable',

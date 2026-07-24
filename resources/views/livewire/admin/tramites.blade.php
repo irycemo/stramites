@@ -976,6 +976,16 @@
 
                         @endif
 
+                        @if ($modelo_editar->numero_autoridad)
+
+                            <div class="rounded-lg bg-gray-100 py-1 px-2">
+
+                                <p><strong>Número autoridad:</strong> {{ $modelo_editar->numero_autoridad }}</p>
+
+                            </div>
+
+                        @endif
+
                         @if ($modelo_editar->numero_documento)
 
                             <div class="rounded-lg bg-gray-100 py-1 px-2">

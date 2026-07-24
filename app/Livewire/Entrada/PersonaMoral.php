@@ -50,6 +50,8 @@ class PersonaMoral extends Component
             'modelo_editar.observaciones' => 'nullable',
             'modelo_editar.folio_real_persona_moral' => 'nullable',
             'modelo_editar.procedencia' => 'nullable',
+            'modelo_editar.numero_notaria' => 'nullable',
+            'modelo_editar.numero_autoridad' => 'nullable',
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.fecha_emision' => [
                                                 'nullable',

@@ -47,6 +47,7 @@ class Certificaciones extends Component
         return [
             'servicio' => 'required',
             'modelo_editar.id_servicio' => 'required',
+            'modelo_editar.numero_autoridad' => 'nullable',
             'modelo_editar.solicitante' => 'required',
             'modelo_editar.nombre_solicitante' => 'required',
             'modelo_editar.numero_oficio' => Rule::requiredIf(in_array($this->modelo_editar->solicitante, ['Oficialia de partes','SAT'])),
@@ -58,6 +59,7 @@ class Certificaciones extends Component
             'modelo_editar.seccion' => Rule::requiredIf($this->modelo_editar->folio_real == null && !in_array($this->servicio['clave_ingreso'], ['DL12', 'DM67', 'D110', 'D111'])),
             'modelo_editar.monto' => 'nullable',
             'modelo_editar.tipo_servicio' => 'required',
+            'modelo_editar.numero_notaria' => 'nullable',
             'modelo_editar.tipo_tramite' => 'required',
             'modelo_editar.cantidad' => 'required|numeric|min:1',
             'modelo_editar.adiciona' => 'required_if:adicionaTramite,true',

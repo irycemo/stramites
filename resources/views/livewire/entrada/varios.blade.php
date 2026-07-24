@@ -21,7 +21,7 @@
 
                         </div>
 
-                    @else
+                    @elseif(!in_array($servicio['nombre'], ['Inscripciones varios sin afectación de propiedad']))
 
                         @include('livewire.entrada.comun.antecedente')
 
