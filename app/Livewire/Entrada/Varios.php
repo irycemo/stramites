@@ -147,6 +147,17 @@ class Varios extends Component
 
         }
 
+        if(in_array($this->servicio['nombre'], ['Segundo aviso preventivo'])){
+
+            $this->cargos_autoridad = ['NOTARIO'];
+
+            $this->documentos_entrada = [
+                'ESCRITURA PÚBLICA',
+                'ESCRITURA PRIVADA',
+            ];
+
+        }
+
         $this->modelo_editar->id_servicio = $this->servicio['id'];
 
     }
