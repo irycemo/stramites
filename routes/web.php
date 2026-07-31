@@ -1,28 +1,29 @@
 <?php
 
 
-use App\Livewire\Admin\Umas;
-use App\Livewire\Admin\Roles;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ManualController;
+use App\Http\Controllers\SetPasswordController;
+use App\Http\Controllers\TramitesController;
+use App\Livewire\Admin\Auditoria;
+use App\Livewire\Admin\Categorias;
+use App\Livewire\Admin\Dependencias;
 use App\Livewire\Admin\Notarias;
 use App\Livewire\Admin\Permisos;
-use App\Livewire\Admin\Tramites;
-use App\Livewire\Admin\Usuarios;
-use App\Livewire\Admin\Auditoria;
+use App\Livewire\Admin\Roles;
 use App\Livewire\Admin\Servicios;
+use App\Livewire\Admin\Tramites;
+use App\Livewire\Admin\Transicion;
+use App\Livewire\Admin\Umas;
+use App\Livewire\Admin\Usuarios;
+use App\Livewire\Consultas\Consultas;
+use App\Livewire\Entrada\Cobol\Cobol;
+use App\Livewire\Entrada\Complemento;
 use App\Livewire\Entrada\Entrada;
 use App\Livewire\Entrega\Entrega;
-use App\Livewire\Admin\Categorias;
-use App\Livewire\Admin\Transicion;
-use App\Livewire\Reportes\Reportes;
-use App\Livewire\Admin\Dependencias;
-use App\Livewire\Consultas\Consultas;
 use App\Livewire\Recepcion\Recepcion;
+use App\Livewire\Reportes\Reportes;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ManualController;
-use App\Http\Controllers\TramitesController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SetPasswordController;
-use App\Livewire\Entrada\Complemento;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,7 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
 
     Route::get('entrada', Entrada::class)->middleware('permission:Lista de entradas')->name('entrada');
     Route::get('complemento', Complemento::class)->middleware('permission:Lista de entradas')->name('complemento');
+    Route::get('cobol', Cobol::class)->middleware('permission:Lista de entradas')->name('cobol');
 
     Route::get('recepcion', Recepcion::class)->middleware('permission:Recepción')->name('recepcion');
 

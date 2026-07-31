@@ -150,11 +150,13 @@
                             <p>{{ $tramite->solicitante }}</p>
                         @endif
                         <p>Número de control: {{ $tramite->año }}-{{ $tramite->numero_control }}-{{ $tramite->usuario }} @if($tramite->adiciona) / {{ $tramite->adicionaAlTramite->año }}-{{ $tramite->adicionaAlTramite->numero_control }}-{{ $tramite->adicionaAlTramite->usuario }} @endif</p>
-                        <p>Servicio: {{ $tramite->servicio->nombre }}
-                            @if($tramite->adiciona)
-                                / {{ $tramite->adicionaAlTramite->servicio->nombre }}
-                            @endif
-                        </p>
+                        @if($tramite->usuario != 0)
+                            <p>Servicio: {{ $tramite->servicio->nombre }}
+                                @if($tramite->adiciona)
+                                    / {{ $tramite->adicionaAlTramite->servicio->nombre }}
+                                @endif
+                            </p>
+                        @endif
                         <p>Solicitante: {{ $tramite->nombre_solicitante }}</p>
                         <p>Tipo de servicio: {{ $tramite->tipo_servicio }}</p>
                         <p>Orden de pago: {{ $tramite->orden_de_pago }}</p>

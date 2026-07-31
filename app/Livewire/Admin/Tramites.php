@@ -2,22 +2,23 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Notaria;
-use App\Models\Tramite;
-use Livewire\Component;
-use App\Models\Servicio;
-use App\Models\Dependencia;
-use Livewire\WithPagination;
-use App\Models\Configuracion;
 use App\Constantes\Constantes;
 use App\Exceptions\GeneralException;
-use App\Traits\ComponentesTrait;
+use App\Http\Services\Cobol\CobolService;
+use App\Http\Services\SistemaRPP\SistemaRppService;
+use App\Http\Services\Tramites\TramiteService;
 use App\Models\CategoriaServicio;
-use Livewire\Attributes\Computed;
+use App\Models\Configuracion;
+use App\Models\Dependencia;
+use App\Models\Notaria;
+use App\Models\Servicio;
+use App\Models\Tramite;
+use App\Traits\ComponentesTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Services\Tramites\TramiteService;
-use App\Http\Services\SistemaRPP\SistemaRppService;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Tramites extends Component
 {
@@ -565,18 +566,38 @@ class Tramites extends Component
 
         try {
 
-            $this->modelo_editar->update([
-                'estado' => 'pagado',
-                'documento_de_pago' => $this->referencia_pago,
-                'fecha_pago' => $this->fecha_pago,
-                'fecha_prelacion' => $this->fecha_pago,
-                'actualizado_por' => auth()->id()
-            ]);
+            DB::transaction(function () {
 
-            $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Acreditó pago manualmente']);
+                $this->modelo_editar->update([
+                    'estado' => 'pagado',
+                    'documento_de_pago' => $this->referencia_pago,
+                    'fecha_pago' => $this->fecha_pago,
+                    'fecha_prelacion' => $this->fecha_pago,
+                    'actualizado_por' => auth()->id()
+                ]);
+
+                $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Acreditó pago manualmente']);
+
+                if($this->modelo_editar->usuario === 0){
+
+                    (new CobolService())->insertarS3($this->modelo_editar);
+
+                }
+
+            });
+
+            if($this->modelo_editar->usuario === 0){
+
+                $this->dispatch('mostrarMensaje', ['success', "El trámite acreditó con éxito. Guardar la documentación que acredita el pago."]);
+
+                $this->resetearTodo();
+
+                return;
+
+            }
 
             if($this->modelo_editar->servicio->categoria->nombre === 'Certificaciones')
-                (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
+                    (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite acreditó con éxito. Guardar la documentación que acredita el pago."]);
 

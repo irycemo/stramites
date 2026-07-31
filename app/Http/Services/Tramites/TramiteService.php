@@ -5,6 +5,7 @@ namespace App\Http\Services\Tramites;
 use App\Models\Tramite;
 use Illuminate\Support\Str;
 use App\Exceptions\ErrorAlValidarLineaDeCaptura;
+use App\Http\Services\Cobol\CobolService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 use App\Models\AlertaInmobiliaria;
@@ -201,6 +202,15 @@ class TramiteService{
             'documento_de_pago' => $documento,
             'fecha_entrega' => $this->calcularFechaEntrega()
         ]);
+
+        /* Trámties de cobol */
+        if($this->tramite->usuario === 0){
+
+            (new CobolService())->insertarS3($this->tramite);
+
+            return;
+
+        }
 
         /* Comercio */
         if($this->tramite->seccion == 'Comercio') return;

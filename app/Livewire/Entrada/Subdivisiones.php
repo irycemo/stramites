@@ -233,6 +233,10 @@ class Subdivisiones extends Component
 
             $this->distritos = [2 => '02 Uruapan',];
 
+        }elseif(auth()->user()->hasRole('Administrador')){
+
+            $this->distritos = Constantes::DISTRITOS;
+
         }else{
 
             $this->distritos = Constantes::DISTRITOS;
