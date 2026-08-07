@@ -74,8 +74,8 @@ class Gravamenes extends Component
             'modelo_editar.numero_inmuebles' => 'nullable',
             'modelo_editar.asiento_registral' => 'nullable',
             'modelo_editar.foraneo' => 'required',
-            'folio_real_extra' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'D153'),
-            'asiento_registral_extra' => Rule::requiredIf($this->servicio['clave_ingreso'] == 'D153'),
+            'folio_real_extra' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['D153', 'D154'])),
+            'asiento_registral_extra' => Rule::requiredIf(in_array($this->servicio['clave_ingreso'], ['D153', 'D154'])),
             'año_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'folio_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
             'usuario_foraneo' => Rule::requiredIf($this->flags['tramite_foraneo']),
@@ -116,7 +116,7 @@ class Gravamenes extends Component
 
         $this->modelo_editar->monto = $this->servicio['ordinario'];
 
-        if($this->servicio['clave_ingreso'] == 'D153'){
+        if(in_array($this->servicio['clave_ingreso'], ['D153', 'D154'])){
 
             $this->flags['folio_real'] = true;
             $this->flags['movimiento_registral'] = true;
@@ -135,7 +135,7 @@ class Gravamenes extends Component
 
             $this->consultarFolioReal();
 
-            if($this->servicio['clave_ingreso'] == 'D153'){
+            if(in_array($this->servicio['clave_ingreso'], ['D153', 'D154'])){
 
                 $data = (new SistemaRppService)->consultarGravamenReestructura($this->folio_real_extra, $this->asiento_registral_extra, $this->modelo_editar);
 

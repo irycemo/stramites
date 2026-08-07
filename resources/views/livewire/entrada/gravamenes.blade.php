@@ -13,7 +13,7 @@
 
                     @include('livewire.entrada.comun.antecedente')
 
-                    @if($servicio['clave_ingreso'] === 'D153')
+                    @if(in_array($servicio['clave_ingreso'], ['D153', 'D154']))
 
                         <x-h4>Antecedente de reestructura</x-h4>
 
