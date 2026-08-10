@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tramite;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -12,10 +13,22 @@ class DashboardController extends Controller
 
         if(auth()->user()->hasRole('Administrador')){
 
-            $tramtiesEstado = Tramite::selectRaw('estado, count(estado) count')
+            if(Cache::get('tramties_estado_dashboard_admin')){
+
+                $tramtiesEstado = Cache::get('tramties_estado_dashboard_admin');
+
+            }else{
+
+                $tramtiesEstado = Cache::remember('tramties_estado_dashboard_admin', now()->addHour(), function(){
+
+                    return Tramite::selectRaw('estado, count(estado) count')
                                         ->whereMonth('created_at', now()->month)
                                         ->groupBy('estado')
                                         ->get();
+
+                });
+
+            }
 
             $tramites = cache()->get('graficaRecaudacion');
 
@@ -43,23 +56,73 @@ class DashboardController extends Controller
 
             }
 
-            $tramtiesUruapan = Tramite::selectRaw('estado, count(estado) count')
+            if(Cache::get('tramties_uruapan_dashboard_admin')){
+
+                $tramtiesUruapan = Cache::get('tramties_uruapan_dashboard_admin');
+
+            }else{
+
+                $tramtiesUruapan = Cache::remember('tramties_uruapan_dashboard_admin', now()->addHour(), function(){
+
+                    return Tramite::selectRaw('estado, count(estado) count')
                                         ->where('distrito', 2)
                                         ->whereMonth('created_at', now()->month)
                                         ->groupBy('estado')
                                         ->get();
 
+                });
+
+            }
+
             return view('dashboard', compact('data', 'tramtiesEstado', 'tramtiesUruapan'));
 
         }elseif(auth()->user()->ubicacion == 'Regional 4'){
 
-            $tramtiesUruapan = Tramite::selectRaw('estado, count(estado) count')
-            ->where('distrito', 2)
-            ->whereMonth('created_at', now()->month)
-            ->groupBy('estado')
-            ->get();
+            if(Cache::get('tramties_uruapan_dashboard_admin')){
 
-            return view('dashboard', compact('tramtiesUruapan'));
+                $tramties_uruapan = Cache::get('tramties_uruapan_dashboard_admin');
+
+            }else{
+
+                $tramties_uruapan = Cache::remember('tramties_uruapan_dashboard_admin', now()->addHour(), function(){
+
+                    return Tramite::selectRaw('estado, count(estado) count')
+                                        ->where('distrito', 2)
+                                        ->whereMonth('created_at', now()->month)
+                                        ->groupBy('estado')
+                                        ->get();
+
+                });
+
+            }
+
+            if(Cache::get('tramties_uruapan_dashboard_user')){
+
+                $tramites_diarios_uruapan = Cache::get('tramties_uruapan_dashboard_user');
+
+            }else{
+
+                $tramites_diarios_uruapan = Cache::remember('tramties_uruapan_dashboard_user', now()->addHour(), function(){
+
+                    return Tramite::select('id', 'id_servicio', 'distrito','created_at')
+                                        ->with('servicio:id,nombre')
+                                        ->where('distrito', 2)
+                                        ->where('creado_por', auth()->id())
+                                        ->whereBetween('created_at', [now()->startOfDay(), now()->endOfDay()])
+                                        ->get()
+                                        ->groupBy('id_servicio')
+                                        ->map(function($tramite){
+                                            return [
+                                                    'servicio' => $tramite[0]->servicio->nombre,
+                                                    'cantidad' => count($tramite)
+                                                ];
+                                        });
+
+                });
+
+            }
+
+            return view('dashboard', compact('tramties_uruapan', 'tramites_diarios_uruapan'));
 
         }
 

@@ -122,8 +122,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramtiesUruapan->where('estado', 'nuevo')->count())
-                                {{ $tramtiesUruapan->where('estado', 'nuevo')->first()->count }}
+                            @if($tramties_uruapan->where('estado', 'nuevo')->count())
+                                {{ $tramties_uruapan->where('estado', 'nuevo')->first()->count }}
                             @else
                                 0
                             @endif
@@ -142,8 +142,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramtiesUruapan->where('estado', 'pagado')->count())
-                                {{ $tramtiesUruapan->where('estado', 'pagado')->first()->count }}
+                            @if($tramties_uruapan->where('estado', 'pagado')->count())
+                                {{ $tramties_uruapan->where('estado', 'pagado')->first()->count }}
                             @else
                                 0
                             @endif
@@ -162,8 +162,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramtiesUruapan->where('estado', 'concluido')->count())
-                                {{ $tramtiesUruapan->where('estado', 'concluido')->first()->count }}
+                            @if($tramties_uruapan->where('estado', 'concluido')->count())
+                                {{ $tramties_uruapan->where('estado', 'concluido')->first()->count }}
                             @else
                                 0
                             @endif
@@ -182,8 +182,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramtiesUruapan->where('estado', 'rechazado')->count())
-                                {{ $tramtiesUruapan->where('estado', 'rechazado')->first()->count }}
+                            @if($tramties_uruapan->where('estado', 'rechazado')->count())
+                                {{ $tramties_uruapan->where('estado', 'rechazado')->first()->count }}
                             @else
                                 0
                             @endif
@@ -202,8 +202,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramtiesUruapan->where('estado', 'expirado')->count())
-                                {{ $tramtiesUruapan->where('estado', 'expirado')->first()->count }}
+                            @if($tramties_uruapan->where('estado', 'expirado')->count())
+                                {{ $tramties_uruapan->where('estado', 'expirado')->first()->count }}
                             @else
                                 0
                             @endif
@@ -236,7 +236,7 @@
 
         <x-header>Estadisticas del mes actual</x-header>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-5">
 
             <div class="flex md:block justify-evenly items-center space-x-2 border-t-4 border-blue-400 p-4 shadow-xl text-gray-600 rounded-xl bg-white text-center">
 
@@ -244,8 +244,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramtiesUruapan->where('estado', 'nuevo')->count())
-                            {{ $tramtiesUruapan->where('estado', 'nuevo')->first()->count }}
+                        @if($tramties_uruapan->where('estado', 'nuevo')->count())
+                            {{ $tramties_uruapan->where('estado', 'nuevo')->first()->count }}
                         @else
                             0
                         @endif
@@ -264,8 +264,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramtiesUruapan->where('estado', 'pagado')->count())
-                            {{ $tramtiesUruapan->where('estado', 'pagado')->first()->count }}
+                        @if($tramties_uruapan->where('estado', 'pagado')->count())
+                            {{ $tramties_uruapan->where('estado', 'pagado')->first()->count }}
                         @else
                             0
                         @endif
@@ -284,8 +284,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramtiesUruapan->where('estado', 'concluido')->count())
-                            {{ $tramtiesUruapan->where('estado', 'concluido')->first()->count }}
+                        @if($tramties_uruapan->where('estado', 'concluido')->count())
+                            {{ $tramties_uruapan->where('estado', 'concluido')->first()->count }}
                         @else
                             0
                         @endif
@@ -304,8 +304,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramtiesUruapan->where('estado', 'rechazado')->count())
-                            {{ $tramtiesUruapan->where('estado', 'rechazado')->first()->count }}
+                        @if($tramties_uruapan->where('estado', 'rechazado')->count())
+                            {{ $tramties_uruapan->where('estado', 'rechazado')->first()->count }}
                         @else
                             0
                         @endif
@@ -324,8 +324,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramtiesUruapan->where('estado', 'expirado')->count())
-                            {{ $tramtiesUruapan->where('estado', 'expirado')->first()->count }}
+                        @if($tramties_uruapan->where('estado', 'expirado')->count())
+                            {{ $tramties_uruapan->where('estado', 'expirado')->first()->count }}
                         @else
                             0
                         @endif
@@ -339,6 +339,48 @@
             </div>
 
         </div>
+
+        <div class="shadow-lg bg-white rounded-xl mb-5 p-4 w-full lg:w-1/2 mx-auto">
+
+                <p class="text-center tracking-wider font-semibold">Mis trámites calificados (Hoy)</p>
+
+                <table class="w-full table-fixed">
+
+                    <tbody class="divide-y divide-gray-200">
+
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($tramites_diarios_uruapan as $item)
+
+                            <tr class="text-gray-500 text-sm leading-relaxed">
+                                <td class=" px-2 w-full whitespace-nowrap overflow-hidden text-ellipsis"><p>{{ $item['servicio'] }}</p></td>
+                                <td class=" px-2 w-1/12"><p>{{ $item['cantidad'] }}</p></td>
+                            </tr>
+
+                            @php
+
+                                $total = $total + $item['cantidad']
+
+                            @endphp
+
+                        @endforeach
+
+                        @php
+
+                            echo " <tr class='text-gray-500 text-sm leading-relaxed'>
+                                        <td class='px-2 w-full whitespace-nowrap font-bold'>Total</td>
+                                        <td class='px-2 w-full font-bold'>" . $total . "</td>
+                                    </tr>
+                                ";
+                        @endphp
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
     @else
 
