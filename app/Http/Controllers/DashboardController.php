@@ -56,13 +56,13 @@ class DashboardController extends Controller
 
             }
 
-            if(Cache::get('tramties_uruapan_dashboard_admin')){
+            if(Cache::get('tramites_uruapan_dashboard_admin')){
 
-                $tramtiesUruapan = Cache::get('tramties_uruapan_dashboard_admin');
+                $tramites_uruapan = Cache::get('tramites_uruapan_dashboard_admin');
 
             }else{
 
-                $tramtiesUruapan = Cache::remember('tramties_uruapan_dashboard_admin', now()->addHour(), function(){
+                $tramites_uruapan = Cache::remember('tramites_uruapan_dashboard_admin', now()->addHour(), function(){
 
                     return Tramite::selectRaw('estado, count(estado) count')
                                         ->where('distrito', 2)
@@ -78,13 +78,13 @@ class DashboardController extends Controller
 
         }elseif(auth()->user()->ubicacion == 'Regional 4'){
 
-            if(Cache::get('tramties_uruapan_dashboard_admin')){
+            if(Cache::get('tramites_uruapan_dashboard_admin')){
 
-                $tramties_uruapan = Cache::get('tramties_uruapan_dashboard_admin');
+                $tramites_uruapan = Cache::get('tramites_uruapan_dashboard_admin');
 
             }else{
 
-                $tramties_uruapan = Cache::remember('tramties_uruapan_dashboard_admin', now()->addHour(), function(){
+                $tramites_uruapan = Cache::remember('tramites_uruapan_dashboard_admin', now()->addHour(), function(){
 
                     return Tramite::selectRaw('estado, count(estado) count')
                                         ->where('distrito', 2)
@@ -96,13 +96,13 @@ class DashboardController extends Controller
 
             }
 
-            if(Cache::get('tramties_uruapan_dashboard_user')){
+            if(Cache::get('tramites_uruapan_dashboard_user')){
 
-                $tramites_diarios_uruapan = Cache::get('tramties_uruapan_dashboard_user');
+                $tramites_diarios_uruapan = Cache::get('tramites_uruapan_dashboard_user');
 
             }else{
 
-                $tramites_diarios_uruapan = Cache::remember('tramties_uruapan_dashboard_user', now()->addHour(), function(){
+                $tramites_diarios_uruapan = Cache::remember('tramites_uruapan_dashboard_user', now()->addHour(), function(){
 
                     return Tramite::select('id', 'id_servicio', 'distrito','created_at')
                                         ->with('servicio:id,nombre')
@@ -122,7 +122,7 @@ class DashboardController extends Controller
 
             }
 
-            return view('dashboard', compact('tramties_uruapan', 'tramites_diarios_uruapan'));
+            return view('dashboard', compact('tramites_uruapan', 'tramites_diarios_uruapan'));
 
         }
 

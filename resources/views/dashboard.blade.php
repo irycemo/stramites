@@ -122,8 +122,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramties_uruapan->where('estado', 'nuevo')->count())
-                                {{ $tramties_uruapan->where('estado', 'nuevo')->first()->count }}
+                            @if($tramites_uruapan->where('estado', 'nuevo')->count())
+                                {{ $tramites_uruapan->where('estado', 'nuevo')->first()->count }}
                             @else
                                 0
                             @endif
@@ -142,8 +142,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramties_uruapan->where('estado', 'pagado')->count())
-                                {{ $tramties_uruapan->where('estado', 'pagado')->first()->count }}
+                            @if($tramites_uruapan->where('estado', 'pagado')->count())
+                                {{ $tramites_uruapan->where('estado', 'pagado')->first()->count }}
                             @else
                                 0
                             @endif
@@ -162,8 +162,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramties_uruapan->where('estado', 'concluido')->count())
-                                {{ $tramties_uruapan->where('estado', 'concluido')->first()->count }}
+                            @if($tramites_uruapan->where('estado', 'concluido')->count())
+                                {{ $tramites_uruapan->where('estado', 'concluido')->first()->count }}
                             @else
                                 0
                             @endif
@@ -182,8 +182,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramties_uruapan->where('estado', 'rechazado')->count())
-                                {{ $tramties_uruapan->where('estado', 'rechazado')->first()->count }}
+                            @if($tramites_uruapan->where('estado', 'rechazado')->count())
+                                {{ $tramites_uruapan->where('estado', 'rechazado')->first()->count }}
                             @else
                                 0
                             @endif
@@ -202,8 +202,8 @@
 
                         <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                            @if($tramties_uruapan->where('estado', 'expirado')->count())
-                                {{ $tramties_uruapan->where('estado', 'expirado')->first()->count }}
+                            @if($tramites_uruapan->where('estado', 'expirado')->count())
+                                {{ $tramites_uruapan->where('estado', 'expirado')->first()->count }}
                             @else
                                 0
                             @endif
@@ -244,8 +244,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramties_uruapan->where('estado', 'nuevo')->count())
-                            {{ $tramties_uruapan->where('estado', 'nuevo')->first()->count }}
+                        @if($tramites_uruapan->where('estado', 'nuevo')->count())
+                            {{ $tramites_uruapan->where('estado', 'nuevo')->first()->count }}
                         @else
                             0
                         @endif
@@ -264,8 +264,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramties_uruapan->where('estado', 'pagado')->count())
-                            {{ $tramties_uruapan->where('estado', 'pagado')->first()->count }}
+                        @if($tramites_uruapan->where('estado', 'pagado')->count())
+                            {{ $tramites_uruapan->where('estado', 'pagado')->first()->count }}
                         @else
                             0
                         @endif
@@ -284,8 +284,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramties_uruapan->where('estado', 'concluido')->count())
-                            {{ $tramties_uruapan->where('estado', 'concluido')->first()->count }}
+                        @if($tramites_uruapan->where('estado', 'concluido')->count())
+                            {{ $tramites_uruapan->where('estado', 'concluido')->first()->count }}
                         @else
                             0
                         @endif
@@ -304,8 +304,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramties_uruapan->where('estado', 'rechazado')->count())
-                            {{ $tramties_uruapan->where('estado', 'rechazado')->first()->count }}
+                        @if($tramites_uruapan->where('estado', 'rechazado')->count())
+                            {{ $tramites_uruapan->where('estado', 'rechazado')->first()->count }}
                         @else
                             0
                         @endif
@@ -324,8 +324,8 @@
 
                     <span class="font-bold text-2xl text-blueGray-600 mb-2">
 
-                        @if($tramties_uruapan->where('estado', 'expirado')->count())
-                            {{ $tramties_uruapan->where('estado', 'expirado')->first()->count }}
+                        @if($tramites_uruapan->where('estado', 'expirado')->count())
+                            {{ $tramites_uruapan->where('estado', 'expirado')->first()->count }}
                         @else
                             0
                         @endif
