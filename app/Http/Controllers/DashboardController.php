@@ -74,7 +74,7 @@ class DashboardController extends Controller
 
             }
 
-            return view('dashboard', compact('data', 'tramtiesEstado', 'tramtiesUruapan'));
+            return view('dashboard', compact('data', 'tramtiesEstado', 'tramites_uruapan'));
 
         }elseif(auth()->user()->ubicacion == 'Regional 4'){
 
