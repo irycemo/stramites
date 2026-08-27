@@ -908,7 +908,7 @@
 
                             <div class="rounded-lg bg-gray-100 py-1 px-2">
 
-                                <p><strong>Númerpo de propiedad:</strong> {{ $modelo_editar->numero_propiedad }}</p>
+                                <p><strong>Número de propiedad:</strong> {{ $modelo_editar->numero_propiedad }}</p>
 
                             </div>
 
