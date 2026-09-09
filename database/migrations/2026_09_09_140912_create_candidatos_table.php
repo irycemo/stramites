@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedInteger('numero_propiedad');
             $table->timestamps();
 
-            $table->index(['distrito', 'tomo', 'tomo_bis', 'registro', 'registro_bis', 'numero_propiedad', 'candidato']);
+            $table->index(['distrito', 'tomo', 'tomo_bis', 'registro', 'registro_bis', 'numero_propiedad'], 'candidato');
         });
     }
 
