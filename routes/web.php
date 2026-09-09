@@ -16,6 +16,7 @@ use App\Livewire\Admin\Tramites;
 use App\Livewire\Admin\Transicion;
 use App\Livewire\Admin\Umas;
 use App\Livewire\Admin\Usuarios;
+use App\Livewire\Consultas\Candidatos;
 use App\Livewire\Consultas\Consultas;
 use App\Livewire\Entrada\Cobol\Cobol;
 use App\Livewire\Entrada\Complemento;
@@ -78,6 +79,7 @@ Route::group(['middleware' => ['auth', 'esta.activo']], function(){
     Route::get('entrega', Entrega::class)->middleware('permission:Entrega')->name('entrega');
 
     Route::get('consultas', Consultas::class)->middleware('permission:Consultas')->name('consultas');
+    Route::get('candidatos', Candidatos::class)->middleware('permission:Consultas')->name('candidatos');
 
     Route::get('reportes', Reportes::class)->middleware('permission:Reportes')->name('reportes');
 
