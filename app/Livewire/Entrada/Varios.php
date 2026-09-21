@@ -110,6 +110,16 @@ class Varios extends Component
             'editar',
         ]);
 
+        if($this->servicio['clave_ingreso'] == 'DN83'){
+
+            $this->documentos_entrada = [
+                'ESCRITURA PÚBLICA',
+                'ESCRITURA PRIVADA',
+                'OFICIO'
+            ];
+
+        }
+
         if($this->servicio['clave_ingreso'] == 'DL19'){
 
             $this->flags['email'] = true;
@@ -149,7 +159,9 @@ class Varios extends Component
 
         if(in_array($this->servicio['nombre'], ['Segundo aviso preventivo'])){
 
-            $this->cargos_autoridad = ['NOTARIO'];
+            $this->cargos_autoridad = ['NOTARIO', 'FORANEO'];
+
+            $this->flags['tramite_foraneo'] = true;
 
             $this->documentos_entrada = [
                 'ESCRITURA PÚBLICA',
