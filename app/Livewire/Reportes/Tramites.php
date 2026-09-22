@@ -3,11 +3,13 @@
 namespace App\Livewire\Reportes;
 
 use App\Models\User;
+use Livewire\Attributes\On;
 use App\Models\Tramite;
 use Livewire\Component;
 use App\Models\Servicio;
 use Livewire\WithPagination;
 use App\Constantes\Constantes;
+use Livewire\Attributes\Computed;
 
 class Tramites extends Component
 {
@@ -53,6 +55,13 @@ class Tramites extends Component
 
     }
 
+    #[On('getData')]
+    public function getData(){
+
+        $this->dispatch('reciveData', $this->data);
+
+    }
+
     public function mount(){
 
         $this->usuarios = User::all()->sortby('name');
@@ -65,10 +74,10 @@ class Tramites extends Component
 
     }
 
-    public function render()
-    {
+    #[Computed]
+    public function tramites(){
 
-        $tramites = Tramite::with('servicio', 'creadoPor', 'actualizadoPor')
+        return Tramite::with('servicio', 'creadoPor', 'actualizadoPor')
                                 ->when(isset($this->servicio_id) && $this->servicio_id != "", function($q){
                                     $q->where('id_servicio', $this->servicio_id);
                                 })
@@ -90,7 +99,11 @@ class Tramites extends Component
                                 ->whereBetween('created_at', [$this->fecha1 . ' 00:00:00', $this->fecha2 . ' 23:59:59'])
                                 ->paginate($this->pagination);
 
-        return view('livewire.reportes.tramites', compact('tramites'));
+    }
+
+    public function render()
+    {
+        return view('livewire.reportes.tramites');
     }
 
 }

@@ -71,6 +71,12 @@ class Descarga extends Component
 
     }
 
+    public function mount(){
+
+        $this->dispatch('getData');
+
+    }
+
     public function render()
     {
         return view('livewire.reportes.descarga');

@@ -238,11 +238,11 @@
 
     </div>
 
-    @if(count($tramites))
+    @if(count($this->tramites))
 
         <div class="rounded-lg shadow-xl mb-5 p-4 font-thin md:flex md:items-center md:justify-between bg-white space-y-2 md:space-y-0">
 
-            <p class="font-extralight">Se encontraron: {{ number_format($tramites->total()) }} registros con los filtros seleccionados.</p>
+            <p class="font-extralight">Se encontraron: {{ number_format($this->tramites->total()) }} registros con los filtros seleccionados.</p>
 
             @livewire('reportes.descarga')
 
@@ -285,7 +285,7 @@
 
                 <x-slot name="body">
 
-                    @foreach($tramites as $tramite)
+                    @foreach($this->tramites as $tramite)
 
                         <x-table.row wire:key="row-{{ $usuario->id }}">
 
@@ -484,7 +484,7 @@
 
                         <x-table.cell colspan="26" class="bg-gray-50">
 
-                            {{ $tramites->links()}}
+                            {{ $this->tramites->links()}}
 
                         </x-table.cell>
 
