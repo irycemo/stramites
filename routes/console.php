@@ -2,12 +2,9 @@
 
 use App\Http\Controllers\TramitesController;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
-use App\Http\Services\Tramites\TramiteService;
-use App\Jobs\BienestarTramiteJob;
 use App\Models\Tramite;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /*
@@ -25,6 +22,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+Schedule::command('revisar-pago')->hourly();
 
 Artisan::command('copias', function(){
 
