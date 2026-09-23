@@ -35,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('consultar_archivo', [TramitesApiController::class, 'consultarArchivo']);
 
+    Route::post('desvincular_movimiento_registral', [TramitesApiController::class, 'desvincularMovimientoRegistral']);
+
 });
 
 /* Route::fallback(function(){

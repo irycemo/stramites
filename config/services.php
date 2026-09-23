@@ -32,7 +32,7 @@ return [
         'ruta_documento_entrada' => 'stramites/documento_entrada',
     ],
 
-    'sistema_rpp' =>[
+    'sistema_rpp' => [
         'token' => env('SISTEMA_RPP_SERVICE_TOKEN'),
         'insertar_movimiento_registral' => env('SISTEMA_RPP_SERVICE_INSERT'),
         'actualizar_movimiento_registral' => env('SISTEMA_RPP_SERVICE_UPDATE'),
@@ -46,6 +46,12 @@ return [
         'consultar_antecedentes' => env('SISTEMA_RPP_SERVICE_CONSULTAR_ANTECEDENTES'),
         'consultar_primer_aviso_preventivo' => env('SISTEMA_RPP_SERVICE_CONSULTAR_PRIMER_AVISO'),
         'consultar_segundo_aviso_preventivo' => env('SISTEMA_RPP_SERVICE_CONSULTAR_SEGUNDO_AVISO'),
-    ]
+    ],
+
+    'sap' => [
+        'SAP_VALIDAR_LINEA_DE_CAPTURA_URL' => env('SAP_VALIDAR_LINEA_DE_CAPTURA_URL'),
+        'SAP_USUARIO_API' => env('SAP_USUARIO_API'),
+        'SAP_CONTRASENA_API' => env('SAP_CONTRASENA_API')
+    ],
 
 ];

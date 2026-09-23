@@ -266,4 +266,20 @@ class TramitesApiController extends Controller
 
     }
 
+    public function desvincularMovimientoRegistral(Request $request){
+
+        $validated = $request->validate(['movimiento_registral_id' => 'required']);
+
+        $tramite = Tramite::where('movimiento_registral', $validated['movimiento_registral_id'])->first();
+
+        if($tramite){
+
+            $tramite->update(['movimiento_registral' => null, 'actualizado_por' => auth()->id()]);
+
+        }
+
+        return response()->json([], 200);
+
+    }
+
 }
