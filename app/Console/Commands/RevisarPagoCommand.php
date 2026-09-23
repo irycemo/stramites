@@ -42,7 +42,7 @@ class RevisarPagoCommand extends Command
 
                     (new TramiteService($tramite))->procesarPago();
 
-                    info('Tramite validado mediante tarea programada: ' . $tramite->año . '-' . $tramite->folio . '-' . $tramite->usuario);
+                    info('Tramite validado mediante tarea programada: ' . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario);
 
                 }
 
