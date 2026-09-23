@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TramitesController;
+use Illuminate\Console\Scheduling\Schedule;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 use App\Models\Tramite;
 use Illuminate\Foundation\Inspiring;
