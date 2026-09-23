@@ -28,7 +28,7 @@ class RevisarPagoCommand extends Command
     public function handle()
     {
 
-        $tramites = Tramite::with('servicio.categoria', 'adicionaAlTramite', 'creadoPor:id,name')
+        $tramites = Tramite::with('servicio.categoria', 'adicionaAlTramite.servicio', 'creadoPor:id,name')
                                 ->where('estado', 'nuevo')
                                 ->get();
 
