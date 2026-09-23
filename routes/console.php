@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\TramitesController;
-use Illuminate\Support\Facades\Schedule;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
 use App\Models\Tramite;
 use Illuminate\Foundation\Inspiring;
@@ -23,7 +22,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('revisar-pago')->hourly();
 
 Artisan::command('copias', function(){
 
