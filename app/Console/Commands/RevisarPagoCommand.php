@@ -30,6 +30,7 @@ class RevisarPagoCommand extends Command
 
         $tramites = Tramite::with('servicio.categoria', 'adicionaAlTramite.servicio', 'creadoPor:id,name')
                                 ->where('estado', 'nuevo')
+                                ->wher('usuario', 0)
                                 ->get();
 
         try {
