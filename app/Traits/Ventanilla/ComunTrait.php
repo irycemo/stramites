@@ -60,7 +60,6 @@ trait ComunTrait
         'modelo_editar.adiciona.required_if' => 'El campo trámite es obligatorio cuando el campo adiciona a otro tramite está seleccionado.',
         'modelo_editar.nombre_solicitante' => 'El nombre del solicitante es obligatorio',
         'modelo_editar.numero_oficio' => 'El número de oficio es obligatorio',
-        'modelo_editar.nombre_solicitante' => 'El nombre del solicitante es obligatorio',
         'modelo_editar.movimiento_registral.required_if' => 'No se ha vinculado el trámite original de copias.',
         'modelo_editar.fecha_emision.date_format' => 'El formato de fecha es incorrecto.',
     ];
@@ -84,7 +83,6 @@ trait ComunTrait
         'modelo_editar.tomo_gravamen' => 'tomo del gravamen',
         'modelo_editar.registro_gravamen' => 'registro del gravamen',
         'modelo_editar.asiento_registral' => 'movimiento registral',
-        'modelo_editar.folio_real' => 'folio real',
     ];
 
     public function getListeners()
@@ -395,6 +393,8 @@ trait ComunTrait
     }
 
     public function updatedModeloEditarAutoridadCargo(){
+
+        $this->modelo_editar->numero_autoridad = null;
 
         if($this->modelo_editar->autoridad_cargo == 'FORANEO'){
 
