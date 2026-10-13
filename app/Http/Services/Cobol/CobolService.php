@@ -18,7 +18,7 @@ class CobolService{
 
             $recibo_pago[0] = "1";
 
-        }elseif(strlen($recibo_pago) >= 10){
+        }elseif(strlen($recibo_pago) > 10){
 
             $recibo_pago = mb_strimwidth($recibo_pago, 2, 10, '');
 
