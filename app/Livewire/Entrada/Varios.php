@@ -161,8 +161,6 @@ class Varios extends Component
 
             $this->cargos_autoridad = ['NOTARIO', 'NOTARIO FORANEO'];
 
-            $this->flags['tramite_foraneo'] = true;
-
             $this->documentos_entrada = [
                 'ESCRITURA PÚBLICA',
                 'ESCRITURA PRIVADA',
