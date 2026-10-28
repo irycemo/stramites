@@ -25,7 +25,7 @@ class File extends Model
 
         }else{
 
-            return Storage::disk('s3')->url('tramites/' . $this->url);
+            return Storage::disk('tramites')->url($this->url);
 
         }
 

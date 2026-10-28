@@ -526,4 +526,41 @@ class SistemaRppService{
 
     }
 
+    public function consultarCandidato($tramite){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.consultar_candidato'),
+                                [
+                                    'tomo' => $tramite->tomo,
+                                    'registro' => $tramite->registro,
+                                    'numero_propiedad' => $tramite->numero_propiedad,
+                                    'distrito' => $tramite->distrito,
+                                ]
+                            );
+
+                            /* dd($response); */
+
+        if(!in_array($response->status(), [200, 204])){
+
+            Log::error("Error al consultar candidato en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }else{
+
+                throw new GeneralException("Error al consultar candidato en Sistema RPP.");
+
+            }
+
+        }
+
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Livewire\Entrada;
 
 use App\Models\Notaria;
+use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Models\Tramite;
 use Livewire\Component;
 use App\Models\Dependencia;
@@ -113,7 +114,7 @@ class FolioSimplificado extends Component
 
             if($this->flags['tramite_foraneo']) $this->buscarforaneo();
 
-            $this->consultarFolioReal();
+            (new SistemaRppService)->consultarCandidato($this->modelo_editar);
 
             DB::transaction(function (){
 

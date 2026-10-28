@@ -11,6 +11,8 @@
 
                     @include('livewire.entrada.comun.solicitante')
 
+                    <x-h4>Antecedente</x-h4>
+
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
 
                         @include('livewire.entrada.comun.distrito')

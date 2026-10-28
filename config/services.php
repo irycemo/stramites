@@ -46,6 +46,7 @@ return [
         'consultar_antecedentes' => env('SISTEMA_RPP_SERVICE_CONSULTAR_ANTECEDENTES'),
         'consultar_primer_aviso_preventivo' => env('SISTEMA_RPP_SERVICE_CONSULTAR_PRIMER_AVISO'),
         'consultar_segundo_aviso_preventivo' => env('SISTEMA_RPP_SERVICE_CONSULTAR_SEGUNDO_AVISO'),
+        'consultar_candidato' => env('SISTEMA_RPP_SERVICE_CONSULTAR_CANDIDATO'),
     ],
 
     'sap' => [
