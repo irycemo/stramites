@@ -159,7 +159,7 @@ class Varios extends Component
 
         if(in_array($this->servicio['nombre'], ['Segundo aviso preventivo'])){
 
-            $this->cargos_autoridad = ['NOTARIO', 'NOTARIO FORANEO'];
+            $this->cargos_autoridad = ['NOTARIO', 'FORANEO'];
 
             $this->documentos_entrada = [
                 'ESCRITURA PÚBLICA',
