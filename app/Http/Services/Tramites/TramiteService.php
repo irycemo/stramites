@@ -8,9 +8,13 @@ use App\Exceptions\ErrorAlValidarLineaDeCaptura;
 use App\Http\Services\Cobol\CobolService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 use App\Http\Services\LineasDeCaptura\LineaCapturaApi;
+use App\Http\Services\SistemaTramitesLinea\SistemaTramitesLineaService;
 use App\Models\AlertaInmobiliaria;
+use App\Traits\Tramite\GuardarDocumentoEntradaTrait;
 
 class TramiteService{
+
+    use GuardarDocumentoEntradaTrait;
 
     public $tramite;
     public $fecha_vencimiento;
@@ -262,18 +266,11 @@ class TramiteService{
 
             }
 
-        }else{
+        }elseif($this->tramite->servicio->categoria->nombre === 'Certificaciones' && !in_array($this->tramite->servicio->clave_ingreso, ['DL12', 'D110', 'DM67', 'D111'])){
 
-            if($this->tramite->servicio->categoria->nombre === 'Certificaciones' && !in_array($this->tramite->servicio->clave_ingreso, ['DL12', 'D110', 'DM67', 'D111'])){
+            (new SistemaRppService())->insertarSistemaRpp($this->tramite);
 
-                (new SistemaRppService())->insertarSistemaRpp($this->tramite);
-
-            }
-
-        }
-
-        /* Alerta inmobiliaria */
-        if($this->tramite->servicio->clave_ingreso == 'DL19' && $this->tramite->folio_real){
+        }elseif($this->tramite->servicio->clave_ingreso == 'DL19' && $this->tramite->folio_real){
 
             AlertaInmobiliaria::craete([
                 'estado' => 'activo',
@@ -286,11 +283,24 @@ class TramiteService{
                 'estado' => 'finalizado'
             ]);
 
+        }elseif($this->tramite->usuario == 67){
+
+            /* Primer aviso preventivo */
+            if(in_array($this->tramite->servicio->clave_ingreso, ['DN83'])){
+
+                $data = (new SistemaTramitesLineaService())->consultarAvisoPreventivo($this->tramite->id, 'aviso_preventivo');
+
+                $this->guardarDocumentoEntrada($this->tramite->id, $data);
+
+                (new SistemaRppService())->insertarAvisoPreventivoSistemaRpp($this->tramite, $data['descripcion_acto']);
+
+            }
+
         }
 
     }
 
-    public function cambiarEstado($estado):void
+    public function cambiarEstado($tramite_id, $estado):void
     {
 
         $this->tramite->update(['estado' => $estado]);
@@ -308,5 +318,7 @@ class TramiteService{
         }
 
     }
+
+
 
 }

@@ -13,6 +13,7 @@ use App\Http\Requests\TramiteListRequest;
 use App\Http\Requests\CrearTramiteRequest;
 use App\Http\Services\Tramites\TramiteService;
 use App\Exceptions\GeneralException;
+use App\Http\Requests\CrearTramiteAvisoPreventivoRequest;
 
 class TramitesApiController extends Controller
 {
@@ -105,6 +106,71 @@ class TramitesApiController extends Controller
         } catch (\Throwable $th) {
 
             Log::error("Error al crear trámite mediante api " . $th);
+
+            return response()->json([
+                'error' => "No se pudo crear el trámite.",
+            ], 500);
+
+        }
+
+    }
+
+    public function crearTramiteAvisoPreventivo(CrearTramiteAvisoPreventivoRequest $request){
+
+        $validated = $request->validated();
+
+        $tramite = Tramite::make();
+
+        $tramite->tipo_tramite = 'normal';
+        $tramite->tipo_servicio = $validated['tipo_servicio'];
+        $tramite->id_servicio = $validated['servicio_id'];
+        $tramite->solicitante = $validated['solicitante'];
+        $tramite->nombre_solicitante = $validated['nombre_solicitante'];
+        $tramite->monto = $validated['monto'];
+        $tramite->cantidad = 1;
+        $tramite->usuario_tramites_linea_id = $validated['usuario_tramites_linea_id'];
+        $tramite->folio_real = $validated['predio']['folio_real'];
+        $tramite->tomo = $validated['predio']['tomo'] ?? null;
+        $tramite->registro = $validated['predio']['registro'] ?? null;
+        $tramite->numero_propiedad = $validated['predio']['numero_propiedad'] ?? null;
+        $tramite->distrito = $validated['predio']['distrito'];
+        $tramite->fecha_emision = $validated['fecha_documento'];
+        $tramite->tipo_documento = 'OFICIO';
+        $tramite->autoridad_cargo = 'NOTARIO';
+        $tramite->nombre_autoridad = $validated['nombre_autoridad'];
+        $tramite->numero_autoridad = $validated['numero_autoridad'];
+        $tramite->seccion = 'Propiedad';
+
+        $nuevo_tramite = null;
+
+        try {
+
+            DB::transaction(function () use($tramite, &$nuevo_tramite){
+
+                $nuevo_tramite = (new TramiteService($tramite))->crear();
+
+            }, 10);
+
+            return (new TramiteResource($nuevo_tramite))->response()->setStatusCode(200);
+
+        } catch (GeneralException $ex) {
+
+            Log::error("Error al crear trámite mediante api " . $ex);
+
+            return response()->json([
+                'error' => $ex->getMessage(),
+            ], 500);
+
+        } catch (\Throwable $th) {
+
+            Log::error(
+                "Error al crear trámite de preimer aviso preventivo mediante api.",
+                [
+                    'message' => $th->getMessage(),
+                    'data' => $validated,
+                    'trace' => $th->getTraceAsString()
+                ]
+            );
 
             return response()->json([
                 'error' => "No se pudo crear el trámite.",

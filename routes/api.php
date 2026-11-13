@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('crear_tramite', [TramitesApiController::class, 'crearTramite']);
 
+    Route::post('crear_tramite_primer_aviso', [TramitesApiController::class, 'crearTramiteAvisoPreventivo']);
+
     Route::post('consultar_tramites', [TramitesApiController::class, 'consultarTramites']);
 
     Route::post('acreditar_tramite', [TramitesApiController::class, 'acreditarTramite']);

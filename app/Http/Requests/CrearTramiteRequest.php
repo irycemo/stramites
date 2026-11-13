@@ -28,7 +28,7 @@ class CrearTramiteRequest extends FormRequest
             'nombre_solicitante' => 'required',
             'monto' => 'required',
             'usuario_tramites_linea_id' => 'required',
-            'predio' => 'array|nullable'
+            'predio' => 'array|nullable',
         ];
     }
 

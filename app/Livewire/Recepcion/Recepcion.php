@@ -11,7 +11,6 @@ use App\Exceptions\GeneralException;
 use App\Traits\ComponentesTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Exceptions\TramiteServiceException;
 use App\Http\Services\Tramites\TramiteService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
 

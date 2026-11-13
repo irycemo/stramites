@@ -4,6 +4,7 @@ namespace App\Http\Services\SistemaRPP;
 
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\GeneralException;
+use App\Http\Services\SistemaTramitesLinea\SistemaTramitesLineaService;
 use Illuminate\Support\Facades\Http;
 
 class SistemaRppService{
@@ -95,6 +96,71 @@ class SistemaRppService{
                 $tramite->adicionaAlTramite->update(['movimiento_registral' => $data['id']]);
 
             }
+
+            return $data['usuario_asignado'];
+
+        }
+
+    }
+
+    public function insertarAvisoPreventivoSistemaRpp($tramite, $descripcion_acto){
+
+        $response = Http::withToken(config('services.sistema_rpp.token'))
+                            ->accept('application/json')
+                            ->asForm()
+                            ->post(
+                                config('services.sistema_rpp.insertar_movimiento_registral'),
+                                [
+                                    'monto' => $tramite->monto,
+                                    'solicitante' => $tramite->solicitante,
+                                    'nombre_solicitante' => $tramite->nombre_solicitante,
+                                    'año' => $tramite->año,
+                                    'tramite' => $tramite->numero_control,
+                                    'usuario' => $tramite->usuario,
+                                    'fecha_prelacion' => $tramite->fecha_prelacion,
+                                    'tipo_servicio' => $tramite->tipo_servicio,
+                                    'tipo_tramite' => $tramite->tipo_tramite,
+                                    'seccion' => $tramite->seccion,
+                                    'distrito' => $tramite->distrito,
+                                    'fecha_entrega' => $tramite->fecha_entrega->toDateString(),
+                                    'fecha_pago' => $tramite->fecha_pago?->toDateString(),
+                                    'categoria_servicio' => $tramite->servicio->categoria->nombre,
+                                    'servicio' => $tramite->servicio->clave_ingreso,
+                                    'servicio_nombre' => $tramite->servicio->nombre,
+                                    'folio_real' => $tramite->folio_real,
+                                    'observaciones' => $tramite->observaciones,
+                                    'numero_notaria' => $tramite->numero_notaria,
+                                    'autoridad_cargo' => $tramite->autoridad_cargo,
+                                    'autoridad_nombre' => $tramite->nombre_autoridad,
+                                    'numero_autoridad' => $tramite->numero_autoridad,
+                                    'tipo_documento' => $tramite->tipo_documento,
+                                    'fecha_emision' => $tramite->fecha_emision,
+                                    'usuario_tramites_linea_id' => $tramite->usuario_tramites_linea_id,
+                                    'descripcion_acto' => $descripcion_acto,
+                                ]
+                            );
+
+        if($response->status() !== 200){
+
+            Log::error("Error al insertar en Sistema RPP el trámite: " . $tramite->año . '-' . $tramite->numero_control . '-' . $tramite->usuario . " por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $response);
+
+            $data = json_decode($response, true);
+
+            if(isset($data['error'])){
+
+                throw new GeneralException($data['error']);
+
+            }
+
+            throw new GeneralException("Error al insertar trámite en Sistema RPP.");
+
+        }else{
+
+            $data = json_decode($response, true)['data'];
+
+            $tramite->update(['movimiento_registral' => $data['id']]);
+
+            (new SistemaTramitesLineaService)->actualizarMovimientoRegistral($tramite->id, $data['id']);
 
             return $data['usuario_asignado'];
 

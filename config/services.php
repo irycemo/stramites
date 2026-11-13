@@ -55,4 +55,10 @@ return [
         'SAP_CONTRASENA_API' => env('SAP_CONTRASENA_API')
     ],
 
+    'sistema_tramites_linea' => [
+        'token' => env('SISTEMA_TRAMITES_LINEA_SERVICE_TOKEN'),
+        'consultar_aviso_preventivo' => env('SISTEMA_TRAMITES_LINEA_CONSULTAR_AVISO_PREVENTIVO'),
+        'actualizar_movimiento_registral' => env('SISTEMA_TRAMITES_LINEA_ACTUALIZAR_MOVIMIENTO_REGISTRAL'),
+    ],
+
 ];

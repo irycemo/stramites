@@ -3,6 +3,8 @@
 namespace App\Livewire\Admin;
 
 use App\Constantes\Constantes;
+use App\Http\Services\SistemaTramitesLinea\SistemaTramitesLineaService;
+use App\Models\AlertaInmobiliaria;
 use App\Exceptions\GeneralException;
 use App\Http\Services\Cobol\CobolService;
 use App\Http\Services\SistemaRPP\SistemaRppService;
@@ -14,6 +16,7 @@ use App\Models\Notaria;
 use App\Models\Servicio;
 use App\Models\Tramite;
 use App\Traits\ComponentesTrait;
+use App\Traits\Tramite\GuardarDocumentoEntradaTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
@@ -25,6 +28,7 @@ class Tramites extends Component
 
     use WithPagination;
     use ComponentesTrait;
+    use GuardarDocumentoEntradaTrait;
 
     public $solicitantes;
     public $secciones;
@@ -463,7 +467,24 @@ class Tramites extends Component
 
         try{
 
-            (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
+            if($this->modelo_editar->usuario == 67){
+
+                /* Primer aviso preventivo */
+                if(in_array($this->modelo_editar->servicio->clave_ingreso, ['DN83'])){
+
+                    $data = (new SistemaTramitesLineaService())->consultarAvisoPreventivo($this->modelo_editar->id, 'aviso_preventivo');
+
+                    $this->guardarDocumentoEntrada($this->modelo_editar->id, $data);
+
+                    (new SistemaRppService())->insertarAvisoPreventivoSistemaRpp($this->modelo_editar, $data['descripcion_acto']);
+
+                }
+
+            }else{
+
+                (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
+
+            }
 
             $this->modelo_editar->audits()->latest()->first()->update(['tags' => 'Envió trámite a Sistema RPP']);
 
@@ -596,8 +617,37 @@ class Tramites extends Component
 
             }
 
-            if($this->modelo_editar->servicio->categoria->nombre === 'Certificaciones')
-                    (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
+            if($this->modelo_editar->servicio->categoria->nombre === 'Certificaciones'){
+
+                (new SistemaRppService())->insertarSistemaRpp($this->modelo_editar);
+
+            }elseif($this->modelo_editar->servicio->clave_ingreso == 'DL19' && $this->modelo_editar->folio_real){
+
+                AlertaInmobiliaria::craete([
+                    'estado' => 'activo',
+                    'folio_real' => $this->modelo_editar->folio_real,
+                    'fecha_vencimiento' => now()->addYear()->toDateString(),
+                    'email' => $this->modelo_editar->email
+                ]);
+
+                $this->modelo_editar->update([
+                    'estado' => 'finalizado'
+                ]);
+
+            }elseif($this->modelo_editar->usuario == 67){
+
+                /* Primer aviso preventivo */
+                if(in_array($this->modelo_editar->servicio->clave_ingreso, ['DN83'])){
+
+                    $data = (new SistemaTramitesLineaService())->consultarAvisoPreventivo($this->modelo_editar->id, 'aviso_preventivo');
+
+                    $this->guardarDocumentoEntrada($this->modelo_editar->id, $data);
+
+                    (new SistemaRppService())->insertarAvisoPreventivoSistemaRpp($this->modelo_editar, $data['descripcion_acto']);
+
+                }
+
+            }
 
             $this->dispatch('mostrarMensaje', ['success', "El trámite acreditó con éxito. Guardar la documentación que acredita el pago."]);
 
@@ -609,7 +659,15 @@ class Tramites extends Component
 
         } catch (\Throwable $th) {
 
-            Log::error("Error al acreditar trámite  por el usuario: (id: " . auth()->user()->id . ") " . auth()->user()->name . ". " . $th->getMessage());
+            Log::error(
+                "Error al acreditar trámite manualmente.",
+                [
+                    'message' => $th->getMessage(),
+                    'usuario_id' => auth()->id(),
+                    'usuario' => auth()->user()->name,
+                    'trace' => $th->getTraceAsString()
+                ]
+            );
             $this->dispatch('mostrarMensaje', ['error', "Ha ocurrido un error."]);
 
         }
