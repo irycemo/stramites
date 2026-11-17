@@ -300,7 +300,7 @@ class TramiteService{
 
     }
 
-    public function cambiarEstado($tramite_id, $estado):void
+    public function cambiarEstado($estado):void
     {
 
         $this->tramite->update(['estado' => $estado]);
@@ -318,7 +318,6 @@ class TramiteService{
         }
 
     }
-
 
 
 }
